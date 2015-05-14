@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <script src="/webjars/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.2/css/bootstrap.min.css" />
+
+    <style>
+
+        .uni img{
+            float:left;
+            width:393px;
+            padding: 62px 0px 0px 0px;
+        }
+
+        .page-header{
+            border-bottom:1px dashed;
+            border-bottom-color: #FF7711;
+        }
+
+    </style>
+
+    <title>Artikel</title>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                    <div class="">
+                        <img src="images/uni-bielefeld.gif"/>
+                    </div>
+                </div>
+                <div class="uni col-sm-7 col-md-7 col-lg-7">
+                    <div class="uni">
+                        <img src="images/claim.gif"/>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <div class="">
+                        <img src="images/citec.gif"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2>Würden Sie diesen Artikel lesen?</h2>
+
+        <div class="row">
+
+            <div class="embed-responsive embed-responsive-16by9 col-sm-6 col-md-6 col-ld-6">
+
+                <div class="article" th:with="url='http://docs.google.com/gview?url=http://ftp.forschungsdatenmanagement.org/nw/nw-xml-export/2014-01-13/entpackt/' + ${article.artikelPdf} + '&amp;embedded=true'">
+                    <iframe class="embed-responsive-item" th:src="${url}" frameborder="0"></iframe>
+                </div>
+
+                <!--style="width:700px; height:600px;" frameborder="0"-->
+            </div>
+            <div class="col-sm-6 col-md-6 col-ld-6">
+                    <form action="#" th:action="@{/articles}" th:object="${tmpData}" method="post">
+                        <div  class="radio">
+                            <label>
+                                <input type="radio" th:field="*{preference}"  th:value="'Ja, auf jeden Fall'"/>
+                                Ja, auf jeden Fall
+                            </label>
+                        </div>
+                        <div  class="radio">
+                            <label>
+                                <input type="radio" th:field="*{preference}" th:value="'Ja, wenn ich genügend Zeit hätte'" />
+                                Ja, wenn ich genügend Zeit hätte
+                            </label>
+                        </div>
+                        <div  class="radio">
+                            <label>
+                                <input type="radio" th:field="*{preference}" th:value="Nein" />
+                                Nein
+                            </label>
+                        </div>
+                        <input type="hidden" th:field="*{currentIndex}" th:value="${tmpData.getCurrentIndex()}" />
+                        <input type="hidden" th:field="*{maxIndex}" th:value="${tmpData.getMaxIndex()}" />
+                        <div class="form-group">
+                            <div class="">
+                                <input type="submit" class="btn btn-default" value="Weiter" />
+                            </div>
+                        </div>
+                    </form>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>

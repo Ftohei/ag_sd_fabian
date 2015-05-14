@@ -1,0 +1,16 @@
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Domain/Preference.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Persistence/PreferenceEntity.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Persistence/ProbandArticleListRepository.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Controller/ExperimentController.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Domain/TmpData.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Persistence/ArticleEntity.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Persistence/ProbandRepository.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Domain/Proband.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Domain/LotteryParticipant.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Persistence/ProbandEntity.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Persistence/ArticleRepository.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/NwExperiment3Application.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Persistence/ProbandArticleListEntity.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Persistence/LotteryParticipantEntity.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Persistence/LotteryParticipantRepository.java
+/Users/fabiankaupmann/AG SD/ag_sd_fabian/nwExperiment3/src/main/java/nwExperiment/Persistence/PreferenceRepository.java

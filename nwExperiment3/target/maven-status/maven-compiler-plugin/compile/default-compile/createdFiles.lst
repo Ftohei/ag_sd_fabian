@@ -1,0 +1,16 @@
+nwExperiment/Domain/LotteryParticipant.class
+nwExperiment/Persistence/ProbandArticleListRepository.class
+nwExperiment/Domain/Proband.class
+nwExperiment/Persistence/ArticleRepository.class
+nwExperiment/Persistence/ProbandEntity.class
+nwExperiment/NwExperiment3Application.class
+nwExperiment/Domain/Preference.class
+nwExperiment/Persistence/LotteryParticipantEntity.class
+nwExperiment/Controller/ExperimentController.class
+nwExperiment/Persistence/LotteryParticipantRepository.class
+nwExperiment/Persistence/ProbandArticleListEntity.class
+nwExperiment/Persistence/PreferenceEntity.class
+nwExperiment/Persistence/PreferenceRepository.class
+nwExperiment/Persistence/ProbandRepository.class
+nwExperiment/Persistence/ArticleEntity.class
+nwExperiment/Domain/TmpData.class

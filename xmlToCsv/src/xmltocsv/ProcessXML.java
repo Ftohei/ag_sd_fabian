@@ -141,37 +141,17 @@ public class ProcessXML {
                 
 
                 for(CSVPerson person : persons){
-                
-//                    System.out.println("------------");
-//                    System.out.println("Person: " + person.getName());
 
                     for(ArticleWithResults article : person.getArticleList()){
                         String articleId = article.getArticleId();
                         for(Artikel artikle: artikles){
                             if(articleId.equals(artikle.getArtikelID())){
-//                                System.out.println("Artikel " + articleId + " wird untersucht");
-//                                System.out.println(artikle.getText());
-                                
-                                String textGetaggt = tagger.tagString(artikle.getText());
-                                
-                                
-                                //Sucht für eine Person für einen bestimmten Artikel die 100 besten ESA-Ergebnisse
-                                article.setTitle(artikle.getTitel());
-                                
-                                searcher.addResultsToArticle(article, textGetaggt);
-//                                System.out.println("-----------");
-//                                System.out.println("Titel: " + article.getTitle());
-//                                System.out.println(article.getPageIds());
-//                                System.out.println(article.getWikiTitles());
-//                                System.out.println(article.getScores());
-//                                System.out.println("------------");
 
-                                //TODO: ausgabe als CSV
-                                // searcher abändern, so dass er auf dem vollen Index arbeitet
-                                //kommandozeilenargumente
-                                
-                                
-                                
+                                String textGetaggt = tagger.tagString(artikle.getText());
+
+                                //Sucht für eine Person für einen bestimmten Artikel die besten ESA-Ergebnisse
+                                article.setTitle(artikle.getTitel());
+                                searcher.addResultsToArticle(article, textGetaggt);
                             }
                         }
                     }

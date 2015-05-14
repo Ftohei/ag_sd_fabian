@@ -35,7 +35,7 @@ import org.apache.lucene.util.Version;
  */
 public class WikiIndexer {
     
-    
+    //TODO: Personenliste durcharbeiten und damit indexieren, welche Index-Einträge Personen sind und welche nicht.
 
     private String indexDir;
     
@@ -90,7 +90,7 @@ public class WikiIndexer {
         
     }
     
-    private void index(String id, String title, String abstr, String text) {
+    private void index(String id, String title, String abstr, String text, String booleanValue) {
         try {
             Document doc = new Document();
             
@@ -98,18 +98,19 @@ public class WikiIndexer {
             doc.add(new Field("title", title, Field.Store.YES, Field.Index.ANALYZED));
             doc.add(new Field("abstract", abstr, Field.Store.YES, Field.Index.ANALYZED));
             doc.add(new Field("text", text, Field.Store.YES, Field.Index.ANALYZED));
+            doc.add(new Field("person", booleanValue, Field.Store.NO, Field.NOT_ANALYZED_NO_NORMS));
             
             this.writer.addDocument(doc);
             
             PrintStream out = new PrintStream(System.out, true, "UTF-8");
             
-            out.println("---------");
-            out.println("Artikel wird indexiert:");
-            out.println("id: "  + id);
-            out.println("Titel: " + title);
-            out.println(abstr);
-            out.println(text);
-            out.println("---------");
+//            out.println("---------");
+//            out.println("Artikel wird indexiert:");
+//            out.println("id: "  + id);
+//            out.println("Titel: " + title);
+//            out.println(abstr);
+//            out.println(text);
+//            out.println("---------");
             
         } catch (IOException ex) {
             Logger.getLogger(WikiIndexer.class.getName()).log(Level.SEVERE, null, ex);

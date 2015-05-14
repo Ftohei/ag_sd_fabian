@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.Float;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -161,20 +162,16 @@ public class Searcher {
     public ArticleWithResults addResultsToArticle(ArticleWithResults article, String inputGetaggt){
         ArticleWithResults resultArticle = article;
         String nounAdjectiveQuery = this.extractQueryString(inputGetaggt);
-//        System.out.println(nounAdjectiveQuery);
         
         this.scores.clear();
         this.titles.clear();
         this.pageIds.clear();
         
         this.search(nounAdjectiveQuery);
-//        System.out.println("-----------");
-//        System.out.println(this.scores);
-//        System.out.println(this.titles);
-//        System.out.println(this.pageIds);
-//        System.out.println("-----------");
-        
-        
+
+        //Hier Queryergebnisse normalisieren mit Maximalem Resultat (nur für Vergleich innerhalb einer Query sinnvoll!)
+//        this.normalizeResultsWithMaxResult();
+
         resultArticle.getPageIds().addAll(this.pageIds);
         resultArticle.getWikiTitles().addAll(this.titles);
         resultArticle.getScores().addAll(this.scores);
@@ -195,17 +192,12 @@ public class Searcher {
 
         
                 for(int i=0; i<hits.length; i++){
-//                    Explanation explanation = searcher.explain(q, hits[i].doc);
                     int docId = hits[i].doc;
                     Document d = searcher.doc(docId);
                     this.pageIds.add(d.get("id"));
                     this.scores.add(hits[i].score);
                     this.titles.add(d.get("title"));
-                    
-                    
-//                    result.add(d.get("pageId"));
-//                    this.scores.add(hits[i].score);
-//                    this.normalizedScore = this.normalizedScore + hits[i].score;
+
                 }
                 
             }
@@ -218,6 +210,14 @@ public class Searcher {
         }
         
         
-    }               
+    }
+
+    public void normalizeResultsWithMaxResult(){
+        ArrayList<Float> normalizedScores = this.scores;
+        float maxResult = Collections.max(normalizedScores);
+        for(int i = 0; i<this.scores.size(); i++){
+            this.scores.get(i) = this.scores.get(i) / maxResult;
+        }
+    }
     
 }
