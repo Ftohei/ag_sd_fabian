@@ -27,11 +27,21 @@
       <file leaf-file-name="ExperimentController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/nwExperiment/Controller/ExperimentController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.0363636">
-              <caret line="33" column="62" selection-start-line="33" selection-start-column="62" selection-end-line="33" selection-end-column="62" />
+            <state vertical-scroll-proportion="0.45454547">
+              <caret line="25" column="64" selection-start-line="25" selection-start-column="64" selection-end-line="25" selection-end-column="64" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ArticleRepository.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/nwExperiment/Persistence/ArticleRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="28" column="159" selection-start-line="28" selection-start-column="159" selection-end-line="28" selection-end-column="159" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -107,30 +117,6 @@
               <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ProbandArticleListEntity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/nwExperiment/Persistence/ProbandArticleListEntity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#1042#1043#0" expanded="false" />
-                <element signature="e#1074#1075#0" expanded="false" />
-                <element signature="e#1124#1125#0" expanded="false" />
-                <element signature="e#1166#1167#0" expanded="false" />
-                <element signature="e#1206#1207#0" expanded="false" />
-                <element signature="e#1241#1242#0" expanded="false" />
-                <element signature="e#1298#1299#0" expanded="false" />
-                <element signature="e#1346#1347#0" expanded="false" />
-                <element signature="e#1379#1380#0" expanded="false" />
-                <element signature="e#1411#1412#0" expanded="false" />
-                <element signature="e#1458#1459#0" expanded="false" />
-                <element signature="e#1500#1501#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -225,7 +211,6 @@
         <option value="$PROJECT_DIR$/src/main/java/nwExperiment/Domain/tmpExperiment.java" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/error.html" />
         <option value="$PROJECT_DIR$/src/main/java/nwExperiment/Domain/TmpExperiment.java" />
-        <option value="$PROJECT_DIR$/src/main/java/nwExperiment/Persistence/ArticleRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/nwExperiment/Domain/TmpData.java" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/thankYou.html" />
         <option value="$PROJECT_DIR$/src/main/java/nwExperiment/Persistence/ReferenceRepository.java" />
@@ -251,6 +236,7 @@
         <option value="$PROJECT_DIR$/src/main/java/nwExperiment/Persistence/PreferenceEntity.java" />
         <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/registration.html" />
+        <option value="$PROJECT_DIR$/src/main/java/nwExperiment/Persistence/ArticleRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/nwExperiment/Controller/ExperimentController.java" />
       </list>
     </option>
@@ -845,12 +831,12 @@
       <workItem from="1431437703403" duration="7598000" />
       <workItem from="1431513253746" duration="4298000" />
       <workItem from="1431604418464" duration="14062000" />
-      <workItem from="1431690422690" duration="1803000" />
+      <workItem from="1431690422690" duration="2409000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79557000" />
+    <option name="totallyTimeSpent" value="80163000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1209,6 +1195,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1329,13 +1316,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.45454547">
           <caret line="25" column="61" selection-start-line="25" selection-start-column="61" selection-end-line="25" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/nwExperiment/Persistence/ArticleRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12727273">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -1525,10 +1505,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/nwExperiment/Persistence/ArticleRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="159" selection-start-line="28" selection-start-column="159" selection-end-line="28" selection-end-column="159" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/nwExperiment/Controller/ExperimentController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.0363636">
-          <caret line="33" column="62" selection-start-line="33" selection-start-column="62" selection-end-line="33" selection-end-column="62" />
+        <state vertical-scroll-proportion="0.45454547">
+          <caret line="25" column="64" selection-start-line="25" selection-start-column="64" selection-end-line="25" selection-end-column="64" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -23,7 +23,7 @@ import java.util.*;
 @Controller
 public class ExperimentController {
 
-    private static final int NUMBER_OF_ARTICLES_PER_CATEGORY = 25;
+    private static final int NUMBER_OF_ARTICLES_PER_CATEGORY = 1;
 
     //TODO:
 
