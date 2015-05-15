@@ -5,6 +5,10 @@
 .AppleDouble
 .LSOverride
 
+
+#application.properties
+nwExperiment3/src/main/resources/application.properties
+
 # Icon must end with two \r
 Icon
 

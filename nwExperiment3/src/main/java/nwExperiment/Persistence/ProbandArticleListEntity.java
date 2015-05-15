@@ -15,13 +15,13 @@ public class ProbandArticleListEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "PraeferenzId")
+    @Column(name = "praeferenzId")
     private Integer preferenceId;
 
-    @Column(name = "ArtikelId")
+    @Column(name = "artikelId")
     private byte[] articleId;
 
-    @Column(name = "ProbandId")
+    @Column(name = "probandId")
     private int probandId;
 
 //    @Column(name = "praeferenz")

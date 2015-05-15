@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
-import java.time.Instant;
 import java.util.*;
 
 /**
@@ -24,16 +23,16 @@ import java.util.*;
 @Controller
 public class ExperimentController {
 
+    private static final int NUMBER_OF_ARTICLES_PER_CATEGORY = 25;
+
     //TODO:
 
+    // registration buttons zentrieren
     // - pdfs lokal laden
     // - form validation
     // - nur artikel mit titel nehmen
     // - nur artikel ab einer bestimmten länge nehmen
-    // - gleiche artikel rausfiltern
-    // - db aufräumen : aktuelle ausgaben rein
-
-    private Stack<Integer> tmpProbandStack = new Stack<>();
+    // - neueste Artikel: nur vom neusten Datum für Experiment
 
     @Autowired
     private ProbandRepository probandRepository;
@@ -106,8 +105,8 @@ public class ExperimentController {
         //zugewiesene probandId aus Datenbank abfragen
         int probandId = probandRepository.findNewestId();
 
-        //100 artikel zuweisen
-        for(byte[] articleId : this.randomArticles()){
+        //bel Anzahl an Artikeln zuweisen
+        for(byte[] articleId : this.randomArticles(NUMBER_OF_ARTICLES_PER_CATEGORY)){
             probandArticleListRepository.save(new ProbandArticleListEntity(articleId,probandId));
         }
 
@@ -205,7 +204,7 @@ public class ExperimentController {
         preferenceRepository.save(new PreferenceEntity(praeferenzId,preference));
     }
 
-    private ArrayList<byte[]> randomArticles(){
+    private ArrayList<byte[]> randomArticles(int numberOfArticlesPerCategory){
 
         ArrayList<byte[]> articles = new ArrayList<>();
 
@@ -219,7 +218,7 @@ public class ExperimentController {
 
         Collections.shuffle(randomNumbers);
 
-        for(int i=0;i<20;i++){
+        for(int i=0;i< Math.min(randomNumbers.size(), numberOfArticlesPerCategory);i++){
             articles.add(articlesBielefeld.get(randomNumbers.get(i)));
         }
 
@@ -233,7 +232,7 @@ public class ExperimentController {
 
         Collections.shuffle(randomNumbers);
 
-        for(int i=0;i<20;i++){
+        for(int i=0; i< Math.min(randomNumbers.size(), numberOfArticlesPerCategory); i++){
             articles.add(articlesKultur.get(randomNumbers.get(i)));
         }
 
@@ -247,7 +246,7 @@ public class ExperimentController {
 
         Collections.shuffle(randomNumbers);
 
-        for(int i=0;i<20;i++){
+        for(int i=0; i< Math.min(randomNumbers.size(), numberOfArticlesPerCategory); i++){
             articles.add(articlesPolitik.get(randomNumbers.get(i)));
         }
 
@@ -261,7 +260,7 @@ public class ExperimentController {
 
         Collections.shuffle(randomNumbers);
 
-        for(int i=0;i<20;i++){
+        for(int i=0; i< Math.min(randomNumbers.size(), numberOfArticlesPerCategory); i++){
             articles.add(articlesSportBund.get(randomNumbers.get(i)));
         }
 
@@ -275,7 +274,7 @@ public class ExperimentController {
 
         Collections.shuffle(randomNumbers);
 
-        for(int i=0;i<20;i++){
+        for(int i=0; i< Math.min(randomNumbers.size(), numberOfArticlesPerCategory); i++){
             articles.add(articlesSportBielefeld.get(randomNumbers.get(i)));
         }
 

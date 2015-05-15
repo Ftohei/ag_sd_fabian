@@ -32,19 +32,19 @@ public class ProbandEntity {
     @Column(name = "herkunft")
     private String origin;
 
-    @Column(name = "probandInteresseAnPolitik")
+    @Column(name = "probandInteressePolitik")
     private int interestInPolitics;
 
-    @Column(name = "probandInteresseAnKultur")
+    @Column(name = "probandInteresseKultur")
     private int interestInCulture;
 
-    @Column(name = "probandInteresseAnLokales")
+    @Column(name = "probandInteresseLokales")
     private int interestInLocalArticles;
 
-    @Column(name = "probandInteresseAnSport")
+    @Column(name = "probandInteresseSport")
     private int interestInSports;
 
-    @Column(name = "probandInteresseAnLokalsport")
+    @Column(name = "probandInteresseLokalsport")
     private int interestInLocalSports;
 
 

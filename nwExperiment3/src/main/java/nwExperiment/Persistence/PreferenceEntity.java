@@ -26,8 +26,8 @@ public class PreferenceEntity {
     public PreferenceEntity() {
     }
 
-    public PreferenceEntity(Integer preferenceId, String preference) {
-        this.preferenceId = preferenceId;
+    public PreferenceEntity(Integer praeferenzId, String preference) {
+        this.preferenceId = praeferenzId;
         this.preference = preference;
         this.timestamp = Instant.now();
     }
@@ -47,4 +47,13 @@ public class PreferenceEntity {
     public void setPreference(String preference) {
         this.preference = preference;
     }
+
+    public Instant getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Instant timestamp) {
+        this.timestamp = timestamp;
+    }
+
 }

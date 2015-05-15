@@ -15,40 +15,40 @@ import java.sql.Date;
 public class ArticleEntity {
 
     @Id
-    @Column(name = "ArtikelId")
+    @Column(name = "artikelId")
     private byte[] id;
 
-    @Column(name = "LieferantId")
+    @Column(name = "lieferantId")
     private Integer lieferantId;
 
-    @Column(name = "QuelleId")
+    @Column(name = "quelleId")
     private  String quelleId;
 
     @Column(name = "artikelpdf")
     private String artikelPdf;
 
-    @Column(name = "Herausgeber")
+    @Column(name = "herausgeber")
     private String herausgeber;
 
-    @Column(name = "Datum")
+    @Column(name = "datum")
     private Date datum;
 
     @Column(name = "titel")
     private String titel;
 
-    @Column(name = "Text")
+    @Column(name = "text")
     private String text;
 
-    @Column(name = "AusgabeId")
+    @Column(name = "ausgabeId")
     private Integer ausgabeId;
 
-    @Column(name = "RessortId")
+    @Column(name = "ressortId")
     private Integer ressortId;
 
-    @Column(name = "Autor")
+    @Column(name = "autor")
     private String autor;
 
-    @Column(name = "Seite")
+    @Column(name = "seite")
     private Integer seite;
 
     public ArticleEntity(){}
