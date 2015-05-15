@@ -27,7 +27,6 @@ public class ExperimentController {
 
     //TODO:
 
-    // registration buttons zentrieren
     // - pdfs lokal laden
     // - form validation
     // - nur artikel mit titel nehmen
