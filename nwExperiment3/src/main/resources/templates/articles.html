@@ -58,7 +58,15 @@
 
             <div class="embed-responsive embed-responsive-16by9 col-sm-6 col-md-6 col-ld-6">
 
-                <div class="article" th:with="url='http://docs.google.com/gview?url=http://ftp.forschungsdatenmanagement.org/nw/nw-xml-export/2014-01-13/entpackt/' + ${article.artikelPdf} + '&amp;embedded=true'">
+                <!--<div class="article" th:with="url='http://docs.google.com/gview?url=http://ftp.forschungsdatenmanagement.org/nw/nw-xml-export/2014-01-13/entpackt/' + ${article.artikelPdf} + '&amp;embedded=true'">
+                    <iframe class="embed-responsive-item" th:src="${url}" frameborder="0"></iframe>
+                </div>-->
+                
+                <!--<div class="article" th:with="url='sources/bela.pdf'">
+                    <iframe class="embed-responsive-item" th:src="${url}" frameborder="0"></iframe>
+                </div>-->
+                
+                <div class="article" th:with="url='sources/'+ ${article.artikelPdf}">
                     <iframe class="embed-responsive-item" th:src="${url}" frameborder="0"></iframe>
                 </div>
 
