@@ -28,13 +28,8 @@ public class ProcessXML {
 
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, SQLException {
 
-        /**
-         * Todo: Fehler mit dem DocumentBuilder beheben
-         */
-
-
-//		File fXmlFile = new File(args[0]);
-        File fXmlFile = new File("/Users/fabiankaupmann/DEV/intellijProjects/xmlToDatabase/target/8586833-Kogni-25022015.xml");
+		File fXmlFile = new File(args[0]);
+//        File fXmlFile = new File("/Users/fabiankaupmann/Desktop/8586833-Kogni-30052015.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 
@@ -50,7 +45,6 @@ public class ProcessXML {
             }
         });
 
-        //Hier liegt das Problem!
         Document doc = dBuilder.parse(fXmlFile);
 
 
@@ -114,7 +108,7 @@ public class ProcessXML {
 
         for (Artikel artikle: artikles)
         {
-            writer = new FileWriter("/Users/fabiankaupmann/Desktop/NW-Datenbank/NW-Artikel/"+artikle.getArtikelID()+".txt");
+            writer = new FileWriter("./output/NW-Artikel/"+artikle.getArtikelID()+".txt");
             writer.write(artikle.getText());
             writer.close();
         }
@@ -147,14 +141,44 @@ public class ProcessXML {
         String datumNeueAusgabe = artikles.get(0).convertDate(artikles.get(0).getDatum());
         stmt.executeUpdate("INSERT INTO ausgabe SET datum = '" + datumNeueAusgabe + "';");
 
+        //Liste der bereits vorhandenen Rubriken erstellen, um zu überprüfen, falls neue hinzukommen
+        ResultSet rubrikSet;
+
+        rubrikSet = stmt.executeQuery("SELECT name FROM rubrik");
+
+        ArrayList<String> existingRubriken = new ArrayList<String>();
+
+
+        System.out.println("Bisherige Rubriken:");
+
+        while(rubrikSet.next()){
+            String rubrik = rubrikSet.getString("name");
+            System.out.println(rubrik);
+            existingRubriken.add(rubrik);
+
+        }
+
+        System.out.println("------------");
+
         MaxentTagger tagger = new MaxentTagger("./taggers/german-fast.tagger");
 
-        //            Searcher searcher = new Searcher("/Users/fabiankaupmann/Desktop/testIndexCompleteStemming/");
+        //            Searcher searcher = new Searcher("");
 
         for (Artikel artikle: artikles){
 
-            //TODO: wenn Artikel schon in DB ist, den neuen Artikel nicht speichern, sondern einen weiteren Eintrag in den Rubriken machen
-            //(artikelId verwerfen)
+            boolean rubrikContained = false;
+
+            for(String rubrik : existingRubriken){
+                if(artikle.getRubrik().equals(rubrik)){
+                    rubrikContained = true;
+                }
+            }
+
+            if(!rubrikContained){
+                System.out.println("Neue Rubrik: " + artikle.getRubrik());
+                stmt.executeUpdate("INSERT INTO rubrik SET name = '" + artikle.getRubrik() + "'");
+                existingRubriken.add(artikle.getRubrik());
+            }
 
             ResultSet resultSet;
 
@@ -224,6 +248,8 @@ public class ProcessXML {
 
         }
 
+        stmt.close();
+        connector.closeConnection();
 
     }
 

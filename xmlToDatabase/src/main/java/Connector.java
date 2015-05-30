@@ -55,5 +55,9 @@ public class Connector {
         return conn;
     }
 
+    public void closeConnection() throws SQLException {
+        this.conn.close();
+    }
+
     
 }
