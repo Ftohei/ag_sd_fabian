@@ -181,18 +181,18 @@ public class ExperimentController {
     }
 
 
-    @RequestMapping(value="/thankYouLottery", method = RequestMethod.GET)
-    public String thankYou(Model model){
-        model.addAttribute("lotteryParticipant", new LotteryParticipant());
-        return "thankYouLottery";
-    }
-
-    @RequestMapping(value="/thankYouLottery", method = RequestMethod.POST)
-    public String thankYouSubmit(Model model, @ModelAttribute LotteryParticipant lotteryParticipant){
-        lotteryParticipantRepository.save(new LotteryParticipantEntity(lotteryParticipant.getMailAddress()));
-
-        return "redirect:/end";
-    }
+//    @RequestMapping(value="/thankYouLottery", method = RequestMethod.GET)
+//    public String thankYou(Model model){
+//        model.addAttribute("lotteryParticipant", new LotteryParticipant());
+//        return "thankYouLottery";
+//    }
+//
+//    @RequestMapping(value="/thankYouLottery", method = RequestMethod.POST)
+//    public String thankYouSubmit(Model model, @ModelAttribute LotteryParticipant lotteryParticipant){
+//        lotteryParticipantRepository.save(new LotteryParticipantEntity(lotteryParticipant.getMailAddress()));
+//
+//        return "redirect:/end";
+//    }
 
     @RequestMapping(value="/end")
     public String thankYouSubmit(){
