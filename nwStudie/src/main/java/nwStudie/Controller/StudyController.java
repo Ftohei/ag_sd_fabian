@@ -23,8 +23,8 @@ import java.util.*;
 @Controller
 public class StudyController {
 
-    private static final int NUMBER_OF_ARTICLES_PER_CATEGORY_PART_ONE = 1;      // artikel für part 1 (5 Kategorien mit jeweils n Artikeln)
-    private static final int NUMBER_OF_ARTICLES_PART_TWO = 3;                   // artikel für part 2 der studie
+    private static final int NUMBER_OF_ARTICLES_PER_CATEGORY_PART_ONE = 6;      // artikel für part 1 (5 Kategorien mit jeweils n Artikeln)
+    private static final int NUMBER_OF_ARTICLES_PART_TWO = 5;                   // artikel für part 2 der studie
 
     //TODO:
 
@@ -48,9 +48,6 @@ public class StudyController {
     /*
     Registration
      */
-
-    //TODO: statt registration als startseite eine erklärungsseite (welcome). dabei trotzdem origin mit übergeben
-
     @RequestMapping(value="/nw", method= RequestMethod.GET)
     public String explanationFormNW(Model model){
 
@@ -183,7 +180,8 @@ public class StudyController {
         if(tmpData.getCurrentIndex() < (tmpData.getMaxIndex() - NUMBER_OF_ARTICLES_PART_TWO)){
 
             //Praeferenz speichern
-            this.savePreference(tmpData.getPreference(), tmpData.getCurrentIndex());
+            int preference = Integer.parseInt(tmpData.getPreference());
+            this.savePreference(preference, tmpData.getCurrentIndex());
 
             //currentIndex inkrementieren
             int i = tmpData.getCurrentIndex();
@@ -201,7 +199,8 @@ public class StudyController {
         }
         else if( tmpData.getCurrentIndex() == (tmpData.getMaxIndex() - NUMBER_OF_ARTICLES_PART_TWO)){
             //Praeferenz speichern
-            this.savePreference(tmpData.getPreference(), tmpData.getCurrentIndex());
+            int preference = Integer.parseInt(tmpData.getPreference());
+            this.savePreference(preference, tmpData.getCurrentIndex());
 
             //currentIndex inkrementieren
             int i = tmpData.getCurrentIndex();
@@ -235,7 +234,7 @@ public class StudyController {
         model.addAttribute("tmpData", tmpData2);
 
         return "articles2";
-        
+
     }
 
     @Transactional
@@ -245,7 +244,11 @@ public class StudyController {
         if(tmpData2.getCurrentIndex() < tmpData2.getMaxIndex()){
 
             //Praeferenz speichern
-            this.savePreference(tmpData2.getComprehensibility(), tmpData2.getComplexity(), tmpData2.getCurrentIndex());
+            int comprehensibility = Integer.parseInt(tmpData2.getComprehensibility());
+            int complexity = Integer.parseInt(tmpData2.getComplexity());
+            int interest = Integer.parseInt(tmpData2.getInterest());
+
+            this.savePreference(comprehensibility, complexity, interest, tmpData2.getCurrentIndex());
 
             //currentIndex inkrementieren
             int i = tmpData2.getCurrentIndex();
@@ -263,7 +266,11 @@ public class StudyController {
         }
         else if( tmpData2.getCurrentIndex() == tmpData2.getMaxIndex()){
             //Praeferenz speichern
-            this.savePreference(tmpData2.getComprehensibility(), tmpData2.getComplexity(), tmpData2.getCurrentIndex());
+            int comprehensibility = Integer.parseInt(tmpData2.getComprehensibility());
+            int complexity = Integer.parseInt(tmpData2.getComplexity());
+            int interest = Integer.parseInt(tmpData2.getInterest());
+
+            this.savePreference(comprehensibility, complexity, interest, tmpData2.getCurrentIndex());
 
             return "redirect:/end";
         } else {
@@ -277,12 +284,12 @@ public class StudyController {
         return "end";
     }
 
-    private void savePreference(String preference, int praeferenzId){
+    private void savePreference(int preference, int praeferenzId){
         preferenceRepository.save(new PreferenceEntity(praeferenzId,preference));
     }
 
-    private void savePreference(String comprehensibilty, String complexity, int praeferenzId){
-        compRepository.save(new CompEntity(praeferenzId, comprehensibilty, complexity));
+    private void savePreference(int comprehensibilty, int complexity, int interest, int praeferenzId){
+        compRepository.save(new CompEntity(praeferenzId, comprehensibilty, complexity, interest));
     }
 
     private ArrayList<byte[]> randomArticlesWithCategory(int numberOfArticlesPerCategory){
@@ -358,8 +365,6 @@ public class StudyController {
         for(int i=0; i< Math.min(randomNumbers.size(), numberOfArticlesPerCategory); i++){
             articles.add(articlesSportBielefeld.get(randomNumbers.get(i)));
         }
-
-
 
         //shuffle final list
         Collections.shuffle(articles);

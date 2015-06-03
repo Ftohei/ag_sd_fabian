@@ -20,10 +20,13 @@ public class CompEntity {
     private Integer compId;
 
     @Column(name = "verständlichkeit")
-    private String comprehensibility;
+    private int comprehensibility;
 
     @Column(name = "komplexitaet")
-    private String complexity;
+    private int complexity;
+
+    @Column(name = "interesse")
+    private int interest;
 
     @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentInstantAsTimestamp")
     @Column(name = "timestamp")
@@ -32,10 +35,11 @@ public class CompEntity {
     public CompEntity() {
     }
 
-    public CompEntity(Integer praeferenzId, String comprehensibility, String complexity) {
+    public CompEntity(Integer praeferenzId, int comprehensibility, int complexity, int interest) {
         this.compId = praeferenzId;
         this.comprehensibility = comprehensibility;
         this.complexity = complexity;
+        this.interest = interest;
         this.timestamp = Instant.now();
     }
 
@@ -47,20 +51,28 @@ public class CompEntity {
         this.compId = compId;
     }
 
-    public String getComprehensibility() {
+    public int getComprehensibility() {
         return comprehensibility;
     }
 
-    public void setComprehensibility(String comprehensibility) {
+    public void setComprehensibility(int comprehensibility) {
         this.comprehensibility = comprehensibility;
     }
 
-    public String getComplexity() {
+    public int getComplexity() {
         return complexity;
     }
 
-    public void setComplexity(String complexity) {
+    public void setComplexity(int complexity) {
         this.complexity = complexity;
+    }
+
+    public int getInterest() {
+        return interest;
+    }
+
+    public void setInterest(int interest) {
+        this.interest = interest;
     }
 
     public Instant getTimestamp() {

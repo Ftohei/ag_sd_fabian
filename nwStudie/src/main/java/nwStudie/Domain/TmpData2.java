@@ -17,6 +17,8 @@ public class TmpData2 {
 
     public String complexity;
 
+    public String interest;
+
     public TmpData2() {
     }
 
@@ -55,5 +57,13 @@ public class TmpData2 {
 
     public void setComplexity(String complexity) {
         this.complexity = complexity;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest;
     }
 }

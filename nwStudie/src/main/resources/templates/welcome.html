@@ -67,42 +67,46 @@
         </div>
     </div>
 
-    <div class="container">
-        <div>
-            <p>
-                Die Studie besteht aus zwei Teilen:
-            </p>
-            <p>
-                <br/>
-                1) Im ersten Teil sollen sie Artikel überfliegen und angeben, ob sie diese in einer Ausgabe der NW gerne lesen würden.
-            </p>
-            <p>
-                2) Im zweiten Teil sollen sie ein paar wenige Artikel lesen und Rückmeldung zur Verständlichkeit geben.
-            </p>
-            <p>
-                <br/>
-                Ihre Angaben werden nur zu wissenschaftlichen Zwecken und anonym verwendet.
-            </p>
-            <p>
-                <br/>
-                Vielen Danke für ihre Teilnahme.
-            </p>
-            <p>
-                <br/>
-                Hier geht es zur Studie…
-            </p>
-        </div>
+    <div class="container col-sm-6 col-md-6 col-lg-6">
         <div class="container">
-            <form class="form form-horizontal" action="#" th:action="@{/}" th:object="${proband}" method="post">
-                <input type="hidden" th:field="*{origin}" th:value="${proband.getOrigin()}" />
-                <div class="form-group">
-                    <div>
-                        <input type="submit" class="btn btn-default" value="Weiter" />
-                    </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <p>
+                    Die Studie besteht aus zwei Teilen:
+                </p>
+                <p>
+                    <br/>
+                    1) Im ersten Teil sollen Sie Artikel überfliegen und angeben, ob Sie diese in einer Ausgabe der NW gerne lesen würden.
+                </p>
+                <p>
+                    2) Im zweiten Teil sollen Sie ein paar wenige Artikel lesen und Rückmeldung zur Verständlichkeit geben.
+                </p>
+                <p>
+                    <br/>
+                    Ihre Angaben werden nur zu wissenschaftlichen Zwecken und anonym verwendet.
+                </p>
+                <p>
+                    <br/>
+                    Vielen Dank für ihre Teilnahme.
+                </p>
+                <p>
+                    <br/>
+                    Hier geht es zur Studie…
+                </p>
+                <div class="container">
+                    <form class="form form-horizontal" action="#" th:action="@{/}" th:object="${proband}" method="post">
+                        <input type="hidden" th:field="*{origin}" th:value="${proband.getOrigin()}" />
+                        <div class="form-group">
+                            <div>
+                                <input type="submit" class="btn btn-default" value="Weiter" />
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <img src="https://www.galerie-am-dom.de/prdimages/Janosch__Zeitungsleser.jpg" class="img-responsive img-rounded" alt="Responsive image"/>
+            </div>
         </div>
-
     </div>
 
 

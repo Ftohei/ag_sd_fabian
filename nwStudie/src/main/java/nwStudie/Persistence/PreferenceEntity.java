@@ -17,7 +17,7 @@ public class PreferenceEntity {
     private Integer preferenceId;
 
     @Column(name = "praeferenz")
-    private String preference;
+    private int preference;
 
     @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentInstantAsTimestamp")
     @Column(name = "timestamp")
@@ -26,7 +26,7 @@ public class PreferenceEntity {
     public PreferenceEntity() {
     }
 
-    public PreferenceEntity(Integer praeferenzId, String preference) {
+    public PreferenceEntity(Integer praeferenzId, int preference) {
         this.preferenceId = praeferenzId;
         this.preference = preference;
         this.timestamp = Instant.now();
@@ -40,11 +40,11 @@ public class PreferenceEntity {
         this.preferenceId = preferenceId;
     }
 
-    public String getPreference() {
+    public int getPreference() {
         return preference;
     }
 
-    public void setPreference(String preference) {
+    public void setPreference(int preference) {
         this.preference = preference;
     }
 

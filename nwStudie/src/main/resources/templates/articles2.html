@@ -74,59 +74,89 @@
         </div>
         <div class="col-sm-6 col-md-6 col-ld-6">
             <form action="#" th:action="@{/articles2}" th:object="${tmpData}" method="post">
-                <p>Dieser Artikel ist sprachlich...</p>
-                <div  class="radio">
-                    <label>
-                        <input type="radio" th:field="*{comprehensibility}"  th:value="'sehr leicht verständlich'" required="required"/>
-                        sehr leicht verständlich
-                    </label>
-                </div>
-                <div  class="radio">
-                    <label>
-                        <input type="radio" th:field="*{comprehensibility}" th:value="'verständlich'" required="required"/>
-                        verständlich
-                    </label>
-                </div>
-                <div  class="radio">
-                    <label>
-                        <input type="radio" th:field="*{comprehensibility}" th:value="'schwer verständlich'" required="required"/>
-                        schwer verständlich
-                    </label>
-                </div>
-                <div  class="radio">
-                    <label>
-                        <input type="radio" th:field="*{comprehensibility}" th:value="'unverständlich'" required="required"/>
-                        unverständlich
-                    </label>
-                </div>
-
-
-                <p>Dieser Artikel ist inhaltlich...</p>
-                <div  class="radio">
-                    <label>
-                        <input type="radio" th:field="*{complexity}"  th:value="'sehr einfach'" required="required"/>
-                        sehr einfach
-                    </label>
-                </div>
-                <div  class="radio">
-                    <label>
-                        <input type="radio" th:field="*{complexity}" th:value="'eher einfach'" required="required"/>
-                        eher einfach
-                    </label>
-                </div>
-                <div  class="radio">
-                    <label>
-                        <input type="radio" th:field="*{complexity}" th:value="'eher komplex'" required="required"/>
-                        eher komplex
-                    </label>
-                </div>
-                <div  class="radio">
-                    <label>
-                        <input type="radio" th:field="*{complexity}" th:value="'sehr komplex'" required="required"/>
-                        sehr komplex
-                    </label>
+                <div class="form-group">
+                    <p>Dieser Artikel ist sprachlich...</p>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{comprehensibility}"  th:value="1" required="required"/>
+                            Sehr leicht verständlich
+                        </label>
+                    </div>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{comprehensibility}" th:value="2" required="required"/>
+                            Verständlich
+                        </label>
+                    </div>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{comprehensibility}" th:value="3" required="required"/>
+                            Schwer verständlich
+                        </label>
+                    </div>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{comprehensibility}" th:value="4" required="required"/>
+                            Unverständlich
+                        </label>
+                    </div>
                 </div>
 
+                <div class="form-group">
+                    <p>Dieser Artikel ist inhaltlich...</p>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{complexity}"  th:value="1" required="required"/>
+                            Sehr einfach
+                        </label>
+                    </div>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{complexity}" th:value="2" required="required"/>
+                            Eher einfach
+                        </label>
+                    </div>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{complexity}" th:value="3" required="required"/>
+                            Eher komplex
+                        </label>
+                    </div>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{complexity}" th:value="4" required="required"/>
+                            Sehr komplex
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p>Fanden Sie den Artikel interessant?</p>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{interest}"  th:value="1" required="required"/>
+                            Sehr interessant
+                        </label>
+                    </div>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{interest}" th:value="2" required="required"/>
+                            Geht so
+                        </label>
+                    </div>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{interest}" th:value="3" required="required"/>
+                            Eher nicht
+                        </label>
+                    </div>
+                    <div  class="radio">
+                        <label>
+                            <input type="radio" th:field="*{interest}" th:value="4" required="required"/>
+                            Nein
+                        </label>
+                    </div>
+                </div>
 
                 <input type="hidden" th:field="*{currentIndex}" th:value="${tmpData.getCurrentIndex()}" />
                 <input type="hidden" th:field="*{maxIndex}" th:value="${tmpData.getMaxIndex()}" />
