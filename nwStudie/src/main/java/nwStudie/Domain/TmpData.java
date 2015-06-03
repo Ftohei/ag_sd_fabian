@@ -5,7 +5,7 @@ package nwStudie.Domain;
  */
 
 /**
- * Speichert alle Daten, die während des Experiments gehalten werden müssen: artikelId, artikelListe, aktueller Artikelindex aus Liste
+ * Speichert alle Daten, die während des ersten Teils des Experiments gehalten werden müssen: artikelId, artikelListe, aktueller Artikelindex aus Liste
  */
 public class TmpData {
 

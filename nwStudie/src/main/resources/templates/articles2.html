@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <script src="/webjars/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.2/css/bootstrap.min.css" />
+
+    <style>
+
+        .uni img{
+            float:left;
+            width:393px;
+            padding: 62px 0px 0px 0px;
+        }
+
+        .page-header{
+            border-bottom:1px dashed;
+            border-bottom-color: #FF7711;
+        }
+
+    </style>
+
+    <title>Artikel</title>
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="">
+                    <img src="images/uni-bielefeld.gif"/>
+                </div>
+            </div>
+            <div class="uni col-sm-7 col-md-7 col-lg-7">
+                <div class="uni">
+                    <img src="images/claim.gif"/>
+                </div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2">
+                <div class="">
+                    <img src="images/citec.gif"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2>Lesen Sie diesen Artikel</h2>
+
+    <div class="row">
+
+        <div class="embed-responsive embed-responsive-16by9 col-sm-6 col-md-6 col-ld-6">
+
+            <!--<div class="article" th:with="url='http://docs.google.com/gview?url=http://ftp.forschungsdatenmanagement.org/nw/nw-xml-export/2014-01-13/entpackt/' + ${article.artikelPdf} + '&amp;embedded=true'">
+                <iframe class="embed-responsive-item" th:src="${url}" frameborder="0"></iframe>
+            </div>-->
+
+            <!--<div class="article" th:with="url='sources/bela.pdf'">
+                <iframe class="embed-responsive-item" th:src="${url}" frameborder="0"></iframe>
+            </div>-->
+
+            <div class="article" th:with="url='sources/'+ ${article.artikelPdf}">
+                <iframe class="embed-responsive-item" th:src="${url}" frameborder="0"></iframe>
+            </div>
+
+            <!--style="width:700px; height:600px;" frameborder="0"-->
+        </div>
+        <div class="col-sm-6 col-md-6 col-ld-6">
+            <form action="#" th:action="@{/articles2}" th:object="${tmpData}" method="post">
+                <p>Dieser Artikel ist sprachlich...</p>
+                <div  class="radio">
+                    <label>
+                        <input type="radio" th:field="*{comprehensibility}"  th:value="'sehr leicht verständlich'" required="required"/>
+                        sehr leicht verständlich
+                    </label>
+                </div>
+                <div  class="radio">
+                    <label>
+                        <input type="radio" th:field="*{comprehensibility}" th:value="'verständlich'" required="required"/>
+                        verständlich
+                    </label>
+                </div>
+                <div  class="radio">
+                    <label>
+                        <input type="radio" th:field="*{comprehensibility}" th:value="'schwer verständlich'" required="required"/>
+                        schwer verständlich
+                    </label>
+                </div>
+                <div  class="radio">
+                    <label>
+                        <input type="radio" th:field="*{comprehensibility}" th:value="'unverständlich'" required="required"/>
+                        unverständlich
+                    </label>
+                </div>
+
+
+                <p>Dieser Artikel ist inhaltlich...</p>
+                <div  class="radio">
+                    <label>
+                        <input type="radio" th:field="*{complexity}"  th:value="'sehr einfach'" required="required"/>
+                        sehr einfach
+                    </label>
+                </div>
+                <div  class="radio">
+                    <label>
+                        <input type="radio" th:field="*{complexity}" th:value="'eher einfach'" required="required"/>
+                        eher einfach
+                    </label>
+                </div>
+                <div  class="radio">
+                    <label>
+                        <input type="radio" th:field="*{complexity}" th:value="'eher komplex'" required="required"/>
+                        eher komplex
+                    </label>
+                </div>
+                <div  class="radio">
+                    <label>
+                        <input type="radio" th:field="*{complexity}" th:value="'sehr komplex'" required="required"/>
+                        sehr komplex
+                    </label>
+                </div>
+
+
+                <input type="hidden" th:field="*{currentIndex}" th:value="${tmpData.getCurrentIndex()}" />
+                <input type="hidden" th:field="*{maxIndex}" th:value="${tmpData.getMaxIndex()}" />
+                <div class="form-group">
+                    <div class="">
+                        <input type="submit" class="btn btn-default" value="Weiter" />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>

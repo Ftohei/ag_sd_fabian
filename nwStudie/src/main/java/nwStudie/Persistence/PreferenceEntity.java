@@ -9,11 +9,11 @@ import java.time.Instant;
  * Created by fabiankaupmann on 06.05.15.
  */
 @Entity
-@Table(name = "Praeferenzen")
+@Table(name = "AuswahlPart1")
 public class PreferenceEntity {
 
     @Id
-    @Column(name = "praeferenzId")
+    @Column(name = "auswahlId")
     private Integer preferenceId;
 
     @Column(name = "praeferenz")

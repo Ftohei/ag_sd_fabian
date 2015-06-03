@@ -28,8 +28,8 @@ public class ProcessXML {
 
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, SQLException {
 
-		File fXmlFile = new File(args[0]);
-//        File fXmlFile = new File("/Users/fabiankaupmann/Desktop/8586833-Kogni-30052015.xml");
+//		File fXmlFile = new File(args[0]);
+        File fXmlFile = new File("/Users/fabiankaupmann/Desktop/8586833-Kogni-30052015.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 

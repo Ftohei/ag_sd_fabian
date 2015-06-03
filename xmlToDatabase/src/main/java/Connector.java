@@ -24,12 +24,12 @@ public class Connector {
     private Connection conn;
     
     public Connector(){
-        this.userName = "";
-        this.password = "";
+        this.userName = "root";
+        this.password = "F1i2e3g4M5";
         this.dbms = "mysql";
         this.serverName = "localhost";
-        this.portNumber = "";
-        this.database = "";
+        this.portNumber = "3307";
+        this.database = "datanw2";
     }
     
     public Connection connect() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {

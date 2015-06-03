@@ -12,15 +12,15 @@ import org.springframework.stereotype.Repository;
 public interface ProbandArticleListRepository extends CrudRepository<ProbandArticleListEntity, Integer> {
 
     @Modifying
-    @Query(value = "UPDATE Praeferenzen SET praeferenz = ?1 where praeferenzId = ?2", nativeQuery = true)
+    @Query(value = "UPDATE Praeferenzen SET praeferenz = ?1 where auswahlId = ?2", nativeQuery = true)
     void updatePraeferenzByPraeferenzId(String praeferenz, int praeferenzId);
 
-    @Query(value = "select min(praeferenzId) from ProbandArtikelListe where probandId = ?1", nativeQuery = true)
+    @Query(value = "select min(auswahlId) from ProbandArtikelListe where probandId = ?1", nativeQuery = true)
     Integer findMinIndexOfArticleListForProband(int probandId);
 
-    @Query(value = "select max(praeferenzId) from ProbandArtikelListe where probandId = ?1", nativeQuery = true)
+    @Query(value = "select max(auswahlId) from ProbandArtikelListe where probandId = ?1", nativeQuery = true)
     Integer findMaxIndexOfArticleListForProband(int probandId);
 
-    @Query(value = "select ArtikelId from ProbandArtikelListe where praeferenzId = ?1", nativeQuery = true)
+    @Query(value = "select ArtikelId from ProbandArtikelListe where auswahlId = ?1", nativeQuery = true)
     byte[] findArticleIdByPraeferenzId(int praeferenzId);
 }

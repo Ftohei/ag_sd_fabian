@@ -10,6 +10,7 @@
     <script src="/webjars/jquery/2.1.3/jquery.min.js"></script>
     <script src="/webjars/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
+
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.2/css/bootstrap.min.css" />
 
 
@@ -42,31 +43,6 @@
 
     </style>
 
-    <!--<link href="../../dist/css/bootstrap.min.css" rel="stylesheet" />-->
-
-    <!--&lt;!&ndash; Hier wird CSS definiert &ndash;&gt;-->
-    <!--<link href="starter-template.css" rel="stylesheet" />-->
-
-    <!--<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap.min.css"-->
-          <!--th:href="@{/webjars/bootstrap/2.3.0/css/bootstrap.min.css}" rel="stylesheet" />-->
-    <!--<link href="../../../resources/css/petclinic.css"-->
-          <!--th:href="@{/resources/css/petclinic.css}" rel="stylesheet" />-->
-
-    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"-->
-            <!--th:src="@{/webjars/jquery/1.9.0/jquery.js}"></script>-->
-    <!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"-->
-            <!--th:src="@{/webjars/jquery-ui/1.9.2/js/jquery-ui-1.9.2.custom.js}"></script>-->
-
-    <!--<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/smoothness/jquery-ui.css"-->
-          <!--th:href="@{/webjars/jquery-ui/1.9.2/css/smoothness/jquery-ui-1.9.2.custom.css}"-->
-          <!--rel="stylesheet" />-->
-
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-
-
-
-
-
 </head>
 <body>
 
@@ -95,13 +71,13 @@
         </div>
         <div class="container">
             <div class="page-header">
-                <h1>Herzlich Willkommen! <br/>
-                    <small>Bitte geben Sie im Folgenden Ihre Daten ein</small>
+                <h1>
+                    Bitte geben Sie im Folgenden Ihre Daten ein
                 </h1>
             </div>
         </div>
 
-        <form class="form-horizontal" action="#" th:action="@{/}" th:object="${proband}" method="post">
+        <form class="form-horizontal" action="#" th:action="@{/registration}" th:object="${proband}" method="post">
 
             <div class="form-group">
                 <label for="inputSex" class="col-sm-2 control-label">Geschlecht</label>
@@ -117,7 +93,7 @@
             <div class="form-group">
                 <label for="inputAge" class="col-sm-2 control-label">Alter</label>
                 <div class="col-sm-10">
-                    <input type="text" th:field="*{age}" class="form-control" id="inputAge" />
+                    <input type="number" min="12" max="120" pattern="\d+" required="required" th:field="*{age}" class="form-control" id="inputAge" />
                 </div>
             </div>
 
@@ -131,39 +107,42 @@
                 </div>
             </div>
 
-                <!--<p>-->
-                    <!--Interessen: (Bitte mit einfachem Komma getrennt)-->
-                <!--</p>-->
-
-                <!--<p>-->
-                    <!--<textarea th:rows="4" th:cols="30" th:field="*{interests}" />-->
-                <!--</p>-->
             <div class="form-group">
                 <label for="inputPostalCode" class="col-sm-2 control-label">Postleitzahl</label>
                 <div class="col-sm-10">
-                    <input type="text" th:field="*{postalCode}" class="form-control" id="inputPostalCode" />
+                    <input type="text" th:field="*{postalCode}" class="form-control" id="inputPostalCode" pattern="([0-9]){5}" required="required"/>
                 </div>
             </div>
 
-                <!--<p>-->
-                    <!--Postleitzahl:-->
-                    <!--<input type="textarea" th:field="*{postalCode}" />-->
-                <!--</p>-->
 
             <div class="form-group">
                 <label for="inputRubrik" class="col-sm-2 control-label">Welche Ausgabe interessiert Sie am meisten?</label>
                 <div class="col-sm-10">
                     <select name="Geschlecht" th:field="*{rubrik}" class="form-control" id="inputRubrik" >
-                        <Option value="101-BI-MW">Bielefelder Westen</Option>
+                        <Option value="101-BI-MW">Bielefeld West</Option>
+                        <Option value="104-BI-OH">Bielefeld Ost</Option>
+                        <Option value="103-BI-SB">Bielefeld Süd</Option>
+                        <Option value="105-BI-BW">Bielefeld Dornberg-Werther</Option>
+                        <Option value="102-BI-MO">Bielefeld mit Oerlingh-Leopoldsh.</Option>
+                        <Option value="107-BI-SH">Schloß-Holte Stukenbrock</Option>
+                        <Option value="120-GT">Gütersloh</Option>
+                        <Option value="121-VE">Verl</Option>
+                        <Option value="124-HE">Herford</Option>
+                        <Option value="128-ES">Enger-Spenge</Option>
+                        <Option value="130-BD">Bünde</Option>
+                        <Option value="132-OE">Bad Oeynhausen</Option>
+                        <Option value="136-LN">Löhne und Gohfeld</Option>
+                        <Option value="138-LK">Lübbecke (Altkreis)</Option>
+                        <Option value="142-PA">Paderborn (Kreis)</Option>
+                        <Option value="144-HT">Höxter (Kreis)</Option>
+                        <Option value="146-WA">Warburg</Option>
+
+
+
                     </select>
                 </div>
             </div>
 
-                <!--<p>Welche Ausgabe der Neuen Westfälischen interessiert Sie am meisten?</p>-->
-                <!--<p>-->
-
-                <!--</p>-->
-            <!--</div>-->
             <div class="form-group">
                 <h3>Bitte beurteilen Sie folgende Aussagen:</h3>
                 <p>Ich interessiere mich für Artikel aus dem Bereich ...
@@ -185,43 +164,43 @@
                         <tbody>
                             <tr>
                                 <td>Politik</td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInPolitics}" th:value="5" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInPolitics}" th:value="4" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInPolitics}" th:value="5" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInPolitics}" th:value="2" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInPolitics}" th:value="1" /></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInPolitics}" th:value="5" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInPolitics}" th:value="4" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInPolitics}" th:value="5" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInPolitics}" th:value="2" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInPolitics}" th:value="1" required="required"/></td>
                             </tr>
                             <tr>
                                 <td>Kultur</td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInCulture}" th:value="5" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInCulture}" th:value="4" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInCulture}" th:value="5" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInCulture}" th:value="2" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInCulture}" th:value="1" /></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInCulture}" th:value="5" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInCulture}" th:value="4" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInCulture}" th:value="5" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInCulture}" th:value="2" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInCulture}" th:value="1" required="required"/></td>
                             </tr>
                             <tr>
                                 <td>Lokales</td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInLocalArticles}" th:value="5" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInLocalArticles}" th:value="4" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInLocalArticles}" th:value="5" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInLocalArticles}" th:value="2" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInLocalArticles}" th:value="1" /></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInLocalArticles}" th:value="5" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInLocalArticles}" th:value="4" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInLocalArticles}" th:value="5" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInLocalArticles}" th:value="2" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInLocalArticles}" th:value="1" required="required"/></td>
                             </tr>
                             <tr>
                                 <td>Sport</td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInSports}" th:value="5" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInSports}" th:value="4" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInSports}" th:value="5" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInSports}" th:value="2" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInSports}" th:value="1" /></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInSports}" th:value="5" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInSports}" th:value="4" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInSports}" th:value="5" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInSports}" th:value="2" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInSports}" th:value="1" required="required"/></td>
                             </tr>
                             <tr>
                                 <td>Lokalsport</td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInLocalSports}" th:value="5" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInLocalSports}" th:value="4" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInLocalSports}" th:value="5" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInLocalSports}" th:value="2" /></td>
-                                <td class="radiobtn-td"><input type="radio" th:field="*{interestInLocalSports}" th:value="1" /></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInLocalSports}" th:value="5" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInLocalSports}" th:value="4" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInLocalSports}" th:value="5" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInLocalSports}" th:value="2" required="required"/></td>
+                                <td class="radiobtn-td"><input class="rubrikRadios" type="radio" th:field="*{interestInLocalSports}" th:value="1" required="required"/></td>
                             </tr>
                         </tbody>
                     </table>
@@ -238,7 +217,7 @@
                     <div class="col-sm-offset-2 col-sm-10">
                         <div class="checkbox">
                             <label for="datasecure">
-                                <input type="checkbox" id="datasecure"/> Mir ist bekannt, dass meine Daten anonym weiter verwendet werden.
+                                <input type="checkbox" id="datasecure" required="required" /> Mir ist bekannt, dass meine Angaben nur zu wissenschaftlichen Zwecken und anonym verwendet werden.
                             </label>
                         </div>
                     </div>
@@ -260,6 +239,41 @@
             </div>
         </form>
     </div>
+
+    <script type="text/javascript">
+
+        var age = document.getElementById("inputAge");
+
+        age.addEventListener("keyup", function (event) {
+            if(age.validity.rangeUnderflow) {
+                age.setCustomValidity("Bitte geben Sie ein gültiges Alter ein");
+            } else if(age.validity.rangeOverflow) {
+                age.setCustomValidity("Bitte geben Sie ein gültiges Alter ein");
+            } else {
+                age.setCustomValidity("");
+            }
+        });
+
+        var postal = document.getElementById("inputPostalCode");
+
+        postal.addEventListener("keyup", function (event) {
+            if(postal.validity.patternMismatch) {
+                postal.setCustomValidity("Bitte geben Sie eine gültige Postleitzahl ein");
+            } else {
+                postal.setCustomValidity("");
+            }
+        });
+
+        var datasecure = document.getElementById("datasecure");
+
+        datasecure.addEventListener("keyup", function (event) {
+            if(datasecure.validity.valueMissing) {
+                datasecure.setCustomValidity("Bitte akzeptieren Sie die Datenschutzbestimmungen");
+            } else {
+                datasecure.setCustomValidity("");
+            }
+        });
+    </script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

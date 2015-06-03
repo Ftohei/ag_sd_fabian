@@ -52,7 +52,7 @@
                 </div>
             </div>
         </div>
-        <h2>Würden Sie diesen Artikel lesen?</h2>
+        <h2>Überfliegen sie diesen Artikel? Würden sie diesen Artikel in einer aktuellen Ausgabe der NW lesen?</h2>
 
         <div class="row">
 
@@ -76,26 +76,26 @@
                     <form action="#" th:action="@{/articles}" th:object="${tmpData}" method="post">
                         <div  class="radio">
                             <label>
-                                <input type="radio" th:field="*{preference}"  th:value="'Ja, auf jeden Fall'"/>
+                                <input type="radio" th:field="*{preference}"  th:value="'Auf jeden Fall.'" required="required"/>
                                 Ja, auf jeden Fall
                             </label>
                         </div>
                         <div  class="radio">
                             <label>
-                                <input type="radio" th:field="*{preference}" th:value="'Ja, wenn ich genügend Zeit hätte'" />
+                                <input type="radio" th:field="*{preference}" th:value="'Ja, wenn ich Zeit hätte.'" required="required"/>
                                 Ja, wenn ich genügend Zeit hätte
                             </label>
                         </div>
                         <div  class="radio">
                             <label>
-                                <input type="radio" th:field="*{preference}" th:value="'Eher nicht'" />
+                                <input type="radio" th:field="*{preference}" th:value="'Eher nicht.'" required="required"/>
                                 Eher nicht
                             </label>
                         </div>
                         <div  class="radio">
                             <label>
-                                <input type="radio" th:field="*{preference}" th:value="Nein" />
-                                Nein
+                                <input type="radio" th:field="*{preference}" th:value="'Auf keinen Fall. Das interessiert mich überhaupt nicht.'" required="required"/>
+                                Auf keinen Fall
                             </label>
                         </div>
                         <input type="hidden" th:field="*{currentIndex}" th:value="${tmpData.getCurrentIndex()}" />

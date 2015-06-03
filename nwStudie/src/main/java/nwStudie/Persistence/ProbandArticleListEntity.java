@@ -11,7 +11,7 @@ public class ProbandArticleListEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "praeferenzId")
+    @Column(name = "auswahlId")
     private Integer preferenceId;
 
     @Column(name = "artikelId")

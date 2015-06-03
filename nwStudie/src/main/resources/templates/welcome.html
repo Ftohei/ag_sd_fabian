@@ -61,25 +61,56 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>Herzlich Willkommen!<br/>
-                <small></small>
+            <h1>Herzlich Willkommen<br/>
+                <small>Die Universität Bielefeld führt im Rahmen des KogniHome Projektes eine Studie durch, um das Verhalten von Zeitungslesern zu verstehen.</small>
             </h1>
         </div>
     </div>
 
-    <form class="form form-horizontal" action="#" th:action="@{/thankYouLottery}" th:object="${lotteryParticipant}" method="post">
-        <div class="form-group">
-            <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-            <div class="col-sm-10">
-                <input type="email" th:field="*{mailAddress}" class="form-control" id="inputEmail" placeholder="Email" />
-            </div>
+    <div class="container">
+        <div>
+            <p>
+                Die Studie besteht aus zwei Teilen:
+            </p>
+            <p>
+                <br/>
+                1) Im ersten Teil sollen sie Artikel überfliegen und angeben, ob sie diese in einer Ausgabe der NW gerne lesen würden.
+            </p>
+            <p>
+                2) Im zweiten Teil sollen sie ein paar wenige Artikel lesen und Rückmeldung zur Verständlichkeit geben.
+            </p>
+            <p>
+                <br/>
+                Ihre Angaben werden nur zu wissenschaftlichen Zwecken und anonym verwendet.
+            </p>
+            <p>
+                <br/>
+                Vielen Danke für ihre Teilnahme.
+            </p>
+            <p>
+                <br/>
+                Hier geht es zur Studie…
+            </p>
         </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <input type="submit" class="btn btn-default" value="Weiter" />
-            </div>
+        <div class="container">
+            <form class="form form-horizontal" action="#" th:action="@{/}" th:object="${proband}" method="post">
+                <input type="hidden" th:field="*{origin}" th:value="${proband.getOrigin()}" />
+                <div class="form-group">
+                    <div>
+                        <input type="submit" class="btn btn-default" value="Weiter" />
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
+
+    </div>
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
 
 </div>
 </body>
