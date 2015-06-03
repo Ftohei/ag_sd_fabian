@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  */
 public class ProcessXML {
 
-    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, SQLException {
+    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
 //		File fXmlFile = new File(args[0]);
         File fXmlFile = new File("/Users/fabiankaupmann/Desktop/8586833-Kogni-30052015.xml");
@@ -98,7 +98,11 @@ public class ProcessXML {
             }
             System.out.print(artikel);
         }
-        articlesToDatabase(artikles);
+        try {
+            articlesToDatabase(artikles);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void serialize(List<Artikel> artikles) throws IOException{
@@ -116,7 +120,7 @@ public class ProcessXML {
 
     }
 
-    private static void articlesToDatabase(List<Artikel> artikles) throws SQLException{
+    private static void articlesToDatabase(List<Artikel> artikles) throws SQLException {
 
         Statement stmt;
         ResultSet rs;
@@ -201,32 +205,37 @@ public class ProcessXML {
                 String artikelDatum = artikle.convertDate(artikle.getDatum());
 
 //                    Daten des Artikels in Tabelle Artikel schreiben
-                stmt.executeUpdate("INSERT INTO Artikel SET "
-                                + "artikelId = 0x" + artikle.getArtikelID() +
-                                ", lieferantId = '" + artikle.getLieferantId() + "'" +
-                                ", quelleId = '" + artikle.getQuelleId() + "'" +
-                                ", artikelPDF = '" + artikle.getArtikelPDF() + "'" +
-                                ", herausgeber = '" + artikle.getName() + "'" +
-                                ", datum = '" + artikle.convertDate(artikle.getDatum()) + "'" +
-                                ", titel = '" + artikle.getTitel() + "'" +
-                                ", text = '" + artikle.getText() + "'" +
-                                ", ausgabeId = (SELECT ausgabeId FROM ausgabe WHERE datum = '" + artikelDatum + "')" +
-                                ", ressortId = (SELECT ressortId FROM ressort WHERE Name like '" + artikle.getRessort() + "')" +
-                                ", autor = '" + artikle.getAutor() + "'" +
-                                ", seite = '" + artikle.getStartSeite() + "';"
-                );
+                try {
+                    stmt.executeUpdate("INSERT INTO Artikel SET "
+                                    + "artikelId = 0x" + artikle.getArtikelID() +
+                                    ", lieferantId = '" + artikle.getLieferantId() + "'" +
+                                    ", quelleId = '" + artikle.getQuelleId() + "'" +
+                                    ", artikelPDF = '" + artikle.getArtikelPDF() + "'" +
+                                    ", herausgeber = '" + artikle.getName() + "'" +
+                                    ", datum = '" + artikle.convertDate(artikle.getDatum()) + "'" +
+                                    ", titel = '" + artikle.getTitel() + "'" +
+                                    ", text = '" + artikle.getText() + "'" +
+                                    ", ausgabeId = (SELECT ausgabeId FROM ausgabe WHERE datum = '" + artikelDatum + "')" +
+                                    ", ressortId = (SELECT ressortId FROM ressort WHERE Name like '" + artikle.getRessort() + "')" +
+                                    ", autor = '" + artikle.getAutor() + "'" +
+                                    ", seite = '" + artikle.getStartSeite() + "';"
+                    );
+
 
 //                    Artikel mit Rubrik verbinden
-                stmt.executeUpdate("INSERT INTO inRubrik SET ArtikelId = 0x" + artikle.getArtikelID() +
-                        ", RubrikId = (SELECT RubrikId FROM Rubrik WHERE Name like '" + artikle.getRubrik() + "');");
+                    stmt.executeUpdate("INSERT INTO inRubrik SET ArtikelId = 0x" + artikle.getArtikelID() +
+                            ", RubrikId = (SELECT RubrikId FROM Rubrik WHERE Name like '" + artikle.getRubrik() + "');");
 
-                String textGetaggt = tagger.tagString(artikle.getText());
-                //Single Quotes aus dem String entfernen
-                String textGetaggtOhneSingleQuotes = textGetaggt.replace("'", "\\'");
-                stmt.executeUpdate("INSERT INTO ArtikelGetaggt SET "
-                        + "ArtikelId = 0x" + artikle.getArtikelID() +
-                        ", TextGetaggt = '" + textGetaggtOhneSingleQuotes + "';");
+                    String textGetaggt = tagger.tagString(artikle.getText());
+                    //Single Quotes aus dem String entfernen
+                    String textGetaggtOhneSingleQuotes = textGetaggt.replace("'", "\\'");
+                    stmt.executeUpdate("INSERT INTO ArtikelGetaggt SET "
+                            + "ArtikelId = 0x" + artikle.getArtikelID() +
+                            ", TextGetaggt = '" + textGetaggtOhneSingleQuotes + "';");
 
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 //Für jeden Artikel die 100 besten ESA-Ergebnisse (pageId von Wikipedia) speichern
 //                    ArrayList<Integer> resultsPerArticle = searcher.searchIndexWithQueryString(searcher.extractQueryString(textGetaggt));
 //                    if(!resultsPerArticle.isEmpty()){
