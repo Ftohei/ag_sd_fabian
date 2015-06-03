@@ -235,7 +235,7 @@ public class StudyController {
         model.addAttribute("tmpData", tmpData2);
 
         return "articles2";
-
+        
     }
 
     @Transactional
@@ -271,7 +271,6 @@ public class StudyController {
         }
 
     }
-
 
     @RequestMapping(value="/end")
     public String thankYouSubmit(){
