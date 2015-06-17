@@ -10,6 +10,7 @@ public class Proband {
     public int age;
     public String interests;
     public int postalCode;
+    public String graduation;
     public String rubrik;
     public int interestInPolitics;
     public int interestInCulture;
@@ -126,5 +127,13 @@ public class Proband {
 
     public void setInterestInLocalSports(int interestInLocalSports) {
         this.interestInLocalSports = interestInLocalSports;
+    }
+
+    public String getGraduation() {
+        return graduation;
+    }
+
+    public void setGraduation(String graduation) {
+        this.graduation = graduation;
     }
 }

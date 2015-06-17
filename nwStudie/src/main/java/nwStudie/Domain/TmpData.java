@@ -11,16 +11,29 @@ public class TmpData {
 
     public int currentIndex;
 
+    public int minIndex;
+
     public int maxIndex;
 
     public String preference;
+
+
 
     public TmpData() {
     }
 
     public TmpData(int minIndex, int maxIndex) {
         this.maxIndex = maxIndex;
+        this.minIndex = minIndex;
         this.currentIndex = minIndex;
+    }
+
+    public int getMinIndex() {
+        return minIndex;
+    }
+
+    public void setMinIndex(int minIndex) {
+        this.minIndex = minIndex;
     }
 
     public int getCurrentIndex() {

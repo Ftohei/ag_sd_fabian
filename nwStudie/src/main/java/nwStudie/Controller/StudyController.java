@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import nwStudie.Domain.Proband;
 import nwStudie.Domain.TmpData;
 import nwStudie.Domain.TmpData2;
+import nwStudie.Domain.Welcome2Tmp;
 import nwStudie.Persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -132,7 +133,7 @@ public class StudyController {
 
         //Daten des Probanden in DB speichern und zufällig Artikel zuweisen
         ProbandEntity probandEntity = new ProbandEntity(proband.getSex(),
-                Integer.parseInt(String.valueOf(proband.getAge())),proband.getPostalCode(),proband.getRubrik(),proband.getInterests(),origin,
+                Integer.parseInt(String.valueOf(proband.getAge())),proband.getPostalCode(),proband.getRubrik(),proband.getInterests(),origin,proband.getGraduation(),
                 proband.getInterestInPolitics(), proband.getInterestInCulture(), proband.getInterestInLocalArticles(),
                 proband.getInterestInSports(), proband.getInterestInLocalSports());
         probandRepository.save(probandEntity);
@@ -166,8 +167,23 @@ public class StudyController {
 
         ArticleEntity article = articleRepository.findById(articleId);
 
+        double currentArticle = (tmpData.currentIndex - tmpData.getMinIndex());
+
+        double maxArticle = (tmpData.getMaxIndex() - NUMBER_OF_ARTICLES_PART_TWO - tmpData.getMinIndex());
+
+        double progress = Math.ceil((currentArticle / maxArticle) * 100);
+
+//        System.out.println(tmpData.getMinIndex());
+//        System.out.println(tmpData.getCurrentIndex());
+//        System.out.println(tmpData.getMaxIndex());
+//
+//        System.out.println("Aktueller Artikel: " + currentArticle);
+//        System.out.println("MaxAnzahl artikel: " + maxArticle);
+//        System.out.println("Progress: " + progress);
+
         model.addAttribute("article", article);
         model.addAttribute("tmpData", tmpData);
+        model.addAttribute("progress", progress);
 
         return "articles";
     }
@@ -192,8 +208,23 @@ public class StudyController {
 
             ArticleEntity article = articleRepository.findById(articleId);
 
+            double currentArticle = (tmpData.currentIndex - tmpData.getMinIndex());
+
+            double maxArticle = (tmpData.getMaxIndex() - NUMBER_OF_ARTICLES_PART_TWO - tmpData.getMinIndex());
+
+            double progress = Math.ceil((currentArticle / maxArticle) * 100);
+
+//            System.out.println(tmpData.getMinIndex());
+//            System.out.println(tmpData.getCurrentIndex());
+//            System.out.println(tmpData.getMaxIndex());
+//
+//            System.out.println("Aktueller Artikel: " + currentArticle);
+//            System.out.println("MaxAnzahl artikel: " + maxArticle);
+//            System.out.println("Progress: " + progress);
+
             model.addAttribute("article", article);
             model.addAttribute("tmpData", tmpData);
+            model.addAttribute("progress", progress);
 
             return "articles";
         }
@@ -210,14 +241,33 @@ public class StudyController {
             redirectAttributes.addAttribute("ci", tmpData.getCurrentIndex());
             redirectAttributes.addAttribute("mi", tmpData.getMaxIndex());
 
-            return "redirect:/articles2";
+            return "redirect:/part2";
         } else {
 
             redirectAttributes.addAttribute("ci", tmpData.getCurrentIndex());
             redirectAttributes.addAttribute("mi", tmpData.getMaxIndex());
-            return "redirect:/articles2";
+            return "redirect:/part2";
         }
 
+    }
+
+    @RequestMapping(value="/part2", method = RequestMethod.GET)
+    public String welcome2(@ModelAttribute("ci") Integer currentIndex, @ModelAttribute("mi") Integer maxIndex, Model model){
+
+        Welcome2Tmp welcome2Tmp = new Welcome2Tmp(currentIndex, maxIndex);
+
+        model.addAttribute("welcome2Tmp", welcome2Tmp);
+
+        return "welcomePart2";
+    }
+
+    @RequestMapping(value="/part2", method = RequestMethod.POST)
+    public String welcome2(@ModelAttribute Welcome2Tmp welcome2Tmp, RedirectAttributes redirectAttributes){
+
+        redirectAttributes.addAttribute("ci", welcome2Tmp.getCurrentIndex());
+        redirectAttributes.addAttribute("mi", welcome2Tmp.getMaxIndex());
+
+        return "redirect:/articles2";
     }
 
     @Transactional
@@ -230,8 +280,23 @@ public class StudyController {
 
         ArticleEntity article = articleRepository.findById(articleId);
 
+        double currentArticle = (tmpData2.currentIndex - tmpData2.getMinIndex());
+
+        double maxArticle = (tmpData2.getMaxIndex() - tmpData2.getMinIndex());
+
+        double progress = Math.ceil((currentArticle / maxArticle) * 100);
+
+//        System.out.println(tmpData2.getMinIndex());
+//        System.out.println(tmpData2.getCurrentIndex());
+//        System.out.println(tmpData2.getMaxIndex());
+//
+//        System.out.println("Aktueller Artikel: " + currentArticle);
+//        System.out.println("MaxAnzahl artikel: " + maxArticle);
+//        System.out.println("Progress: " + progress);
+
         model.addAttribute("article", article);
         model.addAttribute("tmpData", tmpData2);
+        model.addAttribute("progress", progress);
 
         return "articles2";
 
@@ -259,8 +324,23 @@ public class StudyController {
 
             ArticleEntity article = articleRepository.findById(articleId);
 
+            double currentArticle = (tmpData2.currentIndex - tmpData2.getMinIndex());
+
+            double maxArticle = (tmpData2.getMaxIndex() - tmpData2.getMinIndex());
+
+            double progress = Math.ceil((currentArticle / maxArticle) * 100);
+
+//            System.out.println(tmpData2.getMinIndex());
+//            System.out.println(tmpData2.getCurrentIndex());
+//            System.out.println(tmpData2.getMaxIndex());
+//
+//            System.out.println("Aktueller Artikel: " + currentArticle);
+//            System.out.println("MaxAnzahl artikel: " + maxArticle);
+//            System.out.println("Progress: " + progress);
+
             model.addAttribute("article", article);
             model.addAttribute("tmpData", tmpData2);
+            model.addAttribute("progress", progress);
 
             return "articles2";
         }

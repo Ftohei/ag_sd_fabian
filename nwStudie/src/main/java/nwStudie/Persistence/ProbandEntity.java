@@ -32,6 +32,9 @@ public class ProbandEntity {
     @Column(name = "herkunft")
     private String origin;
 
+    @Column(name = "abschluss")
+    private String graduation;
+
     @Column(name = "probandInteressePolitik")
     private int interestInPolitics;
 
@@ -52,13 +55,14 @@ public class ProbandEntity {
     public ProbandEntity() {
     }
 
-    public ProbandEntity(String sex, int age, int postalCode, String mostInterestingRubrik, String interests, String origin, int interestInPolitics, int interestInCulture, int interestInLocalArticles, int interestInSports, int interestInLocalSports) {
+    public ProbandEntity(String sex, int age, int postalCode, String mostInterestingRubrik, String interests, String origin, String graduation, int interestInPolitics, int interestInCulture, int interestInLocalArticles, int interestInSports, int interestInLocalSports) {
         this.sex = sex;
         this.age = age;
         this.postalCode = postalCode;
         this.mostInterestingRubrik = mostInterestingRubrik;
         this.interests = interests;
         this.origin = origin;
+        this.graduation = graduation;
         this.interestInPolitics = interestInPolitics;
         this.interestInCulture = interestInCulture;
         this.interestInLocalArticles = interestInLocalArticles;
@@ -120,6 +124,14 @@ public class ProbandEntity {
 
     public void setOrigin(String origin) {
         this.origin = origin;
+    }
+
+    public String getGraduation() {
+        return graduation;
+    }
+
+    public void setGraduation(String graduation) {
+        this.graduation = graduation;
     }
 
     public int getInterestInPolitics() {

@@ -11,6 +11,8 @@ public class TmpData2 {
 
     public int currentIndex;
 
+    public int minIndex;
+
     public int maxIndex;
 
     public String comprehensibility;
@@ -24,6 +26,7 @@ public class TmpData2 {
 
     public TmpData2(int minIndex, int maxIndex) {
         this.maxIndex = maxIndex;
+        this.minIndex = minIndex;
         this.currentIndex = minIndex;
     }
 
@@ -33,6 +36,14 @@ public class TmpData2 {
 
     public void setCurrentIndex(int currentIndex) {
         this.currentIndex = currentIndex;
+    }
+
+    public int getMinIndex() {
+        return minIndex;
+    }
+
+    public void setMinIndex(int minIndex) {
+        this.minIndex = minIndex;
     }
 
     public int getMaxIndex() {

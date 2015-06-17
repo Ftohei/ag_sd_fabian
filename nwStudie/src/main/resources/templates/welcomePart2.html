@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <script src="/webjars/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <link href="/webjars/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+
+
+    <title>Start eines neuen Experiments</title>
+
+    <style>
+
+        .uni img{
+            float:left;
+            width:393px;
+            padding: 62px 0px 0px 0px;
+            /*vertical-align:bottom;*/
+            /*border:0;*/
+        }
+
+        .page-header{
+            border-bottom:1px dashed;
+            border-bottom-color: #FF7711;
+        }
+
+    </style>
+
+    <title>Experiment erfolgreich</title>
+</head>
+<body>
+
+<div class="container theme-showcase">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <div class="">
+                    <img src="images/uni-bielefeld.gif"/>
+                </div>
+            </div>
+            <div class="uni col-sm-7 col-md-7 col-lg-7">
+                <div class="uni">
+                    <img src="images/claim.gif"/>
+                </div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2">
+                <div class="">
+                    <img src="images/citec.gif"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>
+                <small>Jetzt haben Sie es schon fast geschafft.</small>
+            </h1>
+        </div>
+    </div>
+
+    <div class="container col-sm-6 col-md-6 col-lg-6">
+        <div class="container">
+            <div class="">
+                <p>
+                    Im zweiten Teil sollen Sie nun ein paar wenige Artikel lesen und Rückmeldung zur Verständlichkeit geben.
+                </p>
+            </div>
+            <form class="form form-horizontal" action="#" th:action="@{/part2}" th:object="${welcome2Tmp}" method="post">
+                <input type="hidden" th:field="*{currentIndex}" th:value="${welcome2Tmp.getCurrentIndex()}" />
+                <input type="hidden" th:field="*{maxIndex}" th:value="${welcome2Tmp.getMaxIndex()}" />
+                <div class="form-group">
+                    <div class="">
+                        <input type="submit" class="btn btn-default" value="Weiter" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+
+</div>
+</body>
+</html>
