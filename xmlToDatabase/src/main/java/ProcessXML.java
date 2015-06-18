@@ -195,7 +195,7 @@ public class ProcessXML {
 
                 System.out.println("Artikel mit id:" + artikle.getArtikelID() +  " ist doppelung; speichere " + artikelId + " mit Rubrik " + artikle.getRubrik());
 
-                stmt.executeUpdate("INSERT INTO inRubrik SET artikelId = 0x" + artikelId +
+                stmt.executeUpdate("INSERT INTO inrubrik SET artikelId = 0x" + artikelId +
                         ", rubrikId = (SELECT rubrikId FROM rubrik WHERE Name like '" + artikle.getRubrik() + "');");
 
             } else {
@@ -223,7 +223,7 @@ public class ProcessXML {
 
 
 //                    Artikel mit Rubrik verbinden
-                    stmt.executeUpdate("INSERT INTO inRubrik SET artikelId = 0x" + artikle.getArtikelID() +
+                    stmt.executeUpdate("INSERT INTO inrubrik SET artikelId = 0x" + artikle.getArtikelID() +
                             ", rubrikId = (SELECT rubrikId FROM rubrik WHERE Name like '" + artikle.getRubrik() + "');");
 
                     String textGetaggt = tagger.tagString(artikle.getText());
