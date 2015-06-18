@@ -9,7 +9,7 @@ import java.time.Instant;
  * Created by fabiankaupmann on 06.05.15.
  */
 @Entity
-@Table(name = "AuswahlPart1")
+@Table(name = "auswahlPart1")
 public class PreferenceEntity {
 
     @Id

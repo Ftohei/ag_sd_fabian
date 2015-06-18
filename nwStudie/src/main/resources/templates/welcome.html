@@ -9,14 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <!--<script src="/webjars/jquery/1.11.3/jquery.js"></script>-->
+    <link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}" rel="stylesheet" media="all"/>
+
+    <script th:src="@{//code.jquery.com/jquery-1.11.3.min.js}"></script>
+
+    <script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
 
 
-    <link href="/webjars/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
 
-
-
-    <title>Start eines neuen Experiments</title>
+    <title>Start der Studie</title>
 
     <style>
 
@@ -54,7 +56,7 @@
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <div class="">
-                    <img src="images/citec.gif"/>
+                    <img src="images/bmbf.png" class="img-responsive img-rounded" alt="Responsive image"/>
                 </div>
             </div>
         </div>
@@ -105,20 +107,10 @@
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-6">
-                <img src="https://www.galerie-am-dom.de/prdimages/Janosch__Zeitungsleser.jpg" class="img-responsive img-rounded" alt="Responsive image"/>
+                <img src="images/zeitung-lesen.png" class="img-responsive img-rounded" alt="Responsive image"/>
             </div>
         </div>
     </div>
-
-
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
-    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/webjars/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-
 </div>
 </body>
 </html>

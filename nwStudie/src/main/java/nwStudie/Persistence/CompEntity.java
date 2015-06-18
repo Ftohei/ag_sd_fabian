@@ -12,7 +12,7 @@ import java.time.Instant;
  * Created by fabiankaupmann on 03.06.15.
  */
 @Entity
-@Table(name="AuswahlPart2")
+@Table(name="auswahlPart2")
 public class CompEntity {
 
     @Id

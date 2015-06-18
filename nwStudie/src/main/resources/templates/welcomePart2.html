@@ -9,13 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <script src="/webjars/jquery/2.1.4/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}" rel="stylesheet" media="all"/>
 
-    <link href="/webjars/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+    <script th:src="@{//code.jquery.com/jquery-1.11.3.min.js}"></script>
+
+    <script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
 
 
-    <title>Start eines neuen Experiments</title>
+    <title>Start Teil 2</title>
 
     <style>
 
@@ -53,7 +55,7 @@
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <div class="">
-                    <img src="images/citec.gif"/>
+                    <img src="images/bmbf.png" class="img-responsive img-rounded" alt="Responsive image"/>
                 </div>
             </div>
         </div>
@@ -71,7 +73,7 @@
         <div class="container">
             <div class="">
                 <p>
-                    Im zweiten Teil sollen Sie nun ein paar wenige Artikel lesen und Rückmeldung zur Verständlichkeit geben.
+                    Im zweiten Teil sollen Sie noch ein paar Artikel lesen und Rückmeldung zur Verständlichkeit geben.
                 </p>
             </div>
             <form class="form form-horizontal" action="#" th:action="@{/part2}" th:object="${welcome2Tmp}" method="post">
@@ -85,14 +87,6 @@
             </form>
         </div>
     </div>
-
-
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-
 </div>
 </body>
 </html>

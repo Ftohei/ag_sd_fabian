@@ -9,10 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <script src="/webjars/jquery/2.1.4/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}" rel="stylesheet" media="all"/>
 
-    <link href="/webjars/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+    <script th:src="@{//code.jquery.com/jquery-1.11.3.min.js}"></script>
+
+    <script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+
 
     <style>
 
@@ -29,7 +33,7 @@
 
     </style>
 
-    <title>Artikel</title>
+    <title>Artikel Teil 1</title>
 </head>
 <body>
     <div class="container">
@@ -47,7 +51,7 @@
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-2">
                     <div class="">
-                        <img src="images/citec.gif"/>
+                        <img src="images/bmbf.png" class="img-responsive img-rounded" alt="Responsive image"/>
                     </div>
                 </div>
             </div>
@@ -80,10 +84,9 @@
                 <div class="progress" >
                     <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60"
                          aria-valuemin="0" aria-valuemax="100" th:style="'width:' + ${progress} + '%'">
-                        Fortschritt
                     </div>
                 </div>
-                <form action="#" th:action="@{/articles}" th:object="${tmpData}" method="post">
+                <form name="radioForm" action="#" th:action="@{/articles}" th:object="${tmpData}" method="post">
                     <div  class="radio">
                         <label>
                             <input type="radio" th:field="*{preference}"  th:value="1" required="required"/>
@@ -122,9 +125,14 @@
         </div>
 
     </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+
+
+    <script type="text/javascript">
+        var inp = document.getElementsByTagName('input');
+        for (var i = inp.length-1; i>=0; i--) {
+            if ('radio'===inp[i].type) inp[i].checked = false;
+        }
+    </script>
+
 </body>
 </html>

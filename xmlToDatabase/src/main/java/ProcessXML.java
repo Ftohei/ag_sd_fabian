@@ -195,8 +195,8 @@ public class ProcessXML {
 
                 System.out.println("Artikel mit id:" + artikle.getArtikelID() +  " ist doppelung; speichere " + artikelId + " mit Rubrik " + artikle.getRubrik());
 
-                stmt.executeUpdate("INSERT INTO inRubrik SET ArtikelId = 0x" + artikelId +
-                        ", RubrikId = (SELECT RubrikId FROM Rubrik WHERE Name like '" + artikle.getRubrik() + "');");
+                stmt.executeUpdate("INSERT INTO inRubrik SET artikelId = 0x" + artikelId +
+                        ", rubrikId = (SELECT rubrikId FROM rubrik WHERE Name like '" + artikle.getRubrik() + "');");
 
             } else {
 
@@ -206,7 +206,7 @@ public class ProcessXML {
 
 //                    Daten des Artikels in Tabelle Artikel schreiben
                 try {
-                    stmt.executeUpdate("INSERT INTO Artikel SET "
+                    stmt.executeUpdate("INSERT INTO artikel SET "
                                     + "artikelId = 0x" + artikle.getArtikelID() +
                                     ", lieferantId = '" + artikle.getLieferantId() + "'" +
                                     ", quelleId = '" + artikle.getQuelleId() + "'" +
@@ -223,15 +223,15 @@ public class ProcessXML {
 
 
 //                    Artikel mit Rubrik verbinden
-                    stmt.executeUpdate("INSERT INTO inRubrik SET ArtikelId = 0x" + artikle.getArtikelID() +
-                            ", RubrikId = (SELECT RubrikId FROM Rubrik WHERE Name like '" + artikle.getRubrik() + "');");
+                    stmt.executeUpdate("INSERT INTO inRubrik SET artikelId = 0x" + artikle.getArtikelID() +
+                            ", rubrikId = (SELECT rubrikId FROM rubrik WHERE Name like '" + artikle.getRubrik() + "');");
 
                     String textGetaggt = tagger.tagString(artikle.getText());
                     //Single Quotes aus dem String entfernen
                     String textGetaggtOhneSingleQuotes = textGetaggt.replace("'", "\\'");
-                    stmt.executeUpdate("INSERT INTO ArtikelGetaggt SET "
-                            + "ArtikelId = 0x" + artikle.getArtikelID() +
-                            ", TextGetaggt = '" + textGetaggtOhneSingleQuotes + "';");
+                    stmt.executeUpdate("INSERT INTO artikelGetaggt SET "
+                            + "artikelId = 0x" + artikle.getArtikelID() +
+                            ", textGetaggt = '" + textGetaggtOhneSingleQuotes + "';");
 
                 } catch (SQLException e) {
                     e.printStackTrace();
