@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProbandRepository extends CrudRepository<ProbandEntity, Integer>{
 
-    @Query(value = "SELECT max(probandId) FROM Proband", nativeQuery = true)
+    @Query(value = "SELECT max(probandId) FROM proband", nativeQuery = true)
     Integer findNewestId();
 
 }
