@@ -65,7 +65,7 @@
     <div class="container">
         <div class="page-header">
             <h1>Herzlich Willkommen<br/>
-                <small>Die Universität Bielefeld führt im Rahmen des <a href="https://www.cit-ec.de/de/content/kognihome">KogniHome</a> Projektes eine Studie durch, um das Verhalten von Zeitungslesern zu verstehen.</small>
+                <small>Die Universität Bielefeld führt im Rahmen des <a href="https://www.cit-ec.de/de/content/kognihome">KogniHome</a> Projektes eine Studie durch, um Interessensschwerpunkte von Zeitungslesern herauszufinden.</small>
             </h1>
         </div>
     </div>
@@ -75,32 +75,36 @@
             <div class="col-sm-6 col-md-6 col-lg-6">
                 <p>
                     Die Studie besteht aus zwei Teilen:
+                    <br/>
+                </p>
+                <p>
+                    <ol>
+                        <li>Im ersten Teil bitten wir Sie Artikel überfliegen und angeben, ob Sie diese in einer Ausgabe der Neuen Westfälischen gerne lesen würden.</li>
+                        <li>Im zweiten Teil sollen Sie fünf Artikel lesen und Rückmeldung zur Verständlichkeit geben.</li>
+                    </ol>
+                    <!-- -->
+                    <!--1) -->
+                <!--</p>-->
+                <!--<p>-->
+                    <!--2) -->
                 </p>
                 <p>
                     <br/>
-                    1) Im ersten Teil sollen Sie Artikel überfliegen und angeben, ob Sie diese in einer Ausgabe der Neuen Westfälischen gerne lesen würden.
-                </p>
-                <p>
-                    2) Im zweiten Teil sollen Sie ein paar wenige Artikel lesen und Rückmeldung zur Verständlichkeit geben.
-                </p>
-                <p>
-                    <br/>
+                    Die Studie dauert insgesamt etwa 15 Minuten.
                     Ihre Angaben werden nur zu wissenschaftlichen Zwecken und anonym verwendet.
                 </p>
                 <p>
                     <br/>
-                    Vielen Dank für ihre Teilnahme.
-                </p>
-                <p>
+                    Vielen Dank für Ihre Teilnahme.
                     <br/>
-                    Hier geht es zur Studie…
                 </p>
+
                 <div class="container">
                     <form class="form form-horizontal" action="#" th:action="@{/}" th:object="${proband}" method="post">
                         <input type="hidden" th:field="*{origin}" th:value="${proband.getOrigin()}" />
                         <div class="form-group">
                             <div>
-                                <input type="submit" class="btn btn-default" value="Weiter" />
+                                <input type="submit" class="btn btn-default" value="Hier geht es zur Studie" />
                             </div>
                         </div>
                     </form>

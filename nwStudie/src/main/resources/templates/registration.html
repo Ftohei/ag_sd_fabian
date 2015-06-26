@@ -14,7 +14,8 @@
     <script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
 
-
+    <!--Bitte wählen Sie einen Wert, der nicht weniger ist als 3" nach "Bitte wählen Sie einen Wert, der nicht kleiner ist als 3."-->
+    <!--PLZ: "Bitte halten Sie sich an das vorgebene Format" &ndash;&gt; "Bitte geben Sie Ihre PLZ als fünfstellige Ziffernfolge ein."-->
 
     <title>Datenerhebung</title>
 
@@ -79,7 +80,7 @@
             </div>
         </div>
 
-        <form class="form-horizontal" action="#" th:action="@{/registration}" th:object="${proband}" method="post">
+        <form class="form-horizontal" id="registrationForm" action="#" th:action="@{/registration}" th:object="${proband}" method="post">
 
             <div class="form-group">
                 <label for="inputSex" class="col-sm-2 control-label">Geschlecht</label>
@@ -102,7 +103,7 @@
             <div class="form-group">
                 <label for="inputInterests" class="col-sm-2 control-label">Interessen</label>
                 <div class="col-sm-7">
-                    <input type="textarea" th:field="*{interests}" class="form-control" id="inputInterests" />
+                    <input type="textarea" th:field="*{interests}" class="form-control" id="inputInterests" required="required" />
                 </div>
                 <div class="col-sm-3">
                     <p class="help-block">(Bitte durch Komma trennen)</p>
@@ -230,9 +231,6 @@
                     </div>
                 </div>
 
-                <!--<p>-->
-                    <!--<input type="checkbox" />&lt;!&ndash; Hier noch abfangen, wenn checkbox nicht abgehakt&ndash;&gt;-->
-                <!--</p>-->
                 <input type="hidden" th:field="*{origin}" th:value="${proband.getOrigin()}" />
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -247,39 +245,33 @@
         </form>
     </div>
 
-    <script type="text/javascript">
+    <script th:inline="javascript">
 
         var age = document.getElementById("inputAge");
-
-        age.addEventListener("keyup", function (event) {
-            if(age.validity.rangeUnderflow) {
-                age.setCustomValidity("Bitte geben Sie ein gültiges Alter ein");
-            } else if(age.validity.rangeOverflow) {
-                age.setCustomValidity("Bitte geben Sie ein gültiges Alter ein");
-            } else {
-                age.setCustomValidity("");
-            }
-        });
-
         var postal = document.getElementById("inputPostalCode");
-
-        postal.addEventListener("keyup", function (event) {
-            if(postal.validity.patternMismatch) {
-                postal.setCustomValidity("Bitte geben Sie eine gültige Postleitzahl ein");
-            } else {
-                postal.setCustomValidity("");
-            }
-        });
-
         var datasecure = document.getElementById("datasecure");
+        var interests = document.getElementById("inputInterests");
 
-        datasecure.addEventListener("keyup", function (event) {
-            if(datasecure.validity.valueMissing) {
-                datasecure.setCustomValidity("Bitte akzeptieren Sie die Datenschutzbestimmungen");
-            } else {
-                datasecure.setCustomValidity("");
-            }
-        });
+
+        if (!age.validity.valid) {
+            age.setCustomValidity("Bitte geben Sie ein gültiges Alter (zwischen 3 und 120) an.");
+        } else {
+            age.setCustomValidity("");
+        }
+//
+//        var form = document.getElementById("registrationForm");
+//        form.addEventListener('submit', function() {
+//            if (!age.validity.valid) {
+//                age.setCustomValidity("Bitte geben Sie ein gültiges Alter (zwischen 3 und 120) an.");
+//            }
+//        }, false);
+
+//        age.setCustomValidity("Bitte geben Sie ein gültiges Alter (zwischen 3 und 120) an.");
+//        postal.setCustomValidity("Bitte geben Sie Ihre PLZ als fünfstellige Ziffernfolge ein.");
+//        datasecure.setCustomValidity("Bitte stimmen Sie den Datenschutzbestimmungen zu.");
+//        interests.setCustomValidity("Bitte geben Sie Ihre Interessen an.");
+
     </script>
+
 </body>
 </html>
