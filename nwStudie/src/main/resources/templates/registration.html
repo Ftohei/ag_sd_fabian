@@ -253,23 +253,26 @@
         var interests = document.getElementById("inputInterests");
 
 
-        if (!age.validity.valid) {
-            age.setCustomValidity("Bitte geben Sie ein gültiges Alter (zwischen 3 und 120) an.");
-        } else {
-            age.setCustomValidity("");
-        }
-//
-//        var form = document.getElementById("registrationForm");
-//        form.addEventListener('submit', function() {
-//            if (!age.validity.valid) {
-//                age.setCustomValidity("Bitte geben Sie ein gültiges Alter (zwischen 3 und 120) an.");
-//            }
-//        }, false);
+        age.oninvalid = function(e) {
+            e.target.setCustomValidity("");
+            if (!e.target.validity.valid) { e.target.setCustomValidity("Bitte geben Sie ein gültiges Alter (zwischen 3 und 120) an."); }
+        };
 
-//        age.setCustomValidity("Bitte geben Sie ein gültiges Alter (zwischen 3 und 120) an.");
-//        postal.setCustomValidity("Bitte geben Sie Ihre PLZ als fünfstellige Ziffernfolge ein.");
-//        datasecure.setCustomValidity("Bitte stimmen Sie den Datenschutzbestimmungen zu.");
-//        interests.setCustomValidity("Bitte geben Sie Ihre Interessen an.");
+
+        interests.oninvalid = function(e) {
+            e.target.setCustomValidity("");
+            if (!e.target.validity.valid) { e.target.setCustomValidity("Bitte geben Sie Ihre Interessen an."); }
+        };
+
+        postal.oninvalid = function(e) {
+            e.target.setCustomValidity("");
+            if (!e.target.validity.valid) { e.target.setCustomValidity("Bitte geben Sie Ihre Postleitzahl als fünfstellige Ziffernfolge ein."); }
+        };
+
+        datasecure.oninvalid = function(e) {
+            e.target.setCustomValidity("");
+            if (!e.target.validity.valid) { e.target.setCustomValidity("Bitte stimmen Sie den Datenschutzbestimmungen zu."); }
+        };
 
     </script>
 
