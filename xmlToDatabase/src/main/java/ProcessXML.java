@@ -168,70 +168,79 @@ public class ProcessXML {
 
         //            Searcher searcher = new Searcher("");
 
-        for (Artikel artikle: artikles){
+        for (Artikel artikel: artikles){
 
             boolean rubrikContained = false;
 
             for(String rubrik : existingRubriken){
-                if(artikle.getRubrik().equals(rubrik)){
+                if(artikel.getRubrik().equals(rubrik)){
                     rubrikContained = true;
                 }
             }
 
             if(!rubrikContained){
-                System.out.println("Neue Rubrik: " + artikle.getRubrik());
-                stmt.executeUpdate("INSERT INTO rubrik SET name = '" + artikle.getRubrik() + "'");
-                existingRubriken.add(artikle.getRubrik());
+                System.out.println("Neue Rubrik: " + artikel.getRubrik());
+                stmt.executeUpdate("INSERT INTO rubrik SET name = '" + artikel.getRubrik() + "'");
+                existingRubriken.add(artikel.getRubrik());
             }
 
             ResultSet resultSet;
 
-//          searcher.setCurrentArticleId(artikle.getArtikelID());
-            resultSet = stmt.executeQuery("SELECT hex(artikelId) FROM artikel WHERE ausgabeId = (SELECT ausgabeId FROM ausgabe WHERE datum = '" + datumNeueAusgabe + "') AND text LIKE '%" + artikle.getText() + "'");
+//          searcher.setCurrentArticleId(artikel.getArtikelID());
+            resultSet = stmt.executeQuery("SELECT hex(artikelId) FROM artikel WHERE ausgabeId = (SELECT ausgabeId FROM ausgabe WHERE datum = '" + datumNeueAusgabe + "') AND text LIKE '%" + artikel.getText() + "'");
 
             if(resultSet.next()) {
 
                 String artikelId = resultSet.getString("hex(artikelId)");
 
-                System.out.println("Artikel mit id:" + artikle.getArtikelID() +  " ist doppelung; speichere " + artikelId + " mit Rubrik " + artikle.getRubrik());
+                System.out.println("Artikel mit id:" + artikel.getArtikelID() +  " ist doppelung; speichere " + artikelId + " mit Rubrik " + artikel.getRubrik());
 
                 stmt.executeUpdate("INSERT INTO inrubrik SET artikelId = 0x" + artikelId +
-                        ", rubrikId = (SELECT rubrikId FROM rubrik WHERE Name like '" + artikle.getRubrik() + "');");
+                        ", rubrikId = (SELECT rubrikId FROM rubrik WHERE Name like '" + artikel.getRubrik() + "');");
 
             } else {
 
-                System.out.println("Artikel: " + artikle.getArtikelID() + " wird in die Datenbank gespeichert");
+                System.out.println("Artikel: " + artikel.getArtikelID() + " wird in die Datenbank gespeichert");
 
-                String artikelDatum = artikle.convertDate(artikle.getDatum());
+                String artikelDatum = artikel.convertDate(artikel.getDatum());
 
 //                    Daten des Artikels in Tabelle Artikel schreiben
                 try {
-                    stmt.executeUpdate("INSERT INTO artikel SET "
-                                    + "artikelId = 0x" + artikle.getArtikelID() +
-                                    ", lieferantId = '" + artikle.getLieferantId() + "'" +
-                                    ", quelleId = '" + artikle.getQuelleId() + "'" +
-                                    ", artikelPDF = '" + artikle.getArtikelPDF() + "'" +
-                                    ", herausgeber = '" + artikle.getName() + "'" +
-                                    ", datum = '" + artikle.convertDate(artikle.getDatum()) + "'" +
-                                    ", titel = '" + artikle.getTitel() + "'" +
-                                    ", text = '" + artikle.getText() + "'" +
+                    if(artikel.getTitel()!=null){
+                        int laenge_text = artikel.getText().split(" ").length;
+                        stmt.executeUpdate("INSERT INTO artikel SET "
+                                    + "artikelId = 0x" + artikel.getArtikelID() +
+                                    ", lieferantId = '" + artikel.getLieferantId() + "'" +
+                                    ", quelleId = '" + artikel.getQuelleId() + "'" +
+                                    ", artikelPDF = '" + artikel.getArtikelPDF() + "'" +
+                                    ", herausgeber = '" + artikel.getName() + "'" +
+                                    ", datum = '" + artikel.convertDate(artikel.getDatum()) + "'" +
+                                    ", titel = '" + artikel.getTitel() + "'" +
+                                    ", text = '" + artikel.getText() + "'" +
+                                   // ", laenge_text = '"+Integer.toString(laenge_text)+"'"+
                                     ", ausgabeId = (SELECT ausgabeId FROM ausgabe WHERE datum = '" + artikelDatum + "')" +
-                                    ", ressortId = (SELECT ressortId FROM ressort WHERE Name like '" + artikle.getRessort() + "')" +
-                                    ", autor = '" + artikle.getAutor() + "'" +
-                                    ", seite = '" + artikle.getStartSeite() + "';"
-                    );
+                                    ", ressortId = (SELECT ressortId FROM ressort WHERE Name like '" + artikel.getRessort() + "')" +
+                                    ", autor = '" + artikel.getAutor() + "'" +
+                                    ", seite = '" + artikel.getStartSeite() + "';"
+                        );
+                        //                    Artikel mit Rubrik verbinden
+                        stmt.executeUpdate("INSERT INTO inrubrik SET artikelId = 0x" + artikel.getArtikelID() +
+                                ", rubrikId = (SELECT rubrikId FROM rubrik WHERE Name like '" + artikel.getRubrik() + "');");
 
+                        String textGetaggt = tagger.tagString(artikel.getText());
+                        //Single Quotes aus dem String entfernen
+                        String textGetaggtOhneSingleQuotes = textGetaggt.replace("'", "\\'");
+                        stmt.executeUpdate("INSERT INTO artikelGetaggt SET "
+                                + "artikelId = 0x" + artikel.getArtikelID() +
+                                ", textGetaggt = '" + textGetaggtOhneSingleQuotes + "';");
 
-//                    Artikel mit Rubrik verbinden
-                    stmt.executeUpdate("INSERT INTO inrubrik SET artikelId = 0x" + artikle.getArtikelID() +
-                            ", rubrikId = (SELECT rubrikId FROM rubrik WHERE Name like '" + artikle.getRubrik() + "');");
+                    
+                    }
+                    else{
+                        System.out.println("No title given for "+artikel.getArtikelPDF());
+                    }
+                    
 
-                    String textGetaggt = tagger.tagString(artikle.getText());
-                    //Single Quotes aus dem String entfernen
-                    String textGetaggtOhneSingleQuotes = textGetaggt.replace("'", "\\'");
-                    stmt.executeUpdate("INSERT INTO artikelGetaggt SET "
-                            + "artikelId = 0x" + artikle.getArtikelID() +
-                            ", textGetaggt = '" + textGetaggtOhneSingleQuotes + "';");
 
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -244,7 +253,7 @@ public class ProcessXML {
 //                        //                    String esaIntoDatabaseQuery = "INSERT INTO EsaResultate(ArtikelId,pageId) VALUES ";
 //                        for(Integer result : resultsPerArticle){
 //
-//                            //                        esaIntoDatabaseQuery = esaIntoDatabaseQuery + "(0x"+ artikle.getArtikelID() +",'"+result+"'),";
+//                            //                        esaIntoDatabaseQuery = esaIntoDatabaseQuery + "(0x"+ artikel.getArtikelID() +",'"+result+"'),";
 //                        }
 //                        //                    esaIntoDatabaseQuery = esaIntoDatabaseQuery.substring(0, esaIntoDatabaseQuery.length()-1);
 //                        //                    esaIntoDatabaseQuery = esaIntoDatabaseQuery + ";";
