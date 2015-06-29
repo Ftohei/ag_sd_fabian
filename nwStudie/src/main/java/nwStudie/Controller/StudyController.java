@@ -133,7 +133,8 @@ public class StudyController {
 
         //Daten des Probanden in DB speichern und zufällig Artikel zuweisen
         ProbandEntity probandEntity = new ProbandEntity(proband.getSex(),
-                Integer.parseInt(String.valueOf(proband.getAge())),proband.getPostalCode(),proband.getRubrik(),proband.getInterests(),origin,proband.getGraduation(),
+                Integer.parseInt(String.valueOf(proband.getAge())), proband.getPostalCode(), proband.getRubrik(),
+                proband.getInterests(), origin, proband.getGraduation(),
                 proband.getInterestInPolitics(), proband.getInterestInCulture(), proband.getInterestInLocalArticles(),
                 proband.getInterestInSports(), proband.getInterestInLocalSports());
         probandRepository.save(probandEntity);
