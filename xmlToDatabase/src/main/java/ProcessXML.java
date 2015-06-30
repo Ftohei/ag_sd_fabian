@@ -207,7 +207,7 @@ public class ProcessXML {
 //                    Daten des Artikels in Tabelle Artikel schreiben
                 try {
                     if(artikel.getTitel()!=null){
-                        int laenge_text = artikel.getText().split(" ").length;
+                        int anzahl_woerter = artikel.getText().split(" ").length;
                         stmt.executeUpdate("INSERT INTO artikel SET "
                                     + "artikelId = 0x" + artikel.getArtikelID() +
                                     ", lieferantId = '" + artikel.getLieferantId() + "'" +
@@ -217,7 +217,7 @@ public class ProcessXML {
                                     ", datum = '" + artikel.convertDate(artikel.getDatum()) + "'" +
                                     ", titel = '" + artikel.getTitel() + "'" +
                                     ", text = '" + artikel.getText() + "'" +
-                                   // ", laenge_text = '"+Integer.toString(laenge_text)+"'"+
+                                    ", anzahl_woerter = '"+Integer.toString(anzahl_woerter)+"'"+
                                     ", ausgabeId = (SELECT ausgabeId FROM ausgabe WHERE datum = '" + artikelDatum + "')" +
                                     ", ressortId = (SELECT ressortId FROM ressort WHERE Name like '" + artikel.getRessort() + "')" +
                                     ", autor = '" + artikel.getAutor() + "'" +
