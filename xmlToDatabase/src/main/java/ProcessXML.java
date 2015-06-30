@@ -28,8 +28,8 @@ public class ProcessXML {
 
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
-//		File fXmlFile = new File(args[0]);
-        File fXmlFile = new File("/Users/fabiankaupmann/Desktop/8586833-Kogni-30052015.xml");
+        File fXmlFile = new File(args[0]);
+        //File fXmlFile = new File("/Users/fabiankaupmann/Desktop/8586833-Kogni-30052015.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 
@@ -206,7 +206,7 @@ public class ProcessXML {
 
 //                    Daten des Artikels in Tabelle Artikel schreiben
                 try {
-                    if(artikel.getTitel()!=null){
+                    if(artikel.getTitel()!=null && artikel.getTitel().length()>2){
                         int anzahl_woerter = artikel.getText().split(" ").length;
                         stmt.executeUpdate("INSERT INTO artikel SET "
                                     + "artikelId = 0x" + artikel.getArtikelID() +
