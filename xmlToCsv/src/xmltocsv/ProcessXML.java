@@ -32,14 +32,9 @@ import org.xml.sax.SAXException;
 public class ProcessXML {
 
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, SQLException {
-		
-                /**
-                 * Todo: Fehler mit dem DocumentBuilder beheben
-                 */
-            
-            
+
+
 		File fXmlFile = new File(args[0]);
-//                File fXmlFile = new File("./8586833-Kogni-13012015.xml");                
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
       		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
                 
@@ -130,13 +125,15 @@ public class ProcessXML {
         private static void articlesToCSV(List<Artikel> artikles) throws SQLException{
             
 
-            MaxentTagger tagger = new MaxentTagger("/home/fabian/xmlToCsv/taggers/german-fast.tagger");
+            MaxentTagger tagger = new MaxentTagger("taggers/german-fast.tagger");
             
             try {
                 Searcher searcher = new Searcher("/home/fabian/indexFullWiki/");
-//                Searcher searcher = new Searcher("/Users/fabiankaupmann/Desktop/testIndexStandard/");
 
                 FileAnalyzer fileAnalyzer = new FileAnalyzer();
+
+
+
                 ArrayList<CSVPerson> persons = fileAnalyzer.getPersons("/home/fabian/xmlToCsv/relevance_predictions_13012015_top10.txt");
                 
 

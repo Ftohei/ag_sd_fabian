@@ -104,14 +104,6 @@ public class WikiIndexer {
             
             PrintStream out = new PrintStream(System.out, true, "UTF-8");
             
-//            out.println("---------");
-//            out.println("Artikel wird indexiert:");
-//            out.println("id: "  + id);
-//            out.println("Titel: " + title);
-//            out.println(abstr);
-//            out.println(text);
-//            out.println("---------");
-            
         } catch (IOException ex) {
             Logger.getLogger(WikiIndexer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -167,7 +159,12 @@ public class WikiIndexer {
     public void processLine(String line){
         Scanner lineScanner = new Scanner(line);
         lineScanner.useDelimiter("######");
-        
+
+        String bool = "";
+        if(lineScanner.hasNext()){
+            bool = lineScanner.next();
+        }
+
         String id = "";
         if(lineScanner.hasNext()){
             id = lineScanner.next();
@@ -194,7 +191,7 @@ public class WikiIndexer {
         String abstrProcessed = this.processPart(abstr);
         String textProcessed = this.processPart(text);
         
-        this.index(id, titleProcessed, abstrProcessed, textProcessed);
+        this.index(id, titleProcessed, abstrProcessed, textProcessed, bool);
         
     }
 

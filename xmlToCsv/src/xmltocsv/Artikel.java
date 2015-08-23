@@ -19,13 +19,13 @@ public class Artikel {
 	
 	String Ressort;
 	
-        String Titel;
+	String Titel;
         
 	String Text;
         
 	String ArtikelPDF;
         
-        String Autor;
+	String Autor;
         
 	public Artikel()
 	{
