@@ -119,7 +119,7 @@ public class Searcher {
             String escapedQuery = QueryParser.escape(query);
             if(!escapedQuery.isEmpty()){
 
-                BooleanQuery.setMaxClauseCount(100000);
+//                BooleanQuery.setMaxClauseCount(100000);
                 TopDocs docs = null;
                 if (!this.includePersonArticles) {
                     BooleanQuery booleanQuery = new BooleanQuery();
