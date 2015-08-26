@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +14,7 @@ public class Main{
              * auf Index abfeuern
              * ergebnisse in File abspeichern
              */
-            
+
             String pathToTaggedArticles = args[0];
 
             String pathToIndex = args[1];
@@ -70,20 +71,33 @@ public class Main{
 
             }
 
-            try {
-                FileWriter fileWriter = new FileWriter(outputDir + "/resultsPerAgeGroup.txt");
-                for (GroupWithResults groupWithResults : groupList) {
-                    fileWriter.write("Gruppe " + groupWithResults.getMinAge() + " - " + groupWithResults.getMaxAge());
-                    fileWriter.append("\n");
-                    for (int i = 0; i < groupWithResults.getPageIds().size(); i++) {
-                        fileWriter.write(groupWithResults.getPageIds().get(i) + " " +
-                                groupWithResults.getWikiTitles().get(i) + " " + groupWithResults.getScores().get(i));
-                        fileWriter.append("\n");
-                    }
-                }
-                fileWriter.close();
-            } catch (IOException e){
-                e.printStackTrace();
-            }
+            serialize(groupList, includePersonArticles, outputDir);
         }
+
+
+    public static void serialize(ArrayList<GroupWithResults> groupList, boolean includePersonArticles, String outputDir){
+
+        try {
+
+            FileWriter fileWriter = null;
+            if(includePersonArticles){
+                fileWriter = new FileWriter(outputDir + "/resultsPerAgeGroupWithPersons.txt");
+            } else {
+                fileWriter = new FileWriter(outputDir + "/resultsPerAgeGroupWithoutPersons.txt");
+            }
+            for (GroupWithResults groupWithResults : groupList) {
+                fileWriter.write("Gruppe " + groupWithResults.getMinAge() + " - " + groupWithResults.getMaxAge());
+                fileWriter.append("\n");
+                for (int i = 0; i < groupWithResults.getPageIds().size(); i++) {
+                    fileWriter.write(groupWithResults.getPageIds().get(i) + " " +
+                            groupWithResults.getWikiTitles().get(i) + " " + groupWithResults.getScores().get(i));
+                    fileWriter.append("\n");
+                }
+            }
+            fileWriter.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
 }

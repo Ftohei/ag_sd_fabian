@@ -26,31 +26,54 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author fabiankaupmann
+ * Sucht in einem Lucene-Index nach relevanten Ergebnissen.
  */
 public class Searcher {
-    
-    /*
-    * Werte normalsieren: Lucene index Score aufsummieren und dann durch die anzahl teilen.
-    */
-    
-    /**
-     * normalizedScore summiert über ALLE Ergebnisse und teilt dufch die Anzahl ALLER Ergebnisse
-     */
-    
+
     IndexReader reader;
     IndexSearcher searcher;
+
+    /**
+     * Wie viele ESA-Ergebnisse pro Query?
+     */
     int precision;
+
+    /**
+     * Eine Liste mit den Scores aller Ergebnisse der letzten Suche.
+     */
     ArrayList<Float> scores;
+
+    /**
+     * Eine Liste mit den Wikipedia-Titeln der letzten Suche.
+     */
     ArrayList<String> titles;
+
+    /**
+     * Eine Liste mit den Page-Ids der letzten Suche.
+     */
     ArrayList<String> pageIds;
+
+    /**
+     * Die Sprache, in der gesucht werden soll (beeinflusst die Adjektiv-Nomen-Suche)
+     */
     String language;
+
+    /**
+     * Mit oder ohne Personen suchen?
+     */
     boolean includePersonArticles;
     
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private StandardAnalyzer analyzer = new StandardAnalyzer();
-    
+
+    /**
+     * Konstruktor.
+     * @param indexDir Das Verzeichnis mit dem Index, der durchsucht werden soll.
+     * @param numberOfEsaResults Anzahl der Resultate pro Query.
+     * @param language Sprache, in der gesucht werden soll (muss mit Index übereinstimmen).
+     * @param includePersonArticles Mit oder ohne Personen suchen.
+     * @throws IOException
+     */
     public Searcher(String indexDir, int numberOfEsaResults, String language, boolean includePersonArticles) throws IOException{
         Path indexPath = Paths.get(indexDir) ;
         reader = DirectoryReader.open(FSDirectory.open(indexPath));
@@ -63,107 +86,13 @@ public class Searcher {
         this.pageIds = new ArrayList();
               
     }
-    
-    public String extractQueryString(String taggedString){
-        Scanner scanner = new Scanner(taggedString);
-        scanner.useDelimiter("\\s");
-        
-        ArrayList<String> taggedElements = new ArrayList<>();
-        
-        while(scanner.hasNext()){
-            taggedElements.add(scanner.next());
-        }
-        
-        ArrayList<String> words = new ArrayList<>();
-        ArrayList<String> postags = new ArrayList<>();
 
-        ArrayList<String> adjectiveTags = new ArrayList<>();
-        ArrayList<String> nounTags = new ArrayList<>();
-
-        if(this.language.equals("german")) {
-            adjectiveTags.add("ADJA");
-            adjectiveTags.add("ADJD");
-            nounTags.add("NN");
-            nounTags.add("NE");
-        } else if (this.language.equals("english")){
-            adjectiveTags.add("JJ");
-            adjectiveTags.add("JJR");
-            adjectiveTags.add("JJS");
-            nounTags.add("NN");
-            nounTags.add("NNS");
-            nounTags.add("NNP");
-            nounTags.add("NNPS");
-        }
-        
-        for(String element : taggedElements){
-            scanner = new Scanner(element);
-            scanner.useDelimiter("_");
-            while(scanner.hasNext()){
-                words.add(scanner.next());
-                if(scanner.hasNext()) {
-                    postags.add(scanner.next());
-                } else {
-                    words.remove(words.size() - 1);
-                }
-            }
-        }
-        
-        String queryString = "";
-        for(int j = 0; j<(postags.size()); j++){
-            if(j<(postags.size() - 1)){
-                
-                //checken: Adjektiv * Nomen +, dh. 0 oder mehr adjektive, 1 oder mehr Nomen
-                if(nounTags.contains(postags.get(j))){
-                    queryString = queryString + " " + words.get(j);
-                    
-                } else if(adjectiveTags.contains(postags.get(j))){
-                    //Zähle die Adjektive
-                    int k = 0;
-                    while(adjectiveTags.contains(postags.get(j+k))){
-                        if(j+k<(postags.size()-1)){
-                            k++;
-                        } else {
-                            break;
-                        }                    }
-                    //Sobald ein Nicht-Adjektiv kommt, prüfe ob es ein Nomen ist. Wenn nein, Wörter verwerfen
-                    if(nounTags.contains(postags.get(j+k))){
-                        for(int l=j; l<=(j+k); l++){
-                            queryString = queryString + " " + words.get(l);
-                        } 
-                    }
-                    //Springe an nächste zu prüfende Stelle
-                    j = j + k + 1;
-                    
-                }
-            } else {
-                if(nounTags.contains(postags.get(j))){
-                    queryString = queryString + " " + words.get(j);
-                } else if(adjectiveTags.contains(postags.get(j))){
-                    //Zähle die Adjektive
-                    int k = 0;
-                    while(adjectiveTags.contains(postags.get(j+k))){
-                        if(j+k<(postags.size()-1)){
-                            k++;
-                        } else {
-                            break;
-                        }
-                    }
-                    //Sobald ein Nicht-Adjektiv kommt, prüfe ob es ein Nomen ist. Wenn nein, Wörter verwerfen
-                    if(nounTags.contains(postags.get(j+k))){
-                        for(int l=j; l<=(j+k); l++){
-                            queryString = queryString + " " + words.get(l);
-                        } 
-                    }
-                    //Springe an nächste zu prüfende Stelle
-                    j = j + k + 1;
-                    
-                }
-            }  
-        }
-        
-        return queryString;   
-    }
-    
+    /**
+     * Durchsucht den Index mit der search()-Methode dieser Klasse und fügt die Resultate in ein GroupWithResults-Objekt ein.
+     * @param group Ein GroupWithResults-Objekt.
+     * @param inputGetaggt Ein input-Text, der mit einem passenden POS-Tagger getaggt wurde.
+     * @return GroupWithResults mit Resultaten der Lucene-Suche.
+     */
     public GroupWithResults addResultsToGroup(GroupWithResults group, String inputGetaggt){
         GroupWithResults resultGroup = group;
         String nounAdjectiveQuery = this.extractQueryString(inputGetaggt);
@@ -171,12 +100,12 @@ public class Searcher {
         this.scores.clear();
         this.titles.clear();
         this.pageIds.clear();
-        
+
+
+        //Index wird durchsucht.
         this.search(nounAdjectiveQuery);
 
-        //Hier Queryergebnisse normalisieren mit Maximalem Resultat (nur für Vergleich innerhalb einer Query sinnvoll!)
-//        this.normalizeResultsWithMaxResult();
-
+        //Resultate zu dem Result-Objekt hinzufügen.
         resultGroup.getPageIds().addAll(this.pageIds);
         resultGroup.getWikiTitles().addAll(this.titles);
         resultGroup.getScores().addAll(this.scores);
@@ -222,6 +151,106 @@ public class Searcher {
             Logger.getLogger(Searcher.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    private String extractQueryString(String taggedString){
+        Scanner scanner = new Scanner(taggedString);
+        scanner.useDelimiter("\\s");
+
+        ArrayList<String> taggedElements = new ArrayList<>();
+
+        while(scanner.hasNext()){
+            taggedElements.add(scanner.next());
+        }
+
+        ArrayList<String> words = new ArrayList<>();
+        ArrayList<String> postags = new ArrayList<>();
+
+        ArrayList<String> adjectiveTags = new ArrayList<>();
+        ArrayList<String> nounTags = new ArrayList<>();
+
+        if(this.language.equals("german")) {
+            adjectiveTags.add("ADJA");
+            adjectiveTags.add("ADJD");
+            nounTags.add("NN");
+            nounTags.add("NE");
+        } else if (this.language.equals("english")){
+            adjectiveTags.add("JJ");
+            adjectiveTags.add("JJR");
+            adjectiveTags.add("JJS");
+            nounTags.add("NN");
+            nounTags.add("NNS");
+            nounTags.add("NNP");
+            nounTags.add("NNPS");
+        }
+
+        for(String element : taggedElements){
+            scanner = new Scanner(element);
+            scanner.useDelimiter("_");
+            while(scanner.hasNext()){
+                words.add(scanner.next());
+                if(scanner.hasNext()) {
+                    postags.add(scanner.next());
+                } else {
+                    words.remove(words.size() - 1);
+                }
+            }
+        }
+
+        String queryString = "";
+        for(int j = 0; j<(postags.size()); j++){
+            if(j<(postags.size() - 1)){
+
+                //checken: Adjektiv * Nomen +, dh. 0 oder mehr adjektive, 1 oder mehr Nomen
+                if(nounTags.contains(postags.get(j))){
+                    queryString = queryString + " " + words.get(j);
+
+                } else if(adjectiveTags.contains(postags.get(j))){
+                    //Zähle die Adjektive
+                    int k = 0;
+                    while(adjectiveTags.contains(postags.get(j+k))){
+                        if(j+k<(postags.size()-1)){
+                            k++;
+                        } else {
+                            break;
+                        }                    }
+                    //Sobald ein Nicht-Adjektiv kommt, prüfe ob es ein Nomen ist. Wenn nein, Wörter verwerfen
+                    if(nounTags.contains(postags.get(j+k))){
+                        for(int l=j; l<=(j+k); l++){
+                            queryString = queryString + " " + words.get(l);
+                        }
+                    }
+                    //Springe an nächste zu prüfende Stelle
+                    j = j + k + 1;
+
+                }
+            } else {
+                if(nounTags.contains(postags.get(j))){
+                    queryString = queryString + " " + words.get(j);
+                } else if(adjectiveTags.contains(postags.get(j))){
+                    //Zähle die Adjektive
+                    int k = 0;
+                    while(adjectiveTags.contains(postags.get(j+k))){
+                        if(j+k<(postags.size()-1)){
+                            k++;
+                        } else {
+                            break;
+                        }
+                    }
+                    //Sobald ein Nicht-Adjektiv kommt, prüfe ob es ein Nomen ist. Wenn nein, Wörter verwerfen
+                    if(nounTags.contains(postags.get(j+k))){
+                        for(int l=j; l<=(j+k); l++){
+                            queryString = queryString + " " + words.get(l);
+                        }
+                    }
+                    //Springe an nächste zu prüfende Stelle
+                    j = j + k + 1;
+
+                }
+            }
+        }
+
+        return queryString;
     }
 
     public void normalizeResultsWithMaxResult(){

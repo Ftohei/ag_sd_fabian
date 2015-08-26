@@ -10,6 +10,10 @@ public class GroupWithResults {
 
     String taggedSearchQuery;
 
+    /**
+     * Listen für die Esa-Ergebnisse. Sollten so in jedem Objekt vorkommen, dass mit dem Searcher im aktuellen Zustand
+     * zusammen verwendet werden soll.
+     */
     private ArrayList<String> pageIds = new ArrayList();
     private ArrayList<String> wikiTitles = new ArrayList();
     private ArrayList<Float> scores = new ArrayList();
