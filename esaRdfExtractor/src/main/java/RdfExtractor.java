@@ -10,9 +10,15 @@ import java.util.ArrayList;
  */
 public class RdfExtractor {
 
+    private String rdfFilePath;
+
+    public RdfExtractor( String rdfFilePath){
+        this.rdfFilePath = rdfFilePath;
+    }
+
     public  ArrayList<PersonWithInterests> extractInterests() {
         // create an empty model
-        Model model = RDFDataMgr.loadModel("/Users/Fabian/Documents/Arbeit/AG_SD/personas.ttl");
+        Model model = RDFDataMgr.loadModel(this.rdfFilePath);
 
         Resource interest = model.getResource("http://info.uni-bielefeld.de/kognihome/Rennrad");
 
