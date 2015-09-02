@@ -62,7 +62,7 @@ public class RunResource {
         }
         else terms.add(input);
         
-       return vec.getArtikels(terms, date,false);
+       return vec.getArtikels(terms, date,persons);
     }
 
     /**
