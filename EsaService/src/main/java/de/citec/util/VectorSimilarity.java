@@ -43,7 +43,7 @@ public class VectorSimilarity {
             e.printStackTrace();
         }
         try{
-            result_interests = index.runStrictSearch(interests, 50, true);
+            result_interests = index.runStrictSearch(interests, 100, true);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -55,7 +55,7 @@ public class VectorSimilarity {
             for(Artikel artikel : result_nw){
                 Map<String,Integer> vector1 = new HashMap<String,Integer>();
                 Map<String,Integer> vector2 = new HashMap<String,Integer>();
-                createVector(vector1,vector2,artikel,result_interests);
+                createVector(vector1,vector2,artikel,result_interests,onlyPerson);
                 getSimilarity(vector1,vector2,overall_results,artikel.getTitel());
             }
             
@@ -66,10 +66,10 @@ public class VectorSimilarity {
         }
         
         
-//        overall_results.entrySet().stream()
-//        .sorted(Map.Entry.<String, Double>comparingByValue().reversed()) 
-//        .limit(10) 
-//        .forEach(System.out::println);
+        overall_results.entrySet().stream()
+        .sorted(Map.Entry.<String, Double>comparingByValue().reversed()) 
+        .limit(5) 
+        .forEach(System.out::println);
         int counter = 0;
         JSONArray results = new JSONArray();
         for(String key : overall_results.keySet()){
@@ -144,20 +144,36 @@ public class VectorSimilarity {
     }
 
     
-    private void createVector(Map<String, Integer> vector1, Map<String, Integer> vector2, Artikel artikel, Map<String, List<String>> result_interests) {
+    private void createVector(Map<String, Integer> vector1, Map<String, Integer> vector2, Artikel artikel, Map<String, List<String>> result_interests, boolean onlyPersons) {
         Map<String,Integer> general_vector = new HashMap<>();
-        artikel.getWikipedia_entries_onlyPersons().keySet().stream().forEach((key) -> {
+        if(onlyPersons){
+            artikel.getWikipedia_entries_onlyPersons().keySet().stream().forEach((key) -> {
             general_vector.put(key, 0);
-        });
+            });
+        }
+        else{
+           artikel.getWikipedia_entries_noPersons().keySet().stream().forEach((key) -> {
+            general_vector.put(key, 0);
+            }); 
+        }
+        
         result_interests.keySet().stream().forEach((key) -> {
             general_vector.put(key, 0);
         });
         
         vector1.putAll(general_vector);
         vector2.putAll(general_vector);
-        artikel.getWikipedia_entries_onlyPersons().keySet().stream().filter((key) -> (vector2.containsKey(key))).forEach((key) -> {
+        if(onlyPersons){
+            artikel.getWikipedia_entries_onlyPersons().keySet().stream().filter((key) -> (vector2.containsKey(key))).forEach((key) -> {
             vector2.put(key, 1);
-        });
+            });
+        }
+        else{
+            artikel.getWikipedia_entries_noPersons().keySet().stream().filter((key) -> (vector2.containsKey(key))).forEach((key) -> {
+            vector2.put(key, 1);
+            });
+        }
+        
         result_interests.keySet().stream().filter((key) -> (vector1.containsKey(key))).forEach((key) -> {
             vector1.put(key, 1);
         });

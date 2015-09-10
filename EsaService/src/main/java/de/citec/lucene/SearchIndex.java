@@ -66,6 +66,9 @@ public class SearchIndex {
                 if(onlypersons){
                      booleanQuery.add(new QueryParser("persons", analyzer).parse("1"), BooleanClause.Occur.MUST);
                 }
+                else{
+                     booleanQuery.add(new QueryParser("persons", analyzer).parse("1"), BooleanClause.Occur.MUST_NOT);
+                }
                 //System.out.println(booleanQuery.toString());
                     
                 
