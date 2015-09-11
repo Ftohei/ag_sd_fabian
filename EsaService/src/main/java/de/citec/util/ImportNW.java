@@ -373,6 +373,20 @@ public class ImportNW {
             output+=key+","+info.get(0)+","+info.get(1)+"##";
         }
         
+        output = output.replace(" ._$.", "");
+        output = output.replace("_$.", "");
+        output = output.replace("_card", "");
+        output = output.replace("_xy ", "");
+        output = output.replace("/_$[", "");
+        output = output.replace("-_$[", "");
+        output = output.replace("_$[", "");
+        output = output.replace(("_pper"), "");
+        output = output.replace(("_appr"), "");
+        output = output.replace(" 's", "s");
+        output = output.replace("_piat", "");
+        output = output.replace("' ", "");
+        output = output.replace("'", " ");
+        //System.out.println(output);
         return output;
     }
 
