@@ -106,10 +106,15 @@ public class VectorSimilarity {
                 artikel.setTitel(resultSet.getString("Titel"));
                 artikel.setText(resultSet.getString("Text"));
                 String wiki = "";
-                if(onlyPersons) wiki = resultSet.getString("Wikipedia_OnlyPerson");
-                else wiki = resultSet.getString("Wikipedia_NoPerson");
+                if(onlyPersons) {
+                    wiki = resultSet.getString("Wikipedia_OnlyPerson");
+                    artikel.setWikipedia_entries_onlyPersons(convertToHM(wiki));
+                }
+                else {
+                    wiki = resultSet.getString("Wikipedia_NoPerson");
+                    artikel.setWikipedia_entries_noPersons(convertToHM(wiki));
+                }
                 
-                artikel.setWikipedia_entries_onlyPersons(convertToHM(wiki));
                 results.add(artikel);
             }
             
@@ -143,7 +148,14 @@ public class VectorSimilarity {
         if(cos>0.0001) overall_results.put(titel, cos);
     }
 
-    
+    /**
+     * This function creates 
+     * @param vector1
+     * @param vector2
+     * @param artikel
+     * @param result_interests
+     * @param onlyPersons 
+     */
     private void createVector(Map<String, Integer> vector1, Map<String, Integer> vector2, Artikel artikel, Map<String, List<String>> result_interests, boolean onlyPersons) {
         Map<String,Integer> general_vector = new HashMap<>();
         if(onlyPersons){
@@ -161,6 +173,8 @@ public class VectorSimilarity {
             general_vector.put(key, 0);
         });
         
+//        System.out.println("Size general_vector:"+general_vector.size());
+//        System.out.println("Size interests: "+result_interests.size());
         vector1.putAll(general_vector);
         vector2.putAll(general_vector);
         if(onlyPersons){
@@ -180,6 +194,12 @@ public class VectorSimilarity {
         
     }
 
+    /**
+     * Calculates the cosinus between two given vectors. A vector in this case is a hashMap<String,Integer> with a value between 0 and 1
+     * @param vector1
+     * @param vector2
+     * @return 
+     */
     private Double calculateCos(Map<String, Integer> vector1, Map<String, Integer> vector2) {
         double cos = 0.0;
         double len_vector1 = calculateLen(vector1);
@@ -191,6 +211,11 @@ public class VectorSimilarity {
         return cos;
     }
 
+    /**
+     * Calculates the lenght of a vector. A vector is defined in the same way as in the function calculateScalar(v1,v2)
+     * @param vector1
+     * @return 
+     */
     private double calculateLen(Map<String, Integer> vector1) {
         int len = 0;
         len = vector1.values().stream().map((value) -> value*value).reduce(len, Integer::sum);
@@ -198,6 +223,12 @@ public class VectorSimilarity {
         
     }
 
+    /**
+     * Calculates the scalar product of two "vectors", in this case a vector is a hashMap with a WikipediaArtikelID as key and a integer as value (in the moment 0 or 1)
+     * @param vector1
+     * @param vector2
+     * @return 
+     */
     private double calculateScalar(Map<String, Integer> vector1, Map<String, Integer> vector2) {
         if(vector1.size()!=vector2.size()) return 0.0;
         double scalar = 0.0;
