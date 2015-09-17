@@ -27,7 +27,7 @@ public class Main {
         String rdfFilePath = args[5];
 
         RdfExtractor rdfExtractor = new RdfExtractor(rdfFilePath);
-        
+
         ArrayList<PersonWithInterests> personsWithInterests = rdfExtractor.extractInterests();
 //        MaxentTagger tagger = new MaxentTagger("/Users/Fabian/Documents/Dev/intellijProjects/esaXmlToDatabase/taggers/german-fast.tagger");
         MaxentTagger tagger = new MaxentTagger(args[0]);

@@ -5,14 +5,15 @@
  */
 package citec.de.esaservice;
 
+import de.citec.util.Language;
+import de.citec.util.VectorSimilarity;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * REST Web Service
@@ -25,11 +26,19 @@ public class RawInputResource {
     @Context
     private UriInfo context;
 
+    private final VectorSimilarity vec;
+
     /**
      * Creates a new instance of RawInputResource
      */
-    public RawInputResource() {
+    public RawInputResource() throws IOException {
+        this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index", Language.DE);
     }
+
+
+    /*
+     curl "http://localhost:8080/EsaService-1.0-SNAPSHOT/webresources/rawInput?rawInput="Morihei_Ueshiba"&onlyPersons=true"
+    */
 
     /**
      * Retrieves representation of an instance of citec.de.esaservice.RawInputResource
@@ -37,9 +46,10 @@ public class RawInputResource {
      */
     @GET
     @Produces("text/plain")
-    public String getText() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
+    public String getText(@QueryParam("rawInput") String rawInput, @QueryParam("onlyPersons") String onlyPersons) {
+        boolean persons = true;
+        if(onlyPersons.contains("false")) persons=false;
+        return vec.getArtikelsRawInput(rawInput, persons);
     }
 
     /**

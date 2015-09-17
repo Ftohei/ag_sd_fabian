@@ -37,13 +37,16 @@ public class RunResource {
      * @throws java.io.IOException
      */
     public RunResource() throws IOException {
-        this.vec = new VectorSimilarity("/Users/swalter/Documents/EsaDeutsch/Index",Language.DE);
+//        this.vec = new VectorSimilarity("/Users/swalter/Documents/EsaDeutsch/Index",Language.DE);
+        this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index",Language.DE);
+
     }
 
     /*
      curl "http://localhost:8080/EsaService/webresources/run?date=2015-08-28&input=Kunst,Kultur&onlyPersons=true"
+     curl "http://localhost:8080/EsaService-1.0-SNAPSHOT/webresources/run?date=2015-08-28&input=Kunst,Kultur&onlyPersons=true"
     */
-    
+
     /**
      * Retrieves representation of an instance of citec.de.esaservice.RunResource
      * @param date

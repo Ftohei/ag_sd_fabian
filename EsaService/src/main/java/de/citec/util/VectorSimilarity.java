@@ -11,10 +11,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import org.json.simple.JSONArray;
 
 /**
@@ -43,7 +42,7 @@ public class VectorSimilarity {
             e.printStackTrace();
         }
         try{
-            result_interests = index.runStrictSearch(interests, 100, true);
+            result_interests = index.runStrictSearch(interests, 100, onlyPerson);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -80,7 +79,42 @@ public class VectorSimilarity {
         
     }
     
-    
+    public String getArtikelsRawInput(String rawInput, boolean onlyPerson){
+
+
+
+        List<String> searchInput = new ArrayList<String>();
+
+        //TODO: rawInput vorverarbeiten
+//        rawInput = ImportNW.tagText(rawInput, ImportNW.getTagger("./taggers/german-fast.tagger"));
+
+        if(rawInput.contains(",")){
+            for(String i:rawInput.split(","))searchInput.add(i);
+        } else {
+            searchInput.add(rawInput);
+        }
+
+        Map<String,List<String>> result_rawInput = null;
+
+        try {
+            result_rawInput = index.runStrictSearch(searchInput, 100, onlyPerson);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        int counter = 0;
+        JSONArray resultJSON = new JSONArray();
+        for(String key : result_rawInput.keySet()){
+            counter+=1;
+
+            String artikelname = result_rawInput.get(key).get(0);
+            String score = result_rawInput.get(key).get(1);
+
+            resultJSON.add(new EsaResult(Integer.toString(counter), artikelname, score));
+        }
+        return JSONArray.toJSONString(resultJSON);
+
+    }
 
     private List<Artikel> getArtikelsForDate(String date, boolean onlyPersons) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         
@@ -238,5 +272,5 @@ public class VectorSimilarity {
         
         return scalar;
     }
-    
+
 }

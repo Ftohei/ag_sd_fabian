@@ -36,7 +36,7 @@ import org.xml.sax.SAXException;
 public class ImportNW {
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
-        File fXmlFile = new File("/Users/swalter/Downloads/NW_Test/8586833-Kogni-28082015.xml");
+        File fXmlFile = new File("/Users/Fabian/Documents/Arbeit/AG_SD/8586833-Kogni-28082015.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         
@@ -64,7 +64,7 @@ public class ImportNW {
         doc.getDocumentElement().normalize();
 
         System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-        SearchIndex index = new SearchIndex("/Users/swalter/Documents/EsaDeutsch/Index",Language.DE);
+        SearchIndex index = new SearchIndex("/Users/Fabian/Documents/Arbeit/AG_SD/Index",Language.DE);
 
         NodeList nList = doc.getElementsByTagName("artikel");
         
@@ -78,7 +78,7 @@ public class ImportNW {
 
             Artikel artikel = new Artikel();
 
-            
+
 
             NodeList nodes = nNode.getChildNodes();
 
@@ -108,6 +108,8 @@ public class ImportNW {
             
             //System.out.print(artikel);
         }
+
+
          /*
         Run search on index - but on cleaned entries_onlyPersons
         */
@@ -135,6 +137,9 @@ public class ImportNW {
 
 
     private static void articlesToDatabase(Set<Artikel> artikelliste) throws SQLException {
+
+
+        System.out.println("articlesToDatabase gestartet");
 
         Statement stmt;
         ResultSet rs;
@@ -344,7 +349,7 @@ public class ImportNW {
         return null;
     }
 
-    private static String tagText(String body,MaxentTagger tagger) {
+    public static String tagText(String body,MaxentTagger tagger) {
         String line =tagger.tagString(body);
         String new_artikel= "";
         String term = "";
@@ -388,6 +393,11 @@ public class ImportNW {
         output = output.replace("'", " ");
         //System.out.println(output);
         return output;
+    }
+
+    public static MaxentTagger getTagger(String pathToTaggerModel){
+        MaxentTagger tagger = new MaxentTagger(pathToTaggerModel);
+        return tagger;
     }
 
 
