@@ -79,20 +79,18 @@ public class VectorSimilarity {
         
     }
     
-    public String getArtikelsRawInput(String rawInput, boolean onlyPerson){
+    public String getArtikelsRawInput(String rawInput, boolean onlyPerson, MaxentTagger tagger){
 
+        List<String> searchInput = new ArrayList();
 
-
-        List<String> searchInput = new ArrayList<String>();
-
-        //TODO: rawInput vorverarbeiten
-//        rawInput = ImportNW.tagText(rawInput, ImportNW.getTagger("./taggers/german-fast.tagger"));
+        rawInput = ImportNW.tagText(rawInput, tagger);
 
         if(rawInput.contains(",")){
             for(String i:rawInput.split(","))searchInput.add(i);
         } else {
             searchInput.add(rawInput);
         }
+
 
         Map<String,List<String>> result_rawInput = null;
 

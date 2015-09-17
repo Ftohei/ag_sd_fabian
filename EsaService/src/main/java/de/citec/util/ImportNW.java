@@ -350,12 +350,12 @@ public class ImportNW {
     }
 
     public static String tagText(String body,MaxentTagger tagger) {
-        String line =tagger.tagString(body);
+        String line = tagger.tagString(body);
         String new_artikel= "";
         String term = "";
         for(String word : line.split(" ")){
             if (word.contains("NN") || word.contains("ADJA")|| word.contains("ADJD") || word.contains( "NE")){
-                 term+=" "+word.split("_")[0];
+                term+=" "+word.split("_")[0];
             }
             else{
                 term = term.replace(" ","_");
@@ -366,8 +366,15 @@ public class ImportNW {
 
             }
         }
-        
-        //System.out.println(new_artikel);
+
+        if(term.length() > 0){
+            new_artikel+=" "+term.toLowerCase().substring(1);
+        }
+
+//        System.out.println(new_artikel);
+        if(new_artikel.length() == 0) {
+            return new_artikel;
+        }
         return new_artikel.substring(1);
     }
 
@@ -394,11 +401,5 @@ public class ImportNW {
         //System.out.println(output);
         return output;
     }
-
-    public static MaxentTagger getTagger(String pathToTaggerModel){
-        MaxentTagger tagger = new MaxentTagger(pathToTaggerModel);
-        return tagger;
-    }
-
 
 }

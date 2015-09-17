@@ -7,6 +7,7 @@ package citec.de.esaservice;
 
 import de.citec.util.Language;
 import de.citec.util.VectorSimilarity;
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -28,11 +29,14 @@ public class RawInputResource {
 
     private final VectorSimilarity vec;
 
+    private MaxentTagger tagger;
+
     /**
      * Creates a new instance of RawInputResource
      */
     public RawInputResource() throws IOException {
         this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index", Language.DE);
+        this.tagger = new MaxentTagger("/Users/Fabian/Documents/Arbeit/AG_SD/ag_sd_fabian/EsaService/taggers/german-fast.tagger");
     }
 
 
@@ -49,7 +53,7 @@ public class RawInputResource {
     public String getText(@QueryParam("rawInput") String rawInput, @QueryParam("onlyPersons") String onlyPersons) {
         boolean persons = true;
         if(onlyPersons.contains("false")) persons=false;
-        return vec.getArtikelsRawInput(rawInput, persons);
+        return vec.getArtikelsRawInput(rawInput, persons, tagger);
     }
 
     /**
