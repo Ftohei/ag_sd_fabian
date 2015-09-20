@@ -24,12 +24,12 @@ public class DB_Connector {
     private Connection conn;
     
     public DB_Connector(){
-        this.userName = "esa";
-        this.password = "1234567";
+        this.userName = "root";
+        this.password = "";
         this.dbms = "mysql";
         this.serverName = "localhost";
         this.portNumber = "3306";
-        this.database = "esa";
+        this.database = "esaService";
     }
     
     public Connection connect() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {

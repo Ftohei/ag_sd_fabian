@@ -36,7 +36,7 @@ import org.xml.sax.SAXException;
 public class ImportNW {
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
-        File fXmlFile = new File("/Users/Fabian/Documents/Arbeit/AG_SD/8586833-Kogni-28082015.xml");
+        File fXmlFile = new File(args[0]);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         
@@ -108,11 +108,12 @@ public class ImportNW {
             
             //System.out.print(artikel);
         }
-
+        System.out.println("Alle Artikel aus XML extrahiert");
 
          /*
         Run search on index - but on cleaned entries_onlyPersons
         */
+
         for(Artikel artikel:artikelliste){
             if(artikel.getText()!=null){
                 String[] terms = artikel.getText().split(" ");
@@ -126,7 +127,7 @@ public class ImportNW {
             }
             
         }
-       
+        System.out.println("Für alle Artikel Index durchsucht");
         
         try {
             articlesToDatabase(artikelliste);
