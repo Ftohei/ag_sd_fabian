@@ -36,7 +36,8 @@ import org.xml.sax.SAXException;
 public class ImportNW {
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
-        File fXmlFile = new File("/Users/Fabian/Documents/Arbeit/AG_SD/8586833-Kogni-28082015.xml");
+        //File fXmlFile = new File("/Users/Fabian/Documents/Arbeit/AG_SD/8586833-Kogni-28082015.xml");
+        File fXmlFile = new File(args[0]);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         
@@ -185,8 +186,6 @@ public class ImportNW {
                                     ", Text = '" + artikel.getText() + "'" +
                                     ", Wikipedia_OnlyPerson = '" + convertEntriesToString(artikel.getWikipedia_entries_onlyPersons())+ "'"+
                                     ", Wikipedia_NoPerson = '" + convertEntriesToString(artikel.getWikipedia_entries_noPersons())+ "'"
-                                
-                                   
                         );
                     
                     }
