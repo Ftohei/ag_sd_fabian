@@ -35,7 +35,7 @@ import org.xml.sax.SAXException;
  */
 public class ImportNW {
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
-
+        
         File fXmlFile = new File(args[0]);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -186,8 +186,6 @@ public class ImportNW {
                                     ", Text = '" + artikel.getText() + "'" +
                                     ", Wikipedia_OnlyPerson = '" + convertEntriesToString(artikel.getWikipedia_entries_onlyPersons())+ "'"+
                                     ", Wikipedia_NoPerson = '" + convertEntriesToString(artikel.getWikipedia_entries_noPersons())+ "'"
-                                
-                                   
                         );
                     
                     }
