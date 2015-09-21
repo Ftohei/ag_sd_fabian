@@ -27,7 +27,7 @@ public class RawInputResource {
     @Context
     private UriInfo context;
 
-    private final VectorSimilarity vec;
+    private VectorSimilarity vec;
 
     private MaxentTagger tagger;
 
@@ -35,13 +35,12 @@ public class RawInputResource {
      * Creates a new instance of RawInputResource
      */
     public RawInputResource() throws IOException {
-        this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index", Language.DE);
         this.tagger = new MaxentTagger("/Users/Fabian/Documents/Arbeit/AG_SD/ag_sd_fabian/EsaService/taggers/german-fast.tagger");
     }
 
 
     /*
-     curl "http://localhost:8080/EsaService-1.0-SNAPSHOT/webresources/rawInput?rawInput="Morihei_Ueshiba"&onlyPersons=true"
+     curl "http://localhost:8080/EsaService-1.0-SNAPSHOT/webresources/rawInput?rawInput="informatik"&onlyPersons="true"&language="de""
     */
 
     /**
@@ -50,7 +49,24 @@ public class RawInputResource {
      */
     @GET
     @Produces("text/plain")
-    public String getText(@QueryParam("rawInput") String rawInput, @QueryParam("onlyPersons") String onlyPersons) {
+    public String getText(@QueryParam("rawInput") String rawInput, @QueryParam("onlyPersons") String onlyPersons,
+                          @QueryParam("language") String language) {
+        try {
+            switch (language){
+                case "de":
+                    this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index", Language.DE);
+                    break;
+                case "en":
+                    this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index", Language.EN);
+                    break;
+                default:
+                    this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index", Language.DE);
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         boolean persons = true;
         if(onlyPersons.contains("false")) persons=false;
         return vec.getArtikelsRawInput(rawInput, persons, tagger);
