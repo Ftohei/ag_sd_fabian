@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
  * @author swalter
  */
 
-public class EsaResult implements JSONAware{
+public class EsaResult implements JSONAware, Comparable{
         private final String id;
         private final String title;
         private final String score;
@@ -45,6 +45,17 @@ public class EsaResult implements JSONAware{
                 sb.append("}");
                 
                 return sb.toString();
+        }
+
+        @Override
+        public int compareTo(Object o) {
+                //sortiert abwärts
+                if(Double.parseDouble(((EsaResult) o).score) > Double.parseDouble(this.score) ) {
+                        return 1;
+                } else if(Double.parseDouble(((EsaResult) o).score) < Double.parseDouble(this.score) ) {
+                        return -1;
+                }
+                return 0;
         }
 }
 

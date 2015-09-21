@@ -89,6 +89,7 @@ public class VectorSimilarity {
             for(String i:rawInput.split(","))searchInput.add(i);
         } else {
             searchInput.add(rawInput);
+            System.out.println("RawInput: " + rawInput);
         }
 
 
@@ -102,14 +103,17 @@ public class VectorSimilarity {
 
         int counter = 0;
         JSONArray resultJSON = new JSONArray();
+        ArrayList<EsaResult> esaResults = new ArrayList<>();
         for(String key : result_rawInput.keySet()){
             counter+=1;
 
             String artikelname = result_rawInput.get(key).get(0);
             String score = result_rawInput.get(key).get(1);
 
-            resultJSON.add(new EsaResult(Integer.toString(counter), artikelname, score));
+            esaResults.add(new EsaResult(Integer.toString(counter), artikelname, score));
         }
+        Collections.sort(esaResults);
+        resultJSON.addAll(esaResults);
         return JSONArray.toJSONString(resultJSON);
 
     }
