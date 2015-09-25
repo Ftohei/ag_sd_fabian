@@ -52,8 +52,8 @@ public class VectorSimilarity {
         
         if (!result_nw.isEmpty() && !result_interests.isEmpty()){
             for(Artikel artikel : result_nw){
-                Map<String,Integer> vector1 = new HashMap<String,Integer>();
-                Map<String,Integer> vector2 = new HashMap<String,Integer>();
+                Map<String,Float> vector1 = new HashMap<>();
+                Map<String,Float> vector2 = new HashMap<>();
                 createVector(vector1,vector2,artikel,result_interests,onlyPerson);
                 getSimilarity(vector1,vector2,overall_results,artikel.getTitel());
             }
@@ -244,13 +244,7 @@ public class VectorSimilarity {
             }
 
             stmt.close();
-        } catch (ClassNotFoundException e1) {
-            e1.printStackTrace();
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        } catch (InstantiationException e1) {
-            e1.printStackTrace();
-        } catch (IllegalAccessException e1) {
+        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e1) {
             e1.printStackTrace();
         }
 
@@ -276,7 +270,7 @@ public class VectorSimilarity {
         return wikipedia_entries;
     }
 
-    private void getSimilarity(Map<String, Integer> vector1, Map<String, Integer> vector2, Map<String, Double> overall_results, String titel) {
+    private void getSimilarity(Map<String, Float> vector1, Map<String, Float> vector2, Map<String, Double> overall_results, String titel) {
         Double cos = calculateCos(vector1,vector2);
         if(cos>0.0001) overall_results.put(titel, cos);
     }
@@ -289,21 +283,33 @@ public class VectorSimilarity {
      * @param result_interests
      * @param onlyPersons 
      */
-    private void createVector(Map<String, Integer> vector1, Map<String, Integer> vector2, Artikel artikel, Map<String, List<String>> result_interests, boolean onlyPersons) {
-        Map<String,Integer> general_vector = new HashMap<>();
+    private void createVector(Map<String, Float> vector1, Map<String, Float> vector2, Artikel artikel, Map<String, List<String>> result_interests, boolean onlyPersons) {
+        Map<String,Float> general_vector = new HashMap<>();
         if(onlyPersons){
             artikel.getWikipedia_entries_onlyPersons().keySet().stream().forEach((key) -> {
-            general_vector.put(key, 0);
+                try{
+                    //make sure artikle contains convertable float
+                    //TODO: Find out, why we have _$ as id; if found, remove try catch and the Float.valueOf
+                    Float.valueOf(artikel.getWikipedia_entries_onlyPersons().get(key).get(1));
+                    general_vector.put(key, 0f);
+                }
+                catch(Exception e){}
             });
         }
         else{
            artikel.getWikipedia_entries_noPersons().keySet().stream().forEach((key) -> {
-            general_vector.put(key, 0);
+                try{
+                    //make sure artikle contains convertable float
+                    //TODO: Find out, why we have _$ as id; if found, remove try catch and the Float.valueOf
+                    Float.valueOf(artikel.getWikipedia_entries_noPersons().get(key).get(1));
+                    general_vector.put(key, 0f);
+                }
+                catch(Exception e){}
             }); 
         }
         
         result_interests.keySet().stream().forEach((key) -> {
-            general_vector.put(key, 0);
+            general_vector.put(key, 0f);
         });
         
 //        System.out.println("Size general_vector:"+general_vector.size());
@@ -312,17 +318,17 @@ public class VectorSimilarity {
         vector2.putAll(general_vector);
         if(onlyPersons){
             artikel.getWikipedia_entries_onlyPersons().keySet().stream().filter((key) -> (vector2.containsKey(key))).forEach((key) -> {
-            vector2.put(key, 1);
+            vector2.put(key, Float.valueOf(artikel.getWikipedia_entries_onlyPersons().get(key).get(1)));
             });
         }
         else{
             artikel.getWikipedia_entries_noPersons().keySet().stream().filter((key) -> (vector2.containsKey(key))).forEach((key) -> {
-            vector2.put(key, 1);
+            vector2.put(key, Float.valueOf(artikel.getWikipedia_entries_noPersons().get(key).get(1)));
             });
         }
         
         result_interests.keySet().stream().filter((key) -> (vector1.containsKey(key))).forEach((key) -> {
-            vector1.put(key, 1);
+            vector1.put(key, Float.valueOf(result_interests.get(key).get(1)));
         });
         
     }
@@ -333,7 +339,7 @@ public class VectorSimilarity {
      * @param vector2
      * @return 
      */
-    private Double calculateCos(Map<String, Integer> vector1, Map<String, Integer> vector2) {
+    private Double calculateCos(Map<String, Float> vector1, Map<String, Float> vector2) {
         double cos = 0.0;
         double len_vector1 = calculateLen(vector1);
         double len_vector2 =calculateLen(vector2);
@@ -349,9 +355,9 @@ public class VectorSimilarity {
      * @param vector1
      * @return 
      */
-    private double calculateLen(Map<String, Integer> vector1) {
-        int len = 0;
-        len = vector1.values().stream().map((value) -> value*value).reduce(len, Integer::sum);
+    private double calculateLen(Map<String, Float> vector1) {
+        float len = 0f;
+        len = vector1.values().stream().map((value) -> value*value).reduce(len, Float::sum);
         return Math.sqrt(len);
         
     }
@@ -362,7 +368,7 @@ public class VectorSimilarity {
      * @param vector2
      * @return 
      */
-    private double calculateScalar(Map<String, Integer> vector1, Map<String, Integer> vector2) {
+    private double calculateScalar(Map<String, Float> vector1, Map<String, Float> vector2) {
         if(vector1.size()!=vector2.size()) return 0.0;
         double scalar = 0.0;
         for(String key:vector1.keySet()){
