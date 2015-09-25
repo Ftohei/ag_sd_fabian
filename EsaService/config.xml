@@ -1,0 +1,11 @@
+<Config>
+   <Language>DE</Language>
+   <pathIndexGerman></pathIndexGerman>
+   <pathIndexEnglish></pathIndexEnglish>
+   <portNumber>3306</portNumber>
+   <serverName>localhost</serverName>
+   <dbms>mysql</dbms>
+   <password></password>
+   <userName></userName>
+   <pathTagger></pathTagger>
+</Config>

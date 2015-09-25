@@ -5,6 +5,9 @@
  */
 package de.citec.util;
 
+import de.citec.io.Config;
+import de.citec.io.ImportNW;
+import de.citec.io.DB_Connector;
 import de.citec.lucene.SearchIndex;
 import java.io.IOException;
 import java.sql.Connection;
@@ -24,9 +27,9 @@ public class VectorSimilarity {
     
     private final SearchIndex index;
     private final DB_Connector connector;
-    public VectorSimilarity(String path_index, Language language) throws IOException{
+    public VectorSimilarity(String path_index, Language language, Config config) throws IOException{
         this.index = new SearchIndex(path_index,language);
-        this.connector = new DB_Connector();
+        this.connector = new DB_Connector(config);
         System.out.println("Done initialization");
     }
     

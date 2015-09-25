@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.citec.util;
+package de.citec.io;
 
 import de.citec.lucene.SearchIndex;
+import de.citec.util.Artikel;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -34,9 +36,12 @@ import org.xml.sax.SAXException;
  * @author swalter
  */
 public class ImportNW {
-    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
-
-        File fXmlFile = new File(args[0]);
+    private static Config config;
+    
+    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, IllegalAccessException, ClassNotFoundException, DOMException, Exception {
+        
+        config.loadFromFile("import.xml");
+        File fXmlFile = new File(config.getPathXML());
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         
@@ -64,7 +69,7 @@ public class ImportNW {
         doc.getDocumentElement().normalize();
 
         System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-        SearchIndex index = new SearchIndex("/Users/Fabian/Documents/Arbeit/AG_SD/Index",Language.DE);
+        SearchIndex index = new SearchIndex(config.getPathIndexGerman(),config.getLanguage());
 
         NodeList nList = doc.getElementsByTagName("artikel");
         
@@ -145,7 +150,7 @@ public class ImportNW {
         Statement stmt;
         ResultSet rs;
 
-        DB_Connector connector = new DB_Connector();
+        DB_Connector connector = new DB_Connector(config);
 
         try {
             connector.connect();
@@ -399,6 +404,10 @@ public class ImportNW {
         output = output.replace("'", " ");
         //System.out.println(output);
         return output;
+    }
+
+    public ImportNW() {
+        this.config = null;
     }
 
 }

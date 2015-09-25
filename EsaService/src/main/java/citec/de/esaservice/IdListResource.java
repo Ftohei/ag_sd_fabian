@@ -5,7 +5,9 @@
  */
 package citec.de.esaservice;
 
+import de.citec.io.Config;
 import de.citec.util.Language;
+import static de.citec.util.Language.DE;
 import de.citec.util.VectorSimilarity;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
@@ -18,6 +20,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import org.w3c.dom.DOMException;
+import org.xml.sax.SAXException;
 
 /**
  * REST Web Service
@@ -32,6 +36,8 @@ public class IdListResource
      * Work in Progress, not working
      */
 
+    private Config config;
+    
     @Context
     private UriInfo context;
 
@@ -41,9 +47,15 @@ public class IdListResource
 
     /**
      * Creates a new instance of RawInputResource
+     * @throws java.io.IOException
+     * @throws org.xml.sax.SAXException
+     * @throws java.lang.InstantiationException
+     * @throws java.lang.IllegalAccessException
+     * @throws java.lang.ClassNotFoundException
      */
-    public IdListResource() throws IOException {
-        this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index", Language.DE);
+    public IdListResource() throws IOException, SAXException, InstantiationException, IllegalAccessException, ClassNotFoundException, DOMException, Exception {
+        this.config.loadFromFile("config.xml");
+        this.vec = new VectorSimilarity(config.getPathIndexGerman(), DE,config);
 //        this.tagger = new MaxentTagger("/Users/Fabian/Documents/Arbeit/AG_SD/ag_sd_fabian/EsaService/taggers/german-fast.tagger");
     }
 
@@ -54,6 +66,8 @@ public class IdListResource
 
     /**
      * Retrieves representation of an instance of citec.de.esaservice.RawInputResource
+     * @param idListPath
+     * @param onlyPersons
      * @return an instance of java.lang.String
      */
     @GET

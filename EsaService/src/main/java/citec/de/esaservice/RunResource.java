@@ -5,6 +5,7 @@
  */
 package citec.de.esaservice;
 
+import de.citec.io.Config;
 import de.citec.util.Language;
 import de.citec.util.VectorSimilarity;
 import java.io.IOException;
@@ -18,6 +19,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
+import org.w3c.dom.DOMException;
+import org.xml.sax.SAXException;
 
 /**
  * REST Web Service
@@ -29,17 +32,22 @@ public class RunResource {
 
     @Context
     private UriInfo context;
+    
+    private Config config;
 
-    private final VectorSimilarity vec;
+    public final VectorSimilarity vec;
      
     /**
      * Creates a new instance of RunResource
      * @throws java.io.IOException
+     * @throws org.xml.sax.SAXException
+     * @throws java.lang.InstantiationException
+     * @throws java.lang.IllegalAccessException
+     * @throws java.lang.ClassNotFoundException
      */
-    public RunResource() throws IOException {
-//        this.vec = new VectorSimilarity("/Users/swalter/Documents/EsaDeutsch/Index",Language.DE);
-        this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index",Language.DE);
-
+    public RunResource() throws IOException, SAXException, InstantiationException, IllegalAccessException, ClassNotFoundException, DOMException, Exception {
+        this.config.loadFromFile("config.xml");
+        this.vec = new VectorSimilarity(config.getPathIndexGerman(),Language.DE,config);
     }
 
     /*

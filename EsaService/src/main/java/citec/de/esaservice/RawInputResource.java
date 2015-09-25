@@ -5,7 +5,12 @@
  */
 package citec.de.esaservice;
 
+import de.citec.io.Config;
 import de.citec.util.Language;
+import static de.citec.util.Language.DE;
+import static de.citec.util.Language.EN;
+import static de.citec.util.Language.ES;
+import static de.citec.util.Language.JA;
 import de.citec.util.VectorSimilarity;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
@@ -15,6 +20,8 @@ import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.w3c.dom.DOMException;
+import org.xml.sax.SAXException;
 
 /**
  * REST Web Service
@@ -24,6 +31,7 @@ import java.util.List;
 @Path("rawInput")
 public class RawInputResource {
 
+    private Config config;
     @Context
     private UriInfo context;
 
@@ -33,9 +41,16 @@ public class RawInputResource {
 
     /**
      * Creates a new instance of RawInputResource
+     * @throws java.io.IOException
+     * @throws org.xml.sax.SAXException
+     * @throws java.lang.InstantiationException
+     * @throws java.lang.IllegalAccessException
+     * @throws java.lang.ClassNotFoundException
      */
-    public RawInputResource() throws IOException {
-        this.tagger = new MaxentTagger("/Users/Fabian/Documents/Arbeit/AG_SD/ag_sd_fabian/EsaService/taggers/german-fast.tagger");
+    public RawInputResource() throws IOException, SAXException, InstantiationException, IllegalAccessException, ClassNotFoundException, DOMException, Exception {
+        
+        this.config.loadFromFile("config.xml");
+        this.tagger = new MaxentTagger(config.getPathTagger());
     }
 
 
@@ -45,22 +60,28 @@ public class RawInputResource {
 
     /**
      * Retrieves representation of an instance of citec.de.esaservice.RawInputResource
+     * @param rawInput
+     * @param onlyPersons
+     * @param language_input
      * @return an instance of java.lang.String
+     * @throws java.lang.Exception
      */
     @GET
     @Produces("text/plain")
     public String getText(@QueryParam("rawInput") String rawInput, @QueryParam("onlyPersons") String onlyPersons,
-                          @QueryParam("language") String language) {
+                          @QueryParam("language") String language_input) throws Exception {
+        Language language = getLanguage(language_input);
+        
         try {
             switch (language){
-                case "de":
-                    this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index", Language.DE);
+                case DE:
+                    this.vec = new VectorSimilarity(config.getPathIndexGerman(), DE,config);
                     break;
-                case "en":
-                    this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index", Language.EN);
+                case EN:
+                    this.vec = new VectorSimilarity(config.getPathIndexEnglish(), EN,config);
                     break;
                 default:
-                    this.vec = new VectorSimilarity("/Users/Fabian/Documents/Arbeit/AG_SD/Index", Language.DE);
+                    this.vec = new VectorSimilarity(config.getPathIndexGerman(), DE,config);
                     break;
             }
         } catch (IOException e) {
@@ -80,5 +101,11 @@ public class RawInputResource {
     @PUT
     @Consumes("text/plain")
     public void putText(String content) {
+    }
+
+    private Language getLanguage(String s) throws Exception{       
+            if      (s.toLowerCase().equals("en") || s.toLowerCase().equals("eng")) return EN;
+            else if (s.toLowerCase().equals("de") || s.toLowerCase().equals("ger")) return DE;
+            else throw new Exception("Language '" + s + "' unknown.");
     }
 }

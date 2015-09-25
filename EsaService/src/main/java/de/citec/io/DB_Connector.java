@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.citec.util;
+package de.citec.io;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,13 +23,13 @@ public class DB_Connector {
     private final String database;
     private Connection conn;
     
-    public DB_Connector(){
-        this.userName = "root";
-        this.password = "";
-        this.dbms = "mysql";
-        this.serverName = "localhost";
-        this.portNumber = "3306";
-        this.database = "esaService";
+    public DB_Connector(Config config){
+        this.userName = config.getUserName();
+        this.password = config.getPassword();
+        this.dbms = config.getDbms();
+        this.serverName = config.getServerName();
+        this.portNumber = config.getPortNumber();
+        this.database = config.getDatabase();
     }
     
     public Connection connect() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {

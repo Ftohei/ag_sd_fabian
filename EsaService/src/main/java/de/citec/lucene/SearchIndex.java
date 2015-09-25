@@ -6,6 +6,8 @@
 package de.citec.lucene;
 
 import de.citec.util.Language;
+import static de.citec.util.Language.DE;
+import static de.citec.util.Language.EN;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -40,8 +42,8 @@ public class SearchIndex {
         private final  Language language;
 	
 	public SearchIndex(String pathToIndex, Language input_language) throws IOException{
-		if(input_language.equals(Language.DE)) this.analyzer = new GermanAnalyzer();
-                if(input_language.equals(Language.EN)) this.analyzer = new EnglishAnalyzer();
+		if(input_language.equals(DE)) this.analyzer = new GermanAnalyzer();
+                if(input_language.equals(EN)) this.analyzer = new EnglishAnalyzer();
                 this.language=input_language;
                 this.reader = DirectoryReader.open(FSDirectory.open(Paths.get(pathToIndex)));
                 this.searcher = new IndexSearcher(reader);

@@ -38,7 +38,7 @@ do
 		rm -rf $FOLDER
 
 		echo "Ausgabe $XML_FILE wird importiert"
-		mvn exec:java -Dexec.mainClass="de.citec.util.ImportNW" -Dexec.args="$XML_FILE"
+		mvn exec:java -Dexec.mainClass="de.citec.io.ImportNW" -Dexec.args="$XML_FILE"
 
 		rm $XML_FILE		
 		rm $TAR_FILE
