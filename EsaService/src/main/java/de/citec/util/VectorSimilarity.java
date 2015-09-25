@@ -68,18 +68,20 @@ public class VectorSimilarity {
         }
         
         
-        overall_results.entrySet().stream()
-        .sorted(Map.Entry.<String, Double>comparingByValue().reversed()) 
-        .limit(5) 
-        .forEach(System.out::println);
+//        overall_results.entrySet().stream()
+//        .sorted(Map.Entry.<String, Double>comparingByValue().reversed()) 
+//        .limit(5) 
+//        .forEach(System.out::println);
         int counter = 0;
+        ArrayList<EsaResult> esaResults = new ArrayList<>();
         JSONArray results = new JSONArray();
         for(String key : overall_results.keySet()){
             counter+=1;
-            results.add(new EsaResult(Integer.toString(counter),key,Double.toString(overall_results.get(key))));
+            esaResults.add(new EsaResult(Integer.toString(counter),key,Double.toString(overall_results.get(key))));
         }
+        Collections.sort(esaResults);
+        results.addAll(esaResults);
         return JSONArray.toJSONString(results);
-        
     }
     
     public String getArtikelsRawInput(String rawInput, boolean onlyPerson, MaxentTagger tagger){
