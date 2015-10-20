@@ -36,12 +36,12 @@ import org.xml.sax.SAXException;
  * @author swalter
  */
 public class ImportNW {
-    private static Config config;
     
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, IllegalAccessException, ClassNotFoundException, DOMException, Exception {
-        
-        config.loadFromFile("import.xml");
-        File fXmlFile = new File(config.getPathXML());
+        final Config config = new Config();
+        config.loadFromFile("config.xml");
+        //File fXmlFile = new File(config.getPathXML());
+        File fXmlFile = new File(args[0]);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         
@@ -69,6 +69,7 @@ public class ImportNW {
         doc.getDocumentElement().normalize();
 
         System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+        System.out.println("Path index:"+config.getPathIndexGerman());
         SearchIndex index = new SearchIndex(config.getPathIndexGerman(),config.getLanguage());
 
         NodeList nList = doc.getElementsByTagName("artikel");
@@ -135,14 +136,14 @@ public class ImportNW {
         System.out.println("Für alle Artikel Index durchsucht");
         
         try {
-            articlesToDatabase(artikelliste);
+            articlesToDatabase(artikelliste,config);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-    private static void articlesToDatabase(Set<Artikel> artikelliste) throws SQLException {
+    private static void articlesToDatabase(Set<Artikel> artikelliste, Config config) throws SQLException {
 
 
         System.out.println("articlesToDatabase gestartet");
@@ -406,8 +407,5 @@ public class ImportNW {
         return output;
     }
 
-    public ImportNW() {
-        this.config = null;
-    }
 
 }
