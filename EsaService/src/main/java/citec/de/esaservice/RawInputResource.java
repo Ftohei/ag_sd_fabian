@@ -6,11 +6,10 @@
 package citec.de.esaservice;
 
 import de.citec.io.Config;
+import de.citec.io.ReadDatabase;
 import de.citec.util.Language;
 import static de.citec.util.Language.DE;
 import static de.citec.util.Language.EN;
-import static de.citec.util.Language.ES;
-import static de.citec.util.Language.JA;
 import de.citec.util.VectorSimilarity;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
@@ -39,6 +38,7 @@ public class RawInputResource {
 
     private MaxentTagger tagger;
 
+    private ReadDatabase rd;
     /**
      * Creates a new instance of RawInputResource
      * @throws java.io.IOException
@@ -49,8 +49,9 @@ public class RawInputResource {
      */
     public RawInputResource() throws IOException, SAXException, InstantiationException, IllegalAccessException, ClassNotFoundException, DOMException, Exception {
         
-        this.config.loadFromFile("config.xml");
+        this.config = new Config();
         this.tagger = new MaxentTagger(config.getPathTagger());
+        this.rd = new ReadDatabase(config);
     }
 
 
@@ -107,5 +108,13 @@ public class RawInputResource {
             if      (s.toLowerCase().equals("en") || s.toLowerCase().equals("eng")) return EN;
             else if (s.toLowerCase().equals("de") || s.toLowerCase().equals("ger")) return DE;
             else throw new Exception("Language '" + s + "' unknown.");
+    }
+    
+    
+    @GET
+    @Produces("application/json")
+    public String getJson(@QueryParam("artikelid") String artikelid) {
+
+        return rd.getInformations(artikelid);
     }
 }

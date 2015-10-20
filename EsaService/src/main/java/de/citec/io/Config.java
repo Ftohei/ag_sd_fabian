@@ -38,100 +38,18 @@ public class Config {
     
 	public Config()
 	{
-	}
-	
-	public void loadFromFile(String configFile) throws ParserConfigurationException, SAXException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, DOMException, Exception {
-	
-		// add logger here...
-		System.out.print("Reading configuration from: "+configFile+"\n");
-		
-		File fXmlFile = new File(configFile);
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(fXmlFile);
-	 
-		//optional, but recommended
-		//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-		doc.getDocumentElement().normalize();
-	 
-		NodeList nList = doc.getDocumentElement().getChildNodes();
-		
-	
-		System.out.println("----------------------------");
-		
-		for (int i = 0; i < nList.getLength(); i++) {
-			 
-			Node node = nList.item(i);
-									
-			if (node.getNodeName().equals("Language"))
-			{
-				this.Language = mapToLanguage(node.getTextContent());
-				
-			}
-                        
-                        if (node.getNodeName().equals("pathIndexGerman"))
-			{
-				this.pathIndexGerman = node.getTextContent();
-			}
-                        
-                        if (node.getNodeName().equals("pathIndexEnglish"))
-			{
-				this.pathIndexEnglish = node.getTextContent();
-			}
-                        
-                        if (node.getNodeName().equals("database"))
-			{
-				this.database = node.getTextContent();
-			}
-                        
-                        if (node.getNodeName().equals("portNumber"))
-			{
-				this.portNumber = node.getTextContent();
-			}
-                        
-                        if (node.getNodeName().equals("serverName"))
-			{
-				this.serverName = node.getTextContent();
-			}
-                        
-                        if (node.getNodeName().equals("dbms"))
-			{
-				this.dbms = node.getTextContent();
-			}
-                        
-                        if (node.getNodeName().equals("password"))
-			{
-				this.password = node.getTextContent();
-			}
-                        
-                        if (node.getNodeName().equals("userName"))
-			{
-				this.userName = node.getTextContent();
-			}
-                        
-                        if (node.getNodeName().equals("pathTagger"))
-			{
-				this.pathTagger = node.getTextContent();
-			}
-                        
-                        if (node.getNodeName().equals("pathXML"))
-			{
-				this.pathXML = node.getTextContent();
-			}
-			
-                }
-		
-	}
+            this.Language=DE;
+            this.pathIndexGerman="EsaDeutsch/Index/";
+           this.pathIndexEnglish="EsaEnglish/Index/";
+           this.portNumber="3306";
+           this.serverName="localhost";
+           this.dbms="mysql";
+           this.password="";
+           this.database="esa";
+           this.userName="esa";
+           this.pathTagger="./taggers/german-fast.tagger";
 
-        
-        private Language mapToLanguage(String s) throws Exception {
-            
-            if      (s.toLowerCase().equals("en") || s.toLowerCase().equals("eng")) return EN;
-            else if (s.toLowerCase().equals("de") || s.toLowerCase().equals("ger")) return DE;
-            else if (s.toLowerCase().equals("es") || s.toLowerCase().equals("spa")) return ES;
-            else if (s.toLowerCase().equals("ja") || s.toLowerCase().equals("jpn")) return JA;
-            else throw new Exception("Language '" + s + "' unknown.");
-        }
+	}
 
 	public Language getLanguage() {
 		return Language;

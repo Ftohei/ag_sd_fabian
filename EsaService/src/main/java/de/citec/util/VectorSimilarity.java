@@ -17,6 +17,7 @@ import java.sql.Statement;
 import java.util.*;
 
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
+import java.nio.charset.Charset;
 import org.json.simple.JSONArray;
 
 /**
@@ -53,12 +54,19 @@ public class VectorSimilarity {
         
         Map<String,Double> overall_results = new HashMap<>();
         
+        Map<String,String> titel_id = new HashMap<>();
         if (!result_nw.isEmpty() && !result_interests.isEmpty()){
             for(Artikel artikel : result_nw){
-                Map<String,Float> vector1 = new HashMap<>();
-                Map<String,Float> vector2 = new HashMap<>();
-                createVector(vector1,vector2,artikel,result_interests,onlyPerson);
-                getSimilarity(vector1,vector2,overall_results,artikel.getTitel());
+                String id = artikel.getArtikelID();
+                String titel = artikel.getTitel();
+                if(!titel_id.containsKey(titel)){
+                    Map<String,Float> vector1 = new HashMap<>();
+                    Map<String,Float> vector2 = new HashMap<>();
+                    createVector(vector1,vector2,artikel,result_interests,onlyPerson);
+                    getSimilarity(vector1,vector2,overall_results,titel);
+                    titel_id.put(titel, id);
+                }
+                
             }
             
         }
@@ -72,12 +80,10 @@ public class VectorSimilarity {
 //        .sorted(Map.Entry.<String, Double>comparingByValue().reversed()) 
 //        .limit(5) 
 //        .forEach(System.out::println);
-        int counter = 0;
         ArrayList<EsaResult> esaResults = new ArrayList<>();
         JSONArray results = new JSONArray();
         for(String key : overall_results.keySet()){
-            counter+=1;
-            esaResults.add(new EsaResult(Integer.toString(counter),key,Double.toString(overall_results.get(key))));
+            esaResults.add(new EsaResult(titel_id.get(key),key,Double.toString(overall_results.get(key))));
         }
         Collections.sort(esaResults);
         results.addAll(esaResults);
@@ -123,46 +129,6 @@ public class VectorSimilarity {
 
     }
 
-    public String getArticlesListOfNwArticleIds(List<String> articleIdList, boolean onlyPersons){
-
-        /**
-         * TODO: für Liste von ArtikelIds die besten ESA-Ergebnisse zurückgeben. Dafür
-         * Artikel aus DB suchen (schon vorher?) und dann Index durchsuchen
-         */
-
-        List<Artikel> artikels = this.getArtikelsById(articleIdList, onlyPersons);
-
-        //TODO: von jedem Artikel die ESA-Ergebnisse in Map speichern, dann gesamte Liste sortieren und ausgeben lassen
-
-        Map<Double, String> wikiArticleMap = new HashMap<>();
-
-        for(Artikel artikel : artikels){
-            if(onlyPersons) {
-                SortedSet<String> keys = new TreeSet<>(artikel.getWikipedia_entries_onlyPersons().keySet());
-                for (String key : keys){
-                    wikiArticleMap.put(Double.parseDouble(artikel.getWikipedia_entries_onlyPersons().get(key).get(1)),
-                            artikel.getWikipedia_entries_onlyPersons().get(key).get(0));
-                }
-            } else {
-                SortedSet<String> keys = new TreeSet<>(artikel.getWikipedia_entries_noPersons().keySet());
-                for (String key : keys){
-                    wikiArticleMap.put(Double.parseDouble(artikel.getWikipedia_entries_noPersons().get(key).get(1)),
-                            artikel.getWikipedia_entries_noPersons().get(key).get(0));
-                }
-            }
-        }
-
-        SortedSet<Double> keys = new TreeSet<Double>(wikiArticleMap.keySet());
-        int count = 0;
-        for (Double key : keys) {
-            if(count < 100){
-                System.out.println(wikiArticleMap.get(key) + " : " + key);
-            }
-            count++;
-        }
-
-        return null;
-    }
 
     private List<Artikel> getArtikelsForDate(String date, boolean onlyPersons) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         
@@ -173,10 +139,10 @@ public class VectorSimilarity {
             
             String query = "";
             if(onlyPersons){
-                query = "SELECT Distinct Id, Titel, Text, Wikipedia_OnlyPerson FROM Artikel where Datum='"+date+"';";
+                query = "SELECT Distinct ArtikelId, Titel, Text, Wikipedia_OnlyPerson FROM Artikel where Datum='"+date+"';";
             }
             else{
-                query = "SELECT Distinct Id, Titel, Text, Wikipedia_NoPerson FROM Artikel where Datum='"+date+"';";
+                query = "SELECT Distinct ArtikelId, Titel, Text, Wikipedia_NoPerson FROM Artikel where Datum='"+date+"';";
             }
             
             ResultSet resultSet = stmt.executeQuery(query);
@@ -185,6 +151,7 @@ public class VectorSimilarity {
                 
                 Artikel artikel = new Artikel();
                 artikel.setDatum(date);
+                artikel.setArtikelID(resultSet.getString("ArtikelId"));
                 artikel.setTitel(resultSet.getString("Titel"));
                 artikel.setText(resultSet.getString("Text"));
                 String wiki = "";
@@ -206,54 +173,21 @@ public class VectorSimilarity {
         return results;
     }
 
-    public List<Artikel> getArtikelsById(List<String> ids, boolean onlyPersons){
-
-        List<Artikel> results = new ArrayList<>();
-
-        try {
-            Connection connect = null;
-            connect = connector.connect();
-            Statement stmt = connect.createStatement();
-
-            for(String id : ids) {
-
-                System.out.println("Durchsuche Datenbank nach:" + id);
-
-                String query = "";
-                if (onlyPersons) {
-                    query = "SELECT Distinct Datum, Titel, Text, Wikipedia_OnlyPerson FROM Artikel where hex(id)='" + id + "';";
-                } else {
-                    query = "SELECT Distinct Datum, Titel, Text, Wikipedia_NoPerson FROM Artikel where hex(id)='" + id + "';";
-                }
-
-                ResultSet resultSet = stmt.executeQuery(query);
-
-                while (resultSet.next()) {
-
-                    Artikel artikel = new Artikel();
-                    artikel.setDatum(resultSet.getString("Datum"));
-                    artikel.setTitel(resultSet.getString("Titel"));
-                    artikel.setText(resultSet.getString("Text"));
-                    String wiki = "";
-                    if (onlyPersons) {
-                        wiki = resultSet.getString("Wikipedia_OnlyPerson");
-                        artikel.setWikipedia_entries_onlyPersons(convertToHM(wiki));
-                    } else {
-                        wiki = resultSet.getString("Wikipedia_NoPerson");
-                        artikel.setWikipedia_entries_noPersons(convertToHM(wiki));
-                    }
-
-                    results.add(artikel);
-                }
-
-            }
-
-            stmt.close();
-        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e1) {
-            e1.printStackTrace();
+    
+    /*
+    see http://stackoverflow.com/questions/1096868/listbyte-to-string-can-you-help-refactor-this-small-method
+    */
+    public static String byteListToString(List<Byte> l, Charset charset) {
+        if (l == null) {
+            return "";
         }
-
-        return results;
+        byte[] array = new byte[l.size()];
+        int i = 0;
+        for (Byte current : l) {
+            array[i] = current;
+            i++;
+        }
+        return new String(array, charset);
     }
 
     private Map<String, List<String>> convertToHM(String wiki) {

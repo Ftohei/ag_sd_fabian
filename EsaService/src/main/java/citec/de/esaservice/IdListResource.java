@@ -54,16 +54,16 @@ public class IdListResource
      * @throws java.lang.ClassNotFoundException
      */
     public IdListResource() throws IOException, SAXException, InstantiationException, IllegalAccessException, ClassNotFoundException, DOMException, Exception {
-        this.config.loadFromFile("config.xml");
+//        this.config.loadFromFile("config.xml");
         this.vec = new VectorSimilarity(config.getPathIndexGerman(), DE,config);
 //        this.tagger = new MaxentTagger("/Users/Fabian/Documents/Arbeit/AG_SD/ag_sd_fabian/EsaService/taggers/german-fast.tagger");
     }
-
-
-    /*
-    curl "http://localhost:8080/EsaService-1.0-SNAPSHOT/webresources/idList?idListPath="/Users/Fabian/Documents/Arbeit/AG_SD/getaggteArtikelNachAlter/50-59.txt"&onlyPersons=true"
-    */
-
+//
+//
+//    /*
+//    curl "http://localhost:8080/EsaService-1.0-SNAPSHOT/webresources/idList?idListPath="/Users/Fabian/Documents/Arbeit/AG_SD/getaggteArtikelNachAlter/50-59.txt"&onlyPersons=true"
+//    */
+//
     /**
      * Retrieves representation of an instance of citec.de.esaservice.RawInputResource
      * @param idListPath
@@ -73,44 +73,44 @@ public class IdListResource
     @GET
     @Produces("text/plain")
     public String getText(@QueryParam("idListPath") String idListPath, @QueryParam("onlyPersons") String onlyPersons) {
-        Reader reader = null;
-        List<String> ids = new ArrayList<>();
-
-        try {
-            reader = new FileReader(idListPath);
-            String id = "";
-            int c;
-            int count = 0;
-            while ( (c = reader.read()) != -1){
-                if( ((char) c) == '\n') {
-                    if ( count == 0 ) {
-                        System.out.println("Erste ZEILE: " + id);
-                        count++;
-                    }
-                    ids.add(id);
-                    id = "";
-                } else {
-                    id = id + Character.toString((char) c);
-                }
-            }
-            ids.add(id);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        boolean persons = true;
-        if(onlyPersons.contains("false")) persons=false;
-        return vec.getArticlesListOfNwArticleIds(ids, persons);
-//        return null;
+//        Reader reader = null;
+//        List<String> ids = new ArrayList<>();
+//
+//        try {
+//            reader = new FileReader(idListPath);
+//            String id = "";
+//            int c;
+//            int count = 0;
+//            while ( (c = reader.read()) != -1){
+//                if( ((char) c) == '\n') {
+//                    if ( count == 0 ) {
+//                        System.out.println("Erste ZEILE: " + id);
+//                        count++;
+//                    }
+//                    ids.add(id);
+//                    id = "";
+//                } else {
+//                    id = id + Character.toString((char) c);
+//                }
+//            }
+//            ids.add(id);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                reader.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        boolean persons = true;
+//        if(onlyPersons.contains("false")) persons=false;
+//        return vec.getArticlesListOfNwArticleIds(ids, persons);
+        return null;
     }
-
+//
     /**
      * PUT method for updating or creating an instance of RawInputResource
      * @param content representation for the resource

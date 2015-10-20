@@ -38,8 +38,8 @@ import org.xml.sax.SAXException;
 public class ImportNW {
     
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, IllegalAccessException, ClassNotFoundException, DOMException, Exception {
-        final Config config = new Config();
-        config.loadFromFile("config.xml");
+        Config config = new Config();
+//        config.loadFromFile("config.xml");
         //File fXmlFile = new File(config.getPathXML());
         File fXmlFile = new File(args[0]);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -58,6 +58,7 @@ public class ImportNW {
                 }
             }
         });
+        System.out.println(fXmlFile.toString());
 
         Document doc = dBuilder.parse(fXmlFile);
 
@@ -187,6 +188,7 @@ public class ImportNW {
                         int anzahl_woerter = artikel.getText().split(" ").length;
                         stmt.executeUpdate("INSERT INTO Artikel SET "
                                     + "Id = 0x" + artikel.getArtikelID() +
+                                    ", ArtikelId = '" + artikel.getArtikelID() + "'" +
                                     ", Datum = '" + artikel.convertDate(artikel.getDatum()) + "'" +
                                     ", Titel = '" + artikel.getTitel() + "'" +
                                     ", Text = '" + artikel.getText() + "'" +

@@ -29,6 +29,8 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+//        resources.add(citec.de.esaservice.GenericResource.class);
+//        resources.add(citec.de.esaservice.IdListResource.class);
         resources.add(citec.de.esaservice.IdListResource.class);
         resources.add(citec.de.esaservice.RawInputResource.class);
         resources.add(citec.de.esaservice.RunResource.class);

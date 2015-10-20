@@ -1,11 +1,12 @@
 <Config>
    <Language>DE</Language>
-   <pathIndexGerman></pathIndexGerman>
-   <pathIndexEnglish></pathIndexEnglish>
+   <pathIndexGerman>/Users/swalter/Documents/EsaDeutsch/Index/</pathIndexGerman>
+   <pathIndexEnglish>/Users/swalter/Documents/EsaEnglish/Index/</pathIndexEnglish>
    <portNumber>3306</portNumber>
    <serverName>localhost</serverName>
    <dbms>mysql</dbms>
-   <password></password>
-   <userName></userName>
-   <pathTagger></pathTagger>
+   <password>1234567</password>
+   <database>esa</database>
+   <userName>esa</userName>
+   <pathTagger>/Users/swalter/Git/ag_sd_fabian/EsaService/taggers/german-fast.tagger</pathTagger>
 </Config>
