@@ -38,7 +38,7 @@ public class VectorSimilarity {
     public String getArtikels(List<String> interests, String date, boolean onlyPerson){
         
         List<Artikel> result_nw = null;
-        Map<String,List<String>> result_interests = null;
+        Map<String,List<String>> result_interests = new HashMap();
         try{
             result_nw = getArtikelsForDate(date,onlyPerson);
         }
@@ -46,12 +46,18 @@ public class VectorSimilarity {
             e.printStackTrace();
         }
         try{
-            result_interests = index.runStrictSearch(interests, 100, onlyPerson);
+            int value = result_nw.size();
+            if(value>0){
+                if(onlyPerson)
+                    result_interests = index.runStrictSearch(interests, value, onlyPerson);
+                else result_interests = index.runStrictSearch(interests, value, onlyPerson);
+            }
+            
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        
+        System.out.println("result_interests.size():"+result_interests.size());
         Map<String,Double> overall_results = new HashMap<>();
         
         Map<String,String> titel_id = new HashMap<>();
@@ -82,6 +88,7 @@ public class VectorSimilarity {
 //        .forEach(System.out::println);
         ArrayList<EsaResult> esaResults = new ArrayList<>();
         JSONArray results = new JSONArray();
+        System.out.println(overall_results.size());
         for(String key : overall_results.keySet()){
             esaResults.add(new EsaResult(titel_id.get(key),key,Double.toString(overall_results.get(key))));
         }
@@ -146,7 +153,6 @@ public class VectorSimilarity {
             }
             
             ResultSet resultSet = stmt.executeQuery(query);
-            System.out.println(query);
             while (resultSet.next()) {
                 
                 Artikel artikel = new Artikel();
@@ -163,32 +169,18 @@ public class VectorSimilarity {
                     wiki = resultSet.getString("Wikipedia_NoPerson");
                     artikel.setWikipedia_entries_noPersons(convertToHM(wiki));
                 }
-                
+
                 results.add(artikel);
             }
             
             
             stmt.close();
         }
+        System.out.println("results.size():"+results.size());
         return results;
     }
 
     
-    /*
-    see http://stackoverflow.com/questions/1096868/listbyte-to-string-can-you-help-refactor-this-small-method
-    */
-    public static String byteListToString(List<Byte> l, Charset charset) {
-        if (l == null) {
-            return "";
-        }
-        byte[] array = new byte[l.size()];
-        int i = 0;
-        for (Byte current : l) {
-            array[i] = current;
-            i++;
-        }
-        return new String(array, charset);
-    }
 
     private Map<String, List<String>> convertToHM(String wiki) {
         Map<String, List<String>> wikipedia_entries = new HashMap<>();
@@ -211,7 +203,7 @@ public class VectorSimilarity {
 
     private void getSimilarity(Map<String, Float> vector1, Map<String, Float> vector2, Map<String, Double> overall_results, String titel) {
         Double cos = calculateCos(vector1,vector2);
-        if(cos>0.0001) overall_results.put(titel, cos);
+        if(cos>0.002) overall_results.put(titel, cos);
     }
 
     /**
@@ -229,10 +221,12 @@ public class VectorSimilarity {
                 try{
                     //make sure artikle contains convertable float
                     //TODO: Find out, why we have _$ as id; if found, remove try catch and the Float.valueOf
-                    Float.valueOf(artikel.getWikipedia_entries_onlyPersons().get(key).get(1));
-                    general_vector.put(key, 0f);
+                    if(!artikel.getWikipedia_entries_onlyPersons().get(key).get(1).contains("_$")){
+                        general_vector.put(key, 0f);
+                    }
+                    
                 }
-                catch(Exception e){}
+                catch(Exception e){e.printStackTrace();}
             });
         }
         else{
@@ -240,15 +234,19 @@ public class VectorSimilarity {
                 try{
                     //make sure artikle contains convertable float
                     //TODO: Find out, why we have _$ as id; if found, remove try catch and the Float.valueOf
-                    Float.valueOf(artikel.getWikipedia_entries_noPersons().get(key).get(1));
-                    general_vector.put(key, 0f);
+                    if(!artikel.getWikipedia_entries_noPersons().get(key).get(1).contains("_$")&&!artikel.getWikipedia_entries_noPersons().get(key).get(1).contains(" ")){
+                        general_vector.put(key, 0f);
+                    }
                 }
-                catch(Exception e){}
+                catch(Exception e){e.printStackTrace();}
             }); 
         }
         
         result_interests.keySet().stream().forEach((key) -> {
-            general_vector.put(key, 0f);
+            try{
+                general_vector.put(key, 0f);
+            }
+            catch(Exception e){e.printStackTrace();}
         });
         
 //        System.out.println("Size general_vector:"+general_vector.size());
@@ -257,12 +255,16 @@ public class VectorSimilarity {
         vector2.putAll(general_vector);
         if(onlyPersons){
             artikel.getWikipedia_entries_onlyPersons().keySet().stream().filter((key) -> (vector2.containsKey(key))).forEach((key) -> {
-            vector2.put(key, Float.valueOf(artikel.getWikipedia_entries_onlyPersons().get(key).get(1)));
+                 if(!artikel.getWikipedia_entries_onlyPersons().get(key).get(1).contains("_$")){
+                     vector2.put(key, Float.valueOf(artikel.getWikipedia_entries_onlyPersons().get(key).get(1)));
+                 }
             });
         }
         else{
             artikel.getWikipedia_entries_noPersons().keySet().stream().filter((key) -> (vector2.containsKey(key))).forEach((key) -> {
-            vector2.put(key, Float.valueOf(artikel.getWikipedia_entries_noPersons().get(key).get(1)));
+                if(!artikel.getWikipedia_entries_noPersons().get(key).get(1).contains("_$")&&!artikel.getWikipedia_entries_noPersons().get(key).get(1).contains(" ")){
+                    vector2.put(key, Float.valueOf(artikel.getWikipedia_entries_noPersons().get(key).get(1)));
+                }
             });
         }
         

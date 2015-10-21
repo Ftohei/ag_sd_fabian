@@ -74,7 +74,7 @@ public class SearchIndex {
 //                else{
 //                     booleanQuery.add(new QueryParser("persons", analyzer).parse("1"), BooleanClause.Occur.MUST_NOT);
 //                }
-                //System.out.println(booleanQuery.toString());
+                System.out.println("Query:"+booleanQuery.toString());
                     
                 
                 int hitsPerPage = top_k;

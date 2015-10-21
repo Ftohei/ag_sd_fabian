@@ -13,21 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
-//import org.apache.jena.query.Query;
-//import org.apache.jena.query.QueryExecution;
-//import org.apache.jena.query.QueryExecutionFactory;
-//import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 
 
 /*
- curl -H "Accept: application/json" "http://localhost:8080/EsaService/webresources/run?date=2015-09-01&input=Kunst,Kultur&onlyPersons=true"
+ curl -H "Accept: application/json" "http://localhost:8080/EsaService/webresources/run?date=2015-09-01&interests=Kunst,Kultur&onlyPersons=true"
 */
 /**
  * REST Web Service
@@ -56,22 +57,44 @@ public class RunResource {
     /**
      * Retrieves representation of an instance of citec.de.esaservice.RunResource
      * @param date
-     * @param input
+     * @param interests
      * @param onlyPersons
+     * @param personid
      * @return an instance of java.lang.String
      */
     @GET
     @Produces("application/json")
-    public String getJson(@QueryParam("date") String date, @QueryParam("input") String input,  @QueryParam("onlyPersons") String onlyPersons) {
+    public String getJson(@QueryParam("date") String date, @QueryParam("interests") String interests,  @QueryParam("onlyPersons") String onlyPersons,@QueryParam("personid") String personid) {
         List<String> terms = new ArrayList<String>();
-        boolean persons = true;
-        if(onlyPersons.contains("false")) persons=false;
-        if(input.contains(",")){
-            for(String i:input.split(","))terms.add(i);
+        if(date!=null && interests!=null && onlyPersons!=null){
+            boolean persons = true;
+            if(onlyPersons.contains("false")) persons=false;
+            if(interests.contains(",")){
+                for(String i:interests.split(","))terms.add(i);
+            }
+            else terms.add(interests);
+           return vec.getArtikels(terms, date,persons);
         }
-        else terms.add(input);
         
-       return vec.getArtikels(terms, date,persons);
+        else if(date!=null && personid!=null && onlyPersons!=null){
+            boolean persons = true;
+            if(onlyPersons.contains("false")) persons=false;
+            return vec.getArtikels(getInterests(personid), date,persons);
+        }
+        
+        else if(date!=null && personid!=null && onlyPersons!=null && interests!=null){
+            boolean persons = true;
+            if(onlyPersons.contains("false")) persons=false;
+            if(interests.contains(",")){
+                for(String i:interests.split(","))terms.add(i);
+            }
+            else terms.add(interests);
+            terms.addAll(getInterests(personid));
+            return vec.getArtikels(terms, date,persons);
+        }
+        
+        else return "ERROR";
+        
     }
 
     /**
@@ -84,39 +107,8 @@ public class RunResource {
     public void putJson(String content) {
     }
     
-//    
-//      /**
-//     * Retrieves representation of an instance of citec.de.esaservice.RunResource
-//     * @param date
-//     * @param id
-//     * @return an instance of java.lang.String
-//     */
-//    @GET
-//     @Produces("text/html")
-//    public String getHtml(@QueryParam("date") String date, @QueryParam("personid") String personid) {
-//        List<String> terms = new ArrayList<String>();
-//        boolean persons = false;
-//        String input = getInterests(personid);
-//        if(input.contains(",")){
-//            for(String i:input.split(","))terms.add(i);
-//        }
-//        else terms.add(input);
-//        
-//       return vec.getArtikels(terms, date,persons);
-//    }
-//    
-//    
-//
-//    /**
-//     * PUT method for updating or creating an instance of RunResource
-//     * @param content representation for the resource
-//     * @return an HTTP response with content of the updated or created resource.
-//     */
-//    @PUT
-//    @Consumes("text/html")
-//    public void putHtml(String content) {
-//    }
-//
+    
+
 //    /*
 //   1 http://info.uni-bielefeld.de/kognihome/PaulBecker
 //   2 http://info.uni-bielefeld.de/kognihome/AlexanderBecker
@@ -127,50 +119,63 @@ public class RunResource {
 //   7 http://info.uni-bielefeld.de/kognihome/NinaBecker    
 //                
 //    */
-//    private String getInterests(String id) {
-//        String personURI = "";
-//        
-//        switch(id){
-//            case "1":
-//                personURI="http://info.uni-bielefeld.de/kognihome/PaulBecker";
-//                break;
-//                
-//            case "2":
-//                personURI="http://info.uni-bielefeld.de/kognihome/AlexanderBecker";
-//                break;
-//                
-//            case "3":
-//                personURI="http://info.uni-bielefeld.de/kognihome/ChristinaBecker";
-//                break;
-//                
-//            case "4":
-//                personURI="http://info.uni-bielefeld.de/kognihome/KatharinaBecker";
-//                break;
-//                
-//            case "5":
-//                personURI="http://info.uni-bielefeld.de/kognihome/HeinrichBecker";
-//                break;
-//           
-//            case "6":
-//                personURI="http://info.uni-bielefeld.de/kognihome/LottaBecker";
-//                break;
-//            
-//            case "7":
-//                personURI="http://info.uni-bielefeld.de/kognihome/NinaBecker";
-//                break;
-//                
-//            default:
-//                personURI = "http://info.uni-bielefeld.de/kognihome/PaulBecker";            
-//            
-//
-//        Query query = QueryFactory.create("");
-//
-//        QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
-//    
-//            
-//        }
-//        
-//        
-//        return "";
-//    }
+    private List<String> getInterests(String id) {
+        String personURI = "";
+        
+        switch(id){
+            case "1":
+                personURI="http://info.uni-bielefeld.de/kognihome/PaulBecker";
+                break;
+                
+            case "2":
+                personURI="http://info.uni-bielefeld.de/kognihome/AlexanderBecker";
+                break;
+                
+            case "3":
+                personURI="http://info.uni-bielefeld.de/kognihome/ChristinaBecker";
+                break;
+                
+            case "4":
+                personURI="http://info.uni-bielefeld.de/kognihome/KatharinaBecker";
+                break;
+                
+            case "5":
+                personURI="http://info.uni-bielefeld.de/kognihome/HeinrichBecker";
+                break;
+           
+            case "6":
+                personURI="http://info.uni-bielefeld.de/kognihome/LottaBecker";
+                break;
+            
+            case "7":
+                personURI="http://info.uni-bielefeld.de/kognihome/NinaBecker";
+                break;
+                
+            default:
+                personURI = "http://info.uni-bielefeld.de/kognihome/PaulBecker";            
+            
+        }
+        System.out.println("personURI:"+personURI);
+        Query query = QueryFactory.create("select distinct ?interest where {<"+personURI+"> <http://xmlns.com/foaf/0.1/interest> ?interest} LIMIT 100");
+        System.out.println("query:"+query);
+        List<String> interests = new ArrayList<>();
+        QueryExecution qExec = QueryExecutionFactory.sparqlService("http://129.70.129.138:8892/sparql", query);
+        ResultSet rs = qExec.execSelect() ;
+        try {
+         while ( rs.hasNext() ) {
+                 QuerySolution qs = rs.next();
+                 try{
+                         interests.add(qs.get("?interest").toString().replace("http://info.uni-bielefeld.de/kognihome/", ""));	
+                  }
+                 catch(Exception e){
+                }
+             }
+        }
+        catch(Exception e){
+        }
+        qExec.close() ;  
+        
+        
+        return interests;
+    }
 }
