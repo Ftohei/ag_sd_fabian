@@ -124,8 +124,8 @@ public class ImportNW {
         */
 
         for(Artikel artikel:artikelliste){
-            if(artikel.getText()!=null){
-                String[] terms = artikel.getText().split(" ");
+            if(artikel.getTaggedText()!=null){
+                String[] terms = artikel.getTaggedText().split(" ");
                 List<String> term_list = new ArrayList();
                 term_list.addAll(Arrays.asList(terms));
                 Map<String,List<String>> entries_onlyPersons = index.runStrictSearch(term_list, 99, true);
