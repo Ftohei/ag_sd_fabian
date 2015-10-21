@@ -103,7 +103,9 @@ public class ImportNW {
                 {
                     artikel.setTitel(getTitel(node));
                     if(artikel.getTitel()!=null && artikel.getTitel().length()>2){
-                        artikel.setText(getText(node,tagger));
+                        String text = getText(node);
+                        artikel.setText(text);
+                        artikel.setTaggedText(tagText(text,tagger));
                     }
                     
                 }
@@ -192,6 +194,7 @@ public class ImportNW {
                                     ", Datum = '" + artikel.convertDate(artikel.getDatum()) + "'" +
                                     ", Titel = '" + artikel.getTitel() + "'" +
                                     ", Text = '" + artikel.getText() + "'" +
+                                    ", TaggedText = '" + artikel.getTaggedText() + "'" +
                                     ", Wikipedia_OnlyPerson = '" + convertEntriesToString(artikel.getWikipedia_entries_onlyPersons())+ "'"+
                                     ", Wikipedia_NoPerson = '" + convertEntriesToString(artikel.getWikipedia_entries_noPersons())+ "'"
                         );
@@ -223,7 +226,7 @@ public class ImportNW {
 
 
 
-    private static String getText(Node nNode,MaxentTagger tagger) {
+    private static String getText(Node nNode) {
 
         String body = "";
 
@@ -260,7 +263,7 @@ public class ImportNW {
 
             }
         }
-        return tagText(body,tagger);
+        return body;
     }
 
  

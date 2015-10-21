@@ -26,6 +26,9 @@ public class Artikel {
         
 	String Text;
         
+        String TaggedText;
+
+        
 	String ArtikelPDF;
         
         String Autor;
@@ -50,7 +53,15 @@ public class Artikel {
 	{
 		
 	}
+        
+        public String getTaggedText() {
+            return TaggedText;
+        }
 
+        public void setTaggedText(String TaggedText) {
+            this.TaggedText = TaggedText;
+        }
+    
         public String convertDate(String date){
             String convertedDate = "";
             convertedDate = date.substring(4) + "-" + date.substring(2,4) + "-" + date.substring(0,2);

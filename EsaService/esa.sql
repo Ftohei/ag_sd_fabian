@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 20. Okt 2015 um 17:08
+-- Erstellungszeit: 21. Okt 2015 um 13:38
 -- Server Version: 5.6.21
 -- PHP-Version: 5.6.3
 
@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `Artikel` (
   `Datum` date NOT NULL,
   `Titel` varchar(255) COLLATE utf8_bin NOT NULL,
   `Text` text COLLATE utf8_bin NOT NULL,
+  `TaggedText` text COLLATE utf8_bin NOT NULL,
   `Wikipedia_OnlyPerson` text COLLATE utf8_bin NOT NULL,
   `Wikipedia_NoPerson` text COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -45,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `Artikel` (
 -- Indizes für die Tabelle `Artikel`
 --
 ALTER TABLE `Artikel`
- ADD UNIQUE KEY `Id` (`Id`), ADD UNIQUE KEY `artikelID` (`ArtikelID`);
+ ADD UNIQUE KEY `Id` (`Id`), ADD UNIQUE KEY `artikelID` (`ArtikelID`), ADD KEY `Datum` (`Datum`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
