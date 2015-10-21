@@ -107,7 +107,6 @@ public class VectorSimilarity {
             for(String i:rawInput.split(","))searchInput.add(i);
         } else {
             searchInput.add(rawInput);
-            System.out.println("RawInput: " + rawInput);
         }
 
 
