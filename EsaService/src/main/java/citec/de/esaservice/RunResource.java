@@ -121,61 +121,81 @@ public class RunResource {
 //    */
     private List<String> getInterests(String id) {
         String personURI = "";
+        List<String> interests = new ArrayList<>();
         
         switch(id){
             case "1":
                 personURI="http://info.uni-bielefeld.de/kognihome/PaulBecker";
+                interests.add("BMX");
+                interests.add("Fussball");
+                interests.add("Fußball");
                 break;
                 
             case "2":
                 personURI="http://info.uni-bielefeld.de/kognihome/AlexanderBecker";
+                interests.add("Fitness");
                 break;
                 
             case "3":
                 personURI="http://info.uni-bielefeld.de/kognihome/ChristinaBecker";
+                interests.add("Pilates");
+                interests.add("Rennrad");
+                interests.add("Gesunde_Ernährung");
                 break;
                 
             case "4":
                 personURI="http://info.uni-bielefeld.de/kognihome/KatharinaBecker";
+                interests.add("Gartenarbeit");
+                interests.add("Sauna");
+                interests.add("Kaffekranz");
+                interests.add("Walking");
+                interests.add("Aquajogging");
+                interests.add("klassische_musik");
                 break;
                 
             case "5":
                 personURI="http://info.uni-bielefeld.de/kognihome/HeinrichBecker";
+                interests.add("Musik_68_und_70er");
                 break;
            
             case "6":
                 personURI="http://info.uni-bielefeld.de/kognihome/LottaBecker";
+                interests.add("mit_grossem_bruder_spielen");
                 break;
             
             case "7":
                 personURI="http://info.uni-bielefeld.de/kognihome/NinaBecker";
+                interests.add("Social_Media");
+                interests.add("Flohmarkt");
+                interests.add("Schwimmen");
                 break;
                 
             default:
                 personURI = "http://info.uni-bielefeld.de/kognihome/PaulBecker";            
             
         }
-        System.out.println("personURI:"+personURI);
-        Query query = QueryFactory.create("select distinct ?interest where {<"+personURI+"> <http://xmlns.com/foaf/0.1/interest> ?interest} LIMIT 100");
-        System.out.println("query:"+query);
-        List<String> interests = new ArrayList<>();
-        QueryExecution qExec = QueryExecutionFactory.sparqlService("http://129.70.129.138:8892/sparql", query);
-        ResultSet rs = qExec.execSelect() ;
-        try {
-         while ( rs.hasNext() ) {
-                 QuerySolution qs = rs.next();
-                 try{
-                         interests.add(qs.get("?interest").toString().replace("http://info.uni-bielefeld.de/kognihome/", ""));	
-                  }
-                 catch(Exception e){
-                }
-             }
-        }
-        catch(Exception e){
-        }
-        qExec.close() ;  
+//        System.out.println("personURI:"+personURI);
+//        Query query = QueryFactory.create("select distinct ?interest where {<"+personURI+"> <http://xmlns.com/foaf/0.1/interest> ?interest} LIMIT 100");
+//        System.out.println("query:"+query);
+//        QueryExecution qExec = QueryExecutionFactory.sparqlService("http://129.70.129.138:8892/sparql", query);
+//        ResultSet rs = qExec.execSelect() ;
+//        try {
+//         while ( rs.hasNext() ) {
+//                 QuerySolution qs = rs.next();
+//                 try{
+//                         interests.add(qs.get("?interest").toString().replace("http://info.uni-bielefeld.de/kognihome/", ""));	
+//                  }
+//                 catch(Exception e){
+//                }
+//             }
+//        }
+//        catch(Exception e){
+//        }
+//        qExec.close() ;  
         
-        
+        for(String i: interests){
+            System.out.println(i);
+        }
         return interests;
     }
 }
