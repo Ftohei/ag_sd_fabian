@@ -35,7 +35,7 @@ public class VectorSimilarity {
     }
     
     
-    public String getArtikels(List<String> interests, String date, boolean onlyPerson){
+    public String getArtikels(List<String> interests, String date, boolean onlyPerson, boolean json){
         
         List<Artikel> result_nw = null;
         Map<String,List<String>> result_interests = new HashMap();
@@ -94,7 +94,10 @@ public class VectorSimilarity {
         }
         Collections.sort(esaResults);
         results.addAll(esaResults);
-        return JSONArray.toJSONString(results);
+        if(json)
+            return JSONArray.toJSONString(results);
+        else
+            return getPlainTitle(esaResults);
     }
     
     public String getArtikelsRawInput(String rawInput, boolean onlyPerson, MaxentTagger tagger){
@@ -316,6 +319,17 @@ public class VectorSimilarity {
         }
         
         return scalar;
+    }
+
+    private String getPlainTitle(ArrayList<EsaResult> esaResults) {
+        String output="";
+        int counter = 0;
+        for(EsaResult result : esaResults){
+            if (counter <20) output+=result.getTitle()+"\n";
+            counter+=1;
+        }
+        
+        return output;
     }
 
 }

@@ -10,6 +10,7 @@ import de.citec.util.Language;
 import de.citec.util.VectorSimilarity;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -19,12 +20,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QueryFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
 
 
 /*
@@ -60,37 +55,51 @@ public class RunResource {
      * @param interests
      * @param onlyPersons
      * @param personid
+     * @param json_input
      * @return an instance of java.lang.String
      */
     @GET
     @Produces("application/json")
-    public String getJson(@QueryParam("date") String date, @QueryParam("interests") String interests,  @QueryParam("onlyPersons") String onlyPersons,@QueryParam("personid") String personid) {
+    public String getJson(@QueryParam("date") String date, @QueryParam("interests") String interests,  @QueryParam("onlyPersons") String onlyPersons,@QueryParam("personid") String personid, @QueryParam("json") String json_input) {
         List<String> terms = new ArrayList<String>();
         if(date!=null && interests!=null && onlyPersons!=null){
             boolean persons = true;
             if(onlyPersons.contains("false")) persons=false;
             if(interests.contains(",")){
-                for(String i:interests.split(","))terms.add(i);
+                terms.addAll(Arrays.asList(interests.split(",")));
             }
             else terms.add(interests);
-           return vec.getArtikels(terms, date,persons);
+           boolean json = true;
+           if(json_input!=null){
+               if(json_input.toLowerCase().equals("false")) json=false;
+           }
+           return vec.getArtikels(terms, date,persons,json);
         }
         
-        else if(date!=null && personid!=null && onlyPersons!=null){
-            boolean persons = true;
-            if(onlyPersons.contains("false")) persons=false;
-            return vec.getArtikels(getInterests(personid), date,persons);
-        }
         
         else if(date!=null && personid!=null && onlyPersons!=null && interests!=null){
             boolean persons = true;
             if(onlyPersons.contains("false")) persons=false;
             if(interests.contains(",")){
-                for(String i:interests.split(","))terms.add(i);
+                terms.addAll(Arrays.asList(interests.split(",")));
             }
             else terms.add(interests);
             terms.addAll(getInterests(personid));
-            return vec.getArtikels(terms, date,persons);
+            boolean json = true;
+            if(json_input!=null){
+               if(json_input.toLowerCase().equals("false")) json=false;
+            }
+            return vec.getArtikels(terms, date,persons,json);
+        }
+        
+        else if(date!=null && personid!=null && onlyPersons!=null){
+            boolean persons = true;
+            if(onlyPersons.contains("false")) persons=false;
+            boolean json = true;
+            if(json_input!=null){
+               if(json_input.toLowerCase().equals("false")) json=false;
+            }
+            return vec.getArtikels(getInterests(personid), date,persons,json);
         }
         
         else return "ERROR";

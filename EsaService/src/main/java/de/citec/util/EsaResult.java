@@ -57,5 +57,17 @@ public class EsaResult implements JSONAware, Comparable{
                 }
                 return 0;
         }
+        
+        public String getId() {
+            return id;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getScore() {
+            return score;
+        }
 }
 
