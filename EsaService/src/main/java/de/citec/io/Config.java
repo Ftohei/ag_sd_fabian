@@ -4,22 +4,6 @@ package de.citec.io;
 import de.citec.util.Language;
 import static de.citec.util.Language.DE;
 import static de.citec.util.Language.EN;
-import static de.citec.util.Language.ES;
-import static de.citec.util.Language.JA;
-import java.io.File;
-import java.io.IOException;
-
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 
 public class Config {
@@ -39,15 +23,15 @@ public class Config {
 	public Config()
 	{
             this.Language=DE;
-            this.pathIndexGerman="EsaDeutsch/Index/";
-           this.pathIndexEnglish="EsaEnglish/Index/";
+            this.pathIndexGerman="/Users/swalter/Documents/EsaDeutsch/Index/";
+           this.pathIndexEnglish="/Users/swalter/Documents/EsaEnglish/Index/";
            this.portNumber="3306";
            this.serverName="localhost";
            this.dbms="mysql";
-           this.password="";
+           this.password="1234567";
            this.database="esa";
            this.userName="esa";
-           this.pathTagger="./taggers/german-fast.tagger";
+           this.pathTagger="/Users/swalter/Git/ag_sd_fabian/EsaService/taggers/german-fast.tagger";
 
 	}
 

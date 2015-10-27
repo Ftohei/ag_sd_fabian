@@ -97,8 +97,10 @@ public class ImportNW {
                 {
                     if (getArtikelID(node) != null) artikel.setArtikelID(getArtikelID(node));
                     if (getDatum(node) != null) artikel.setDatum(getDatum(node));
+                    if (getArtikelPDF(node) != null) artikel.setArtikelPDF(getArtikelPDF(node));
                 }
 
+                
                 if (node.getNodeName().equals("inhalt"))
                 {
                     artikel.setTitel(getTitel(node));
@@ -110,7 +112,7 @@ public class ImportNW {
                     
                 }
             }
-            if(!artikel_titel.contains(artikel.getTitel().trim().toLowerCase())){
+            if(!artikel_titel.contains(artikel.getTitel().trim().toLowerCase()) && artikel.getArtikelPDF()!=null){
                 artikel_titel.add(artikel.getTitel().trim().toLowerCase());
                 artikelliste.add(artikel);
             }
@@ -191,6 +193,7 @@ public class ImportNW {
                         stmt.executeUpdate("INSERT INTO Artikel SET "
                                     + "Id = 0x" + artikel.getArtikelID() +
                                     ", ArtikelId = '" + artikel.getArtikelID() + "'" +
+                                    ", ArtikelPDF = '" + artikel.getArtikelPDF() + "'" +
                                     ", Datum = '" + artikel.convertDate(artikel.getDatum()) + "'" +
                                     ", Titel = '" + artikel.getTitel() + "'" +
                                     ", Text = '" + artikel.getText() + "'" +
@@ -224,7 +227,25 @@ public class ImportNW {
     
 
 
+     private static String getArtikelPDF(Node nNode) {
 
+        NodeList nodes = nNode.getChildNodes();
+
+        Node node;
+
+        for (int i = 0; i < nodes.getLength(); i++) {
+
+            node = nodes.item(i);
+
+            if (node.getNodeName().equals("artikel-pdf"))
+            {
+
+                return node.getTextContent();
+            }
+        }
+        return null;
+    }
+        
 
     private static String getText(Node nNode) {
 

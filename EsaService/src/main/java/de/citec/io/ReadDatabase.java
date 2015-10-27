@@ -60,13 +60,14 @@ public class ReadDatabase {
             Connection connect = connector.connect()) {
             Statement stmt = connect.createStatement();
             
-            String query = "SELECT Distinct ArtikelId, Datum, Titel, Text, TaggedText, Wikipedia_OnlyPerson, Wikipedia_NoPerson FROM Artikel where ArtikelId='"+id+"';";
+            String query = "SELECT Distinct ArtikelId, ArtikelPDF, Datum, Titel, Text, TaggedText, Wikipedia_OnlyPerson, Wikipedia_NoPerson FROM Artikel where ArtikelId='"+id+"';";
             
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next()) {
                 
                 artikel.setDatum(resultSet.getString("Datum"));
                 artikel.setArtikelID(resultSet.getString("ArtikelId"));
+                artikel.setArtikelPDF(resultSet.getString("ArtikelPDF"));
                 artikel.setTitel(resultSet.getString("Titel"));
                 artikel.setText(resultSet.getString("Text"));
                 artikel.setTaggedText(resultSet.getString("TaggedText"));

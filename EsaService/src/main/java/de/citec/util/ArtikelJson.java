@@ -38,16 +38,16 @@ public class ArtikelJson implements JSONAware{
         sb.append("\"").append(JSONObject.escape(artikel.getTitel())).append("\"");
 
         sb.append(",");
+        
+        sb.append(JSONObject.escape("ArtikelPDF"));
+        sb.append(":");
+        sb.append("\"").append(JSONObject.escape(artikel.getArtikelPDF())).append("\"");
+
+        sb.append(",");
 
         sb.append(JSONObject.escape("Datum"));
         sb.append(":");
         sb.append(artikel.getDatum());
-        
-        sb.append(",");
-        
-        sb.append(JSONObject.escape("Title"));
-        sb.append(":");
-        sb.append("\"").append(JSONObject.escape(artikel.getTitel())).append("\"");
         
         sb.append(",");
 
