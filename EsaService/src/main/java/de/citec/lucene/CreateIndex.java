@@ -41,8 +41,8 @@ public class CreateIndex {
         Analyzer analyzer = null;
         
         List<String> files = new ArrayList<>();
-        files.add("/Users/swalter/Documents/EsaDeutsch/new_copus_german.txt");
-        String indexPath = "/Users/swalter/Documents/EsaDeutsch/Index/";
+        files.add("/Users/swalter/Documents/EsaEnglish/new_corpus_english.txt");
+        String indexPath = "/Users/swalter/Documents/EsaEnglish/Index/";
         Language language = Language.DE;
         Directory dir = FSDirectory.open(Paths.get(indexPath));
         
@@ -93,6 +93,22 @@ public class CreateIndex {
             name = name.replace("_appr", "");
             name = name.replace("._$.","");
             name = name.replace("_card .", "");
+            name = name.replace(" ._$.", "");
+            name = name.replace("_$.", "");
+            name = name.replace("_card", "");
+            name = name.replace("_xy ", "");
+            name = name.replace("/_$[", "");
+            name = name.replace("-_$[", "");
+            name = name.replace("_$[", "");
+            name = name.replace(("_pper"), "");
+            name = name.replace(("_appr"), "");
+            name = name.replace(" 's", "s");
+            name = name.replace("_piat", "");
+            name = name.replace("_adv", "");
+            name = name.replace("' ", "");
+            name = name.replace("'", " ");
+            name = name.replace("  ", " ");
+            name = name.trim();
             if(tmp.length<4){
                 //System.out.println(s);
                 counter +=1;
@@ -103,7 +119,7 @@ public class CreateIndex {
                 Document doc = new Document();
                 Field field_persons = new StringField("persons",persons,Field.Store.NO);
                 Field field_id = new StringField("id",id,Field.Store.YES);
-                Field field_name = new TextField("name",name.toLowerCase(),Field.Store.YES);
+                Field field_name = new TextField("name",name,Field.Store.YES);
                 Field field_text = new TextField("text",text.toLowerCase(),Field.Store.NO);
                 doc.add(field_persons);
                 doc.add(field_id);

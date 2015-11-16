@@ -325,7 +325,7 @@ public class VectorSimilarity {
         String output="";
         int counter = 0;
         for(EsaResult result : esaResults){
-            if (counter <20) output+=result.getTitle()+"\n";
+            if (counter <30) output+=result.getTitle()+"\n";
             counter+=1;
         }
         

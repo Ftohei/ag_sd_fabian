@@ -427,8 +427,11 @@ public class ImportNW {
         output = output.replace(("_appr"), "");
         output = output.replace(" 's", "s");
         output = output.replace("_piat", "");
+        output = output.replace("_adv", "");
         output = output.replace("' ", "");
         output = output.replace("'", " ");
+        output = output.replace("  ", " ");
+        output = output.trim();
         //System.out.println(output);
         return output;
     }
