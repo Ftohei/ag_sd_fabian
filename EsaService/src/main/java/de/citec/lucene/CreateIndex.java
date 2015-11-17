@@ -41,8 +41,8 @@ public class CreateIndex {
         Analyzer analyzer = null;
         
         List<String> files = new ArrayList<>();
-        files.add("/Users/swalter/Documents/EsaEnglish/new_corpus_english.txt");
-        String indexPath = "/Users/swalter/Documents/EsaEnglish/Index/";
+        files.add("/Users/swalter/Documents/EsaDeutsch/new_copus_german.txt");
+        String indexPath = "/Users/swalter/Documents/EsaDeutsch/Index/";
         Language language = Language.DE;
         Directory dir = FSDirectory.open(Paths.get(indexPath));
         
@@ -76,41 +76,53 @@ public class CreateIndex {
     }
     
     
-    private static void indexDoc(final IndexWriter writer,String s) {
+//            name = name.replace("_piat", "");
+//            name = name.replace("_adv", "");
+//            name = name.replace(("_pper"), "");
+//            name = name.replace(("_appr"), "");
+//            name = name.replace("_card", "");
+//            name = name.replace("_xy ", "");
+//            name = name.replace("_card .", "");
+//            name = name.replace("_NN","");
+//            name = name.replace("_ADJA","");
+//            name = name.replace("_ADJD","");
+//            name = name.replace("_NE","");
+//            name = name.replace("_appr", "");
+    
+    private static void indexDoc(final IndexWriter writer,String input) {
         
         try{
-            s = s.replace("\n","");
-            String[] tmp = s.split("######");
+            input = input.replace("\n","");
+            String[] tmp = input.split("######");
             String persons = tmp[0];
             String id = tmp[1];
             String name = tmp[2];
-            name = name.replace("_NN","");
-            name = name.replace("_ADJA","");
-            name = name.replace("_ADJD","");
-            name = name.replace("_NE","");
             name = name.replace("-RRB-_TRUNC","");
             name = name.replace("-LRB-_TRUNC","");
-            name = name.replace("_appr", "");
             name = name.replace("._$.","");
-            name = name.replace("_card .", "");
             name = name.replace(" ._$.", "");
             name = name.replace("_$.", "");
-            name = name.replace("_card", "");
-            name = name.replace("_xy ", "");
             name = name.replace("/_$[", "");
             name = name.replace("-_$[", "");
             name = name.replace("_$[", "");
-            name = name.replace(("_pper"), "");
-            name = name.replace(("_appr"), "");
             name = name.replace(" 's", "s");
-            name = name.replace("_piat", "");
-            name = name.replace("_adv", "");
             name = name.replace("' ", "");
             name = name.replace("'", " ");
             name = name.replace("  ", " ");
+            if(name.contains(" ")){
+                String[] tmp_string = name.split(" ");
+                name = "";
+                for(String s : tmp_string){
+                    if(s.contains("_")){
+                        name+=" "+s.split("_")[0];
+                    }
+                    else
+                        name+=" "+s;
+                }
+            }
             name = name.trim();
             if(tmp.length<4){
-                //System.out.println(s);
+                //System.out.println(input);
                 counter +=1;
             }
             else{
@@ -132,7 +144,7 @@ public class CreateIndex {
         }
         catch(Exception e){
             e.printStackTrace();
-            //System.out.println("Problem with:"+s);
+            //System.out.println("Problem with:"+input);
         }
         
         
