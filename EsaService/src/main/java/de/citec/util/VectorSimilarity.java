@@ -258,20 +258,42 @@ public class VectorSimilarity {
         if(onlyPersons){
             artikel.getWikipedia_entries_onlyPersons().keySet().stream().filter((key) -> (vector2.containsKey(key))).forEach((key) -> {
                  if(!artikel.getWikipedia_entries_onlyPersons().get(key).get(1).contains("_$")){
-                     vector2.put(key, Float.valueOf(artikel.getWikipedia_entries_onlyPersons().get(key).get(1)));
+                     try{
+                        vector2.put(key, Float.valueOf(artikel.getWikipedia_entries_onlyPersons().get(key).get(1)));
+                     }
+                     catch(Exception e){
+                         System.out.println(artikel.getWikipedia_entries_onlyPersons().get(key).get(1));
+                         System.out.println(artikel.getWikipedia_entries_onlyPersons().get(key).toString());
+                         System.out.println();
+                         vector2.put(key, Float.valueOf(0));
+                     }
                  }
             });
         }
         else{
             artikel.getWikipedia_entries_noPersons().keySet().stream().filter((key) -> (vector2.containsKey(key))).forEach((key) -> {
                 if(!artikel.getWikipedia_entries_noPersons().get(key).get(1).contains("_$")&&!artikel.getWikipedia_entries_noPersons().get(key).get(1).contains(" ")){
-                    vector2.put(key, Float.valueOf(artikel.getWikipedia_entries_noPersons().get(key).get(1)));
+                    try{
+                        vector2.put(key, Float.valueOf(artikel.getWikipedia_entries_noPersons().get(key).get(1)));
+                    }
+                    catch(Exception e){
+                        System.out.println(artikel.getWikipedia_entries_onlyPersons().get(key).get(1));
+                        System.out.println(artikel.getWikipedia_entries_onlyPersons().get(key).toString());
+                        System.out.println();
+                        vector2.put(key, Float.valueOf(0));
+                    }
+                    
                 }
             });
         }
         
         result_interests.keySet().stream().filter((key) -> (vector1.containsKey(key))).forEach((key) -> {
-            vector1.put(key, Float.valueOf(result_interests.get(key).get(1)));
+            try{
+                vector1.put(key, Float.valueOf(result_interests.get(key).get(1)));
+            }
+            catch(Exception e){
+            vector1.put(key, Float.valueOf(0));
+            }
         });
         
     }

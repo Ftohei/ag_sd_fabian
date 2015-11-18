@@ -67,33 +67,14 @@ public class SearchIndex {
                 }
                 if(onlypersons){
                      booleanQuery.add(new QueryParser("persons", analyzer).parse("1"), BooleanClause.Occur.MUST);
+                     wikipedia_entries.putAll(runSearch(top_k,booleanQuery));
                 }
-                /*
-                If onlyPersons is false, run search an all entries.
-                */
-//                else{
-//                     booleanQuery.add(new QueryParser("persons", analyzer).parse("1"), BooleanClause.Occur.MUST_NOT);
-//                }
-//                System.out.println("Query:"+booleanQuery.toString());
-                    
-                
-                int hitsPerPage = top_k;
-		    
-		    
-	        TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage);
-	        searcher.search(booleanQuery, collector);
-	        
-	        ScoreDoc[] hits = collector.topDocs().scoreDocs;
+                else{
+                    wikipedia_entries.putAll(runSearch(top_k,booleanQuery));
+                    booleanQuery.add(new QueryParser("persons", analyzer).parse("1"), BooleanClause.Occur.MUST);
+                    wikipedia_entries.putAll(runSearch(top_k,booleanQuery));
+                }
 
-	        for(int i=0;i<hits.length;++i) {
-	          int docId = hits[i].doc;
-	          Document d = searcher.doc(docId);
-	          String artikelname = d.get("name");
-                  List<String> result = new ArrayList<>();
-                  result.add(artikelname);
-                  result.add(Float.toString(hits[i].score));
-                  wikipedia_entries.put(d.get("id"),result);
-	        }
 		}
 		catch(Exception e){
 			
@@ -102,6 +83,24 @@ public class SearchIndex {
 		return wikipedia_entries;
 	}
         
+    public Map<String,List<String>> runSearch(int top_k,BooleanQuery booleanQuery) throws IOException{
+        int hitsPerPage = top_k;	    
+        TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage);
+        searcher.search(booleanQuery, collector);
+        Map<String,List<String>> wikipedia_entries = new HashMap();
+        ScoreDoc[] hits = collector.topDocs().scoreDocs;
+
+        for(int i=0;i<hits.length;++i) {
+              int docId = hits[i].doc;
+              Document d = searcher.doc(docId);
+              String artikelname = d.get("name");
+              List<String> result = new ArrayList<>();
+              result.add(artikelname);
+              result.add(Float.toString(hits[i].score));
+              wikipedia_entries.put(d.get("id"),result);
+        }
+       return wikipedia_entries;
+    }
 	
     
 }
