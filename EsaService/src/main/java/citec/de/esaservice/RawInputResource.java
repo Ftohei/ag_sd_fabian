@@ -6,7 +6,7 @@
 package citec.de.esaservice;
 
 import de.citec.io.Config;
-import de.citec.io.ReadDatabase;
+import de.citec.io.DatabaseAction;
 import de.citec.util.Language;
 import static de.citec.util.Language.DE;
 import static de.citec.util.Language.EN;
@@ -15,7 +15,6 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import java.io.IOException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -40,7 +39,7 @@ public class RawInputResource {
 
     private MaxentTagger tagger;
 
-    private ReadDatabase rd;
+    private DatabaseAction rd;
 
     /**
      * Creates a new instance of RawInputResource2
@@ -48,7 +47,7 @@ public class RawInputResource {
     public RawInputResource() throws IOException {
         this.config = new Config();
         this.tagger = new MaxentTagger(config.getPathTagger());
-        this.rd = new ReadDatabase(config);
+        this.rd = new DatabaseAction(config);
     }
 
     /**
@@ -75,13 +74,13 @@ public class RawInputResource {
             try {
             switch (language){
                 case DE:
-                    this.vec = new VectorSimilarity(config.getPathIndexGerman(), DE,config);
+                    this.vec = new VectorSimilarity( DE,config);
                     break;
                 case EN:
-                    this.vec = new VectorSimilarity(config.getPathIndexEnglish(), EN,config);
+                    this.vec = new VectorSimilarity( EN,config);
                     break;
                 default:
-                    this.vec = new VectorSimilarity(config.getPathIndexGerman(), DE,config);
+                    this.vec = new VectorSimilarity( DE,config);
                     break;
             }
             } catch (IOException e) {

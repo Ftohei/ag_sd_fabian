@@ -6,7 +6,7 @@
 package citec.de.esaservice;
 
 import de.citec.io.Config;
-import de.citec.util.Language;
+import static de.citec.util.Language.DE;
 import de.citec.util.VectorSimilarity;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class RunResource {
     public RunResource() throws IOException {
                 this.config = new Config();
 
-        this.vec = new VectorSimilarity(config.getPathIndexGerman(),Language.DE,config);
+        this.vec = new VectorSimilarity(DE,config);
     }
 
     /**

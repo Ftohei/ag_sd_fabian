@@ -5,7 +5,6 @@
  */
 package de.citec.io;
 
-import de.citec.lucene.SearchIndex;
 import de.citec.util.Artikel;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import java.io.File;
@@ -44,7 +43,7 @@ public class ImportNW {
         File fXmlFile = new File(args[0]);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        
+        DatabaseAction da = new DatabaseAction(config);
         Set<String> artikel_titel = new HashSet<>();
 
         dBuilder.setEntityResolver(new EntityResolver() {
@@ -70,8 +69,7 @@ public class ImportNW {
         doc.getDocumentElement().normalize();
 
         System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-        System.out.println("Path index:"+config.getPathIndexGerman());
-        SearchIndex index = new SearchIndex(config.getPathIndexGerman(),config.getLanguage());
+
 
         NodeList nList = doc.getElementsByTagName("artikel");
         
@@ -80,7 +78,6 @@ public class ImportNW {
         System.out.println("----------------------------");
 
         for (int i = 0; i < nList.getLength(); i++) {
-
             Node nNode = nList.item(i);
 
             Artikel artikel = new Artikel();
@@ -115,6 +112,8 @@ public class ImportNW {
             if(!artikel_titel.contains(artikel.getTitel().trim().toLowerCase()) && artikel.getArtikelPDF()!=null){
                 artikel_titel.add(artikel.getTitel().trim().toLowerCase());
                 artikelliste.add(artikel);
+
+                
             }
             
             //System.out.print(artikel);
@@ -124,105 +123,32 @@ public class ImportNW {
          /*
         Run search on index - but on cleaned entries_onlyPersons
         */
+        
 
         for(Artikel artikel:artikelliste){
             if(artikel.getTaggedText()!=null){
                 String[] terms = artikel.getTaggedText().split(" ");
                 List<String> term_list = new ArrayList();
                 term_list.addAll(Arrays.asList(terms));
-                Map<String,List<String>> entries_onlyPersons = index.runStrictSearch(term_list, 99, true);
+                Map<Integer,Float> entries_onlyPersons = da.getWikipediaArtikels(term_list, true,10);
                 artikel.setWikipedia_entries_onlyPersons(entries_onlyPersons);
                 
-                Map<String,List<String>> entries_noPersons = index.runStrictSearch(term_list, 99, false);
-                artikel.setWikipedia_entries_noPersons(entries_noPersons);
+                Map<Integer,Float> entries_all = da.getWikipediaArtikels(term_list, false,10);
+                artikel.setWikipedia_entries_all(entries_all);
+                
             }
             
         }
-        System.out.println("Für alle Artikel Index durchsucht");
+        System.out.println("Für alle Artifkel Index durchsucht");
         
         try {
-            articlesToDatabase(artikelliste,config);
+            da.articlesToDatabase(artikelliste);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-    private static void articlesToDatabase(Set<Artikel> artikelliste, Config config) throws SQLException {
-
-
-        System.out.println("articlesToDatabase gestartet");
-
-        Statement stmt;
-        ResultSet rs;
-
-        DB_Connector connector = new DB_Connector(config);
-
-        try {
-            connector.connect();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        stmt = connector.getConn().createStatement();
-
-
-
-
-
-
-        System.out.println("------------");
-
-
-        //            Searcher searcher = new Searcher("");
-
-        for (Artikel artikel: artikelliste){
-
-
-            ResultSet resultSet;
-
-
-                System.out.println("Artikel: " + artikel.getArtikelID() + " wird in die Datenbank gespeichert");
-
-                String artikelDatum = artikel.convertDate(artikel.getDatum());
-
-//                    Daten des Artikels in Tabelle Artikel schreiben
-                try {
-                    if(artikel.getTitel()!=null && artikel.getTitel().length()>2){
-                        int anzahl_woerter = artikel.getText().split(" ").length;
-                        stmt.executeUpdate("INSERT INTO Artikel SET "
-                                    + "Id = 0x" + artikel.getArtikelID() +
-                                    ", ArtikelId = '" + artikel.getArtikelID() + "'" +
-                                    ", ArtikelPDF = '" + artikel.getArtikelPDF() + "'" +
-                                    ", Datum = '" + artikel.convertDate(artikel.getDatum()) + "'" +
-                                    ", Titel = '" + artikel.getTitel() + "'" +
-                                    ", Text = '" + artikel.getText() + "'" +
-                                    ", TaggedText = '" + artikel.getTaggedText() + "'" +
-                                    ", Wikipedia_OnlyPerson = '" + convertEntriesToString(artikel.getWikipedia_entries_onlyPersons())+ "'"+
-                                    ", Wikipedia_NoPerson = '" + convertEntriesToString(artikel.getWikipedia_entries_noPersons())+ "'"
-                        );
-                    
-                    }
-                    else{
-                        System.out.println("No title given for "+artikel.getArtikelPDF());
-                    }
-                    
-
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-
-
-        
-
-        stmt.close();
-        connector.closeConnection();
-
-    }
 
     
 
@@ -401,40 +327,56 @@ public class ImportNW {
         if(term.length() > 0){
             new_artikel+=" "+term.toLowerCase().substring(1);
         }
-
-//        System.out.println(new_artikel);
+        new_artikel = new_artikel.replace("'", "");
+        new_artikel = new_artikel.replace(" ._$.", "");
+        new_artikel = new_artikel.replace("_$.", "");
+        new_artikel = new_artikel.replace("_card", "");
+        new_artikel = new_artikel.replace("_xy ", "");
+        new_artikel = new_artikel.replace("/_$[", "");
+        new_artikel = new_artikel.replace("-_$[", "");
+        new_artikel = new_artikel.replace("_$[", "");
+        new_artikel = new_artikel.replace(("_pper"), "");
+        new_artikel = new_artikel.replace(("_appr"), "");
+        new_artikel = new_artikel.replace(" 's", "s");
+        new_artikel = new_artikel.replace("_piat", "");
+        new_artikel = new_artikel.replace("_adv", "");
+        new_artikel = new_artikel.replace("' ", "");
+        new_artikel = new_artikel.replace("'", " ");
+        new_artikel = new_artikel.replace("  ", " ");
+        new_artikel = new_artikel.trim();
         if(new_artikel.length() == 0) {
             return new_artikel;
         }
         return new_artikel.substring(1);
     }
 
-    private static String convertEntriesToString(Map<String, List<String>> wikipedia_entries) {
-        String output = "";
-        for(String key : wikipedia_entries.keySet()){
-            List<String> info = wikipedia_entries.get(key);
-            output+=key+","+info.get(0)+","+info.get(1)+"##";
-        }
-        
-        output = output.replace(" ._$.", "");
-        output = output.replace("_$.", "");
-        output = output.replace("_card", "");
-        output = output.replace("_xy ", "");
-        output = output.replace("/_$[", "");
-        output = output.replace("-_$[", "");
-        output = output.replace("_$[", "");
-        output = output.replace(("_pper"), "");
-        output = output.replace(("_appr"), "");
-        output = output.replace(" 's", "s");
-        output = output.replace("_piat", "");
-        output = output.replace("_adv", "");
-        output = output.replace("' ", "");
-        output = output.replace("'", " ");
-        output = output.replace("  ", " ");
-        output = output.trim();
-        //System.out.println(output);
-        return output;
-    }
+//    private static String convertEntriesToString(Map<String, List<String>> wikipedia_entries) {
+//        String output = "";
+//        for(String key : wikipedia_entries.keySet()){
+//            List<String> info = wikipedia_entries.get(key);
+//            output+=key+","+info.get(0)+","+info.get(1)+"##";
+//        }
+//        
+//        output = output.replace(" ._$.", "");
+//        output = output.replace("_$.", "");
+//        output = output.replace("_card", "");
+//        output = output.replace("_xy ", "");
+//        output = output.replace("/_$[", "");
+//        output = output.replace("-_$[", "");
+//        output = output.replace("_$[", "");
+//        output = output.replace(("_pper"), "");
+//        output = output.replace(("_appr"), "");
+//        output = output.replace(" 's", "s");
+//        output = output.replace("_piat", "");
+//        output = output.replace("_adv", "");
+//        output = output.replace("' ", "");
+//        output = output.replace("'", " ");
+//        output = output.replace("  ", " ");
+//        output = output.trim();
+//        //System.out.println(output);
+//        return output;
+//    }
+
 
 
 }

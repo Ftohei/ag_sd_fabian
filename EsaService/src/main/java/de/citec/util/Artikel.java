@@ -1,10 +1,19 @@
 package de.citec.util;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Artikel {
+    
+        int SqlID = 0;
+
+        public int getSqlID() {
+            return SqlID;
+        }
+
+        public void setSqlID(int SqlID) {
+            this.SqlID = SqlID;
+        }
 
 	String ArtikelID;
 	
@@ -33,21 +42,9 @@ public class Artikel {
         
         String Autor;
         
-        Map<String,List<String>> wikipedia_entries_onlyPersons = new HashMap();
-        public Map<String, List<String>> getWikipedia_entries_onlyPersons() {
-            return wikipedia_entries_onlyPersons;
-        }
-        public void setWikipedia_entries_onlyPersons(Map<String, List<String>> wikipedia_entries) {
-            this.wikipedia_entries_onlyPersons = wikipedia_entries;
-        }
-        
-        Map<String,List<String>> wikipedia_entries_noPersons = new HashMap();
-        public Map<String, List<String>> getWikipedia_entries_noPersons() {
-            return wikipedia_entries_noPersons;
-        }
-        public void setWikipedia_entries_noPersons(Map<String, List<String>> wikipedia_entries) {
-            this.wikipedia_entries_noPersons = wikipedia_entries;
-        }
+        Map<Integer,Float> wikipedia_entries_onlyPersons = new HashMap();
+        Map<Integer, Float> wikipedia_entries_all = new HashMap();
+
     
 	public Artikel()
 	{
@@ -183,6 +180,22 @@ public class Artikel {
 				+ ", Rubrik=" + Rubrik + ", Ressort=" + Ressort + ", Text="
 				+ Text + "]\n";
 	}
+        
+        public Map<Integer, Float> getWikipedia_entries_onlyPersons() {
+            return wikipedia_entries_onlyPersons;
+        }
+
+        public void setWikipedia_entries_onlyPersons(Map<Integer, Float> wikipedia_entries_onlyPersons) {
+            this.wikipedia_entries_onlyPersons = wikipedia_entries_onlyPersons;
+        }
+
+        public Map<Integer, Float> getWikipedia_entries_all() {
+            return wikipedia_entries_all;
+        }
+
+        public void setWikipedia_entries_all(Map<Integer, Float> wikipedia_entries_all) {
+            this.wikipedia_entries_all = wikipedia_entries_all;
+        }
 	
 
 }

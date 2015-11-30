@@ -47,7 +47,7 @@ public class DB_Connector {
                    ":" + this.portNumber + "/" + this.database,
                    connectionProps);
 
-        System.out.println("Connected to database");
+//        System.out.println("Connected to database");
         return conn;
     }
 

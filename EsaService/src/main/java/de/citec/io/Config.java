@@ -14,23 +14,19 @@ public class Config {
         String serverName;
         String portNumber;
         String database;
-        String pathIndexEnglish;
-        String pathIndexGerman;
         String pathTagger;
         String pathXML;
 
     
 	public Config()
 	{
-            this.Language=DE;
-            this.pathIndexGerman="/Users/swalter/Documents/EsaDeutsch/Index/";
-           this.pathIndexEnglish="/Users/swalter/Documents/EsaEnglish/Index/";
+           this.Language=DE;
            this.portNumber="3306";
            this.serverName="localhost";
            this.dbms="mysql";
            this.password="1234567";
-           this.database="esa";
-           this.userName="esa";
+           this.database="wikipedia";
+           this.userName="wikipedia";
            this.pathTagger="/Users/swalter/Git/ag_sd_fabian/EsaService/taggers/german-fast.tagger";
 
 	}
@@ -110,23 +106,5 @@ public class Config {
         public void setDatabase(String database) {
             this.database = database;
         }
-
-        public String getPathIndexEnglish() {
-            return pathIndexEnglish;
-        }
-
-        public void setPathIndexEnglish(String pathIndexEnglish) {
-            this.pathIndexEnglish = pathIndexEnglish;
-        }
-
-        public String getPathIndexGerman() {
-            return pathIndexGerman;
-        }
-
-        public void setPathIndexGerman(String pathIndexGerman) {
-            this.pathIndexGerman = pathIndexGerman;
-        }
-
-
 
 }
