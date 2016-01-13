@@ -63,7 +63,6 @@ public class DatabaseAction {
             Statement stmt = connect.createStatement();
             
             String query = "SELECT Distinct artikelId, id, artikelPDF, datum, titel, text, taggedText FROM artikel WHERE artikelId='"+id+"';";
-            System.out.println(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next()) {
                 
@@ -81,14 +80,12 @@ public class DatabaseAction {
 
             Map<Integer, Float> wikipedia_entries_AllPersons = new HashMap<>();
             Map<Integer, Float> wikipedia_entries_onlyPersons = new HashMap<>();
-            System.out.println("GotHere");
             ResultSet resultSet_all = stmt.executeQuery(query_all);
             while (resultSet_all.next()) {
                 int wikipediaID = resultSet_all.getInt("wikipediaId");
                 float score = resultSet_all.getFloat("score");
                 wikipedia_entries_AllPersons.put(wikipediaID, score);
             }
-            System.out.println("But failed to get here");
             ResultSet resultSet_onlyPerson = stmt.executeQuery(query_all);
             while (resultSet_onlyPerson.next()) {
                 int wikipediaID = resultSet_onlyPerson.getInt("wikipediaId");

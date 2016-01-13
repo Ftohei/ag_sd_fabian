@@ -100,11 +100,11 @@ public class VectorSimilarity {
     
     
     
-    public String getArtikelsRawInput(String rawInput, boolean onlyPerson, MaxentTagger tagger){
+    public String getArtikelsRawInput(String rawInput, boolean onlyPerson){
 
         List<String> searchInput = new ArrayList();
 
-        rawInput = ImportNW.tagText(rawInput, tagger);
+//        rawInput = ImportNW.tagText(rawInput, tagger);
 
         if(rawInput.contains(",")){
             for(String i:rawInput.split(","))searchInput.add(i);
@@ -112,25 +112,16 @@ public class VectorSimilarity {
             searchInput.add(rawInput);
         }
 
+        Map<Integer, Float> result_rawInput = da.getWikipediaArtikels(searchInput,onlyPerson,10);
 
-        Map<String,List<String>> result_rawInput = null;
 
-//        try {
-//            result_rawInput = index.runStrictSearch(searchInput, 100, onlyPerson);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-        int counter = 0;
         JSONArray resultJSON = new JSONArray();
-        ArrayList<EsaResult> esaResults = new ArrayList<>();
-        for(String key : result_rawInput.keySet()){
-            counter+=1;
+        ArrayList<EsaResultWikipedia> esaResults = new ArrayList<>();
+        for(int key : result_rawInput.keySet()){
+            String artikelid = Integer.toString(key);
+            String score = Float.toString(result_rawInput.get(key));
 
-            String artikelname = result_rawInput.get(key).get(0);
-            String score = result_rawInput.get(key).get(1);
-
-            esaResults.add(new EsaResult(Integer.toString(counter), artikelname, score));
+            esaResults.add(new EsaResultWikipedia(artikelid, score));
         }
         Collections.sort(esaResults);
         resultJSON.addAll(esaResults);

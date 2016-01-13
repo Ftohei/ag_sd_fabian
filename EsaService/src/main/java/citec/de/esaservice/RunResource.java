@@ -36,12 +36,13 @@ public class RunResource {
     @Context
     private UriInfo context;
     
-    private Config config;
+    private final Config config;
 
     public final VectorSimilarity vec;
 
     /**
      * Creates a new instance of RunResource2
+     * @throws java.io.IOException
      */
     public RunResource() throws IOException {
                 this.config = new Config();

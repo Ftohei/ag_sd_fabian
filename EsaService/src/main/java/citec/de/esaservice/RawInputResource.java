@@ -37,7 +37,7 @@ public class RawInputResource {
     
     private VectorSimilarity vec;
 
-    private final MaxentTagger tagger;
+//    private final MaxentTagger tagger;
 
     private final DatabaseAction rd;
 
@@ -47,7 +47,7 @@ public class RawInputResource {
      */
     public RawInputResource() throws IOException {
         this.config = new Config();
-        this.tagger = new MaxentTagger(config.getPathTagger());
+//        this.tagger = new MaxentTagger(config.getPathTagger());
         this.rd = new DatabaseAction(config);
     }
 
@@ -89,7 +89,8 @@ public class RawInputResource {
             }
             boolean persons = true;
             if(onlyPersons.contains("false")) persons=false;
-            return vec.getArtikelsRawInput(interests, persons, tagger);
+            //return vec.getArtikelsRawInput(interests, persons, tagger);
+            return vec.getArtikelsRawInput(interests, persons);
         }
         else if(artikelid!=null){
             return rd.getInformations(artikelid);

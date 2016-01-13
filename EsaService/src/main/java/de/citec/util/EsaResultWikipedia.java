@@ -9,14 +9,12 @@ import org.json.simple.JSONObject;
  * @author swalter
  */
 
-public class EsaResult implements JSONAware, Comparable{
+public class EsaResultWikipedia implements JSONAware, Comparable{
         private final String id;
-        private final String titel;
         private final String score;
         
-        public EsaResult(String id, String title, String score){
-                this.id = id;
-                this.titel = title;
+        public EsaResultWikipedia(String title, String score){
+                this.id = title;
                 this.score = score;
         }
         
@@ -25,16 +23,9 @@ public class EsaResult implements JSONAware, Comparable{
                 StringBuilder sb = new StringBuilder();
                 
                 sb.append("{");
-                
-                sb.append(JSONObject.escape("ID"));
+                sb.append(JSONObject.escape("WikipediaId"));
                 sb.append(":");
-                sb.append(id);
-                
-                sb.append(",");
-                
-                sb.append(JSONObject.escape("Titel"));
-                sb.append(":");
-                sb.append("\"").append(JSONObject.escape(titel)).append("\"");
+                sb.append(JSONObject.escape(id));
                 
                 sb.append(",");
                 
@@ -50,20 +41,17 @@ public class EsaResult implements JSONAware, Comparable{
         @Override
         public int compareTo(Object o) {
                 //sortiert abwärts
-                if(Double.parseDouble(((EsaResult) o).score) > Double.parseDouble(this.score) ) {
+                if(Double.parseDouble(((EsaResultWikipedia) o).score) > Double.parseDouble(this.score) ) {
                         return 1;
-                } else if(Double.parseDouble(((EsaResult) o).score) < Double.parseDouble(this.score) ) {
+                } else if(Double.parseDouble(((EsaResultWikipedia) o).score) < Double.parseDouble(this.score) ) {
                         return -1;
                 }
                 return 0;
         }
         
-        public String getId() {
-            return id;
-        }
 
         public String getTitle() {
-            return titel;
+            return id;
         }
 
         public String getScore() {
