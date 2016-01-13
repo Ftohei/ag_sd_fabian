@@ -98,6 +98,8 @@ public class VectorSimilarity {
             return getPlainTitle(esaResults);
     }
     
+    
+    
     public String getArtikelsRawInput(String rawInput, boolean onlyPerson, MaxentTagger tagger){
 
         List<String> searchInput = new ArrayList();

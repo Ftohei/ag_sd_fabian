@@ -41,6 +41,7 @@ public class Artikel {
 	String ArtikelPDF;
         
         String Autor;
+
         
         Map<Integer,Float> wikipedia_entries_onlyPersons = new HashMap();
         Map<Integer, Float> wikipedia_entries_all = new HashMap();

@@ -62,8 +62,8 @@ public class DatabaseAction {
             Connection connect = connector.connect()) {
             Statement stmt = connect.createStatement();
             
-            String query = "SELECT Distinct ArtikelId, ArtikelPDF, Datum, Titel, Text, TaggedText, Wikipedia_OnlyPerson, Wikipedia_NoPerson FROM Artikel where ArtikelId='"+id+"';";
-            
+            String query = "SELECT Distinct artikelId, id, artikelPDF, datum, titel, text, taggedText FROM artikel WHERE artikelId='"+id+"';";
+            System.out.println(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next()) {
                 
@@ -73,12 +73,30 @@ public class DatabaseAction {
                 artikel.setTitel(resultSet.getString("Titel"));
                 artikel.setText(resultSet.getString("Text"));
                 artikel.setTaggedText(resultSet.getString("TaggedText"));
-//                String wiki = resultSet.getString("Wikipedia_OnlyPerson");
-//                artikel.setWikipedia_entries_onlyPersons(convertToHM(wiki));
-//                wiki = resultSet.getString("Wikipedia_NoPerson");
-//                artikel.setWikipedia_entries_noPersons(convertToHM(wiki));
+                artikel.setSqlID(resultSet.getInt("id"));
             }
             
+            String query_all = "SELECT Distinct wikipediaId, score FROM relationen_Alle WHERE artikelId='"+artikel.getSqlID()+"';";
+            String query_onlyPerson = "SELECT Distinct wikipediaId, score FROM relationen_NurPersonen WHERE artikelId='"+artikel.getSqlID()+"';";
+
+            Map<Integer, Float> wikipedia_entries_AllPersons = new HashMap<>();
+            Map<Integer, Float> wikipedia_entries_onlyPersons = new HashMap<>();
+            System.out.println("GotHere");
+            ResultSet resultSet_all = stmt.executeQuery(query_all);
+            while (resultSet_all.next()) {
+                int wikipediaID = resultSet_all.getInt("wikipediaId");
+                float score = resultSet_all.getFloat("score");
+                wikipedia_entries_AllPersons.put(wikipediaID, score);
+            }
+            System.out.println("But failed to get here");
+            ResultSet resultSet_onlyPerson = stmt.executeQuery(query_all);
+            while (resultSet_onlyPerson.next()) {
+                int wikipediaID = resultSet_onlyPerson.getInt("wikipediaId");
+                float score = resultSet_onlyPerson.getFloat("score");
+                wikipedia_entries_onlyPersons.put(wikipediaID, score);
+            }
+            artikel.setWikipedia_entries_all(wikipedia_entries_AllPersons);
+            artikel.setWikipedia_entries_onlyPersons(wikipedia_entries_onlyPersons);
             
             stmt.close();
         }

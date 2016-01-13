@@ -33,16 +33,17 @@ public class RawInputResource {
     @Context
     private UriInfo context;
     
-    private Config config;
+    private final Config config;
     
     private VectorSimilarity vec;
 
-    private MaxentTagger tagger;
+    private final MaxentTagger tagger;
 
-    private DatabaseAction rd;
+    private final DatabaseAction rd;
 
     /**
      * Creates a new instance of RawInputResource2
+     * @throws java.io.IOException
      */
     public RawInputResource() throws IOException {
         this.config = new Config();
