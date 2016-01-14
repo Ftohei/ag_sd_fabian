@@ -28,58 +28,58 @@ public class ArtikelJson implements JSONAware{
                 
         sb.append("{");
 
-        sb.append(JSONObject.escape("ID"));
+        sb.append("\"").append(JSONObject.escape("ID")).append("\"");
         sb.append(":");
-        sb.append(artikel.getArtikelID());
+        sb.append("\"").append(artikel.getArtikelID()).append("\"");
 
         sb.append(",");
 
-        sb.append(JSONObject.escape("Title"));
+        sb.append("\"").append(JSONObject.escape("Title")).append("\"");
         sb.append(":");
         sb.append("\"").append(JSONObject.escape(artikel.getTitel())).append("\"");
 
         sb.append(",");
         
-        sb.append(JSONObject.escape("ArtikelPDF"));
+        sb.append("\"").append(JSONObject.escape("ArtikelPDF")).append("\"");
         sb.append(":");
         sb.append("\"").append(JSONObject.escape(artikel.getArtikelPDF())).append("\"");
 
         sb.append(",");
 
-        sb.append(JSONObject.escape("Datum"));
+        sb.append("\"").append(JSONObject.escape("Datum")).append("\"");
         sb.append(":");
-        sb.append(artikel.getDatum());
+        sb.append("\"").append(artikel.getDatum()).append("\"");
         
         sb.append(",");
 
-        sb.append(JSONObject.escape("Text"));
+        sb.append("\"").append(JSONObject.escape("Text")).append("\"");
         sb.append(":");
         sb.append("\"").append(JSONObject.escape(artikel.getText())).append("\"");
         
         sb.append(",");
 
-        sb.append(JSONObject.escape("WikipediaOnlyPersons"));
+        sb.append("\"").append(JSONObject.escape("WikipediaOnlyPersons")).append("\"");
         sb.append("{");
         StringBuilder sb_onlyPersons = new StringBuilder();
         Map<Integer, Float> wikipedia_onlyPersons = artikel.getWikipedia_entries_onlyPersons();
         for(Integer id:wikipedia_onlyPersons.keySet()){
-            sb_onlyPersons.append(JSONObject.escape(Integer.toString(id)));
+            sb_onlyPersons.append("\"").append(JSONObject.escape(Integer.toString(id))).append("\"");
             sb_onlyPersons.append(":");
-            sb_onlyPersons.append(Float.toString(wikipedia_onlyPersons.get(id)));
+            sb_onlyPersons.append("\"").append(Float.toString(wikipedia_onlyPersons.get(id))).append("\"");
             sb_onlyPersons.append(",");
         }
         //sb_onlyPersons.deleteCharAt(sb_onlyPersons.lastIndexOf(","));
         sb.append("\"").append(JSONObject.escape(sb_onlyPersons.toString())).append("\"");
         sb.append("},");
         
-        sb.append(JSONObject.escape("WikipediaAllPersons"));
+        sb.append("\"").append(JSONObject.escape("WikipediaAllPersons")).append("\"");
         sb.append("{");
         StringBuilder sb_allPersons = new StringBuilder();
         Map<Integer, Float> wikipedia_allPersons = artikel.getWikipedia_entries_all();
         for(Integer id:wikipedia_allPersons.keySet()){
-            sb_allPersons.append(JSONObject.escape(Integer.toString(id)));
+            sb_allPersons.append("\"").append(JSONObject.escape(Integer.toString(id))).append("\"");
             sb_allPersons.append(":");
-            sb_allPersons.append(Float.toString(wikipedia_allPersons.get(id)));
+            sb_allPersons.append("\"").append(Float.toString(wikipedia_allPersons.get(id))).append("\"");
             sb_allPersons.append(",");
         }
         //sb_allPersons.deleteCharAt(sb_onlyPersons.lastIndexOf(","));

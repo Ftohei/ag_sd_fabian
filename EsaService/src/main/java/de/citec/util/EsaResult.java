@@ -26,21 +26,21 @@ public class EsaResult implements JSONAware, Comparable{
                 
                 sb.append("{");
                 
-                sb.append(JSONObject.escape("ID"));
+                sb.append("\"").append(JSONObject.escape("ID")).append("\"");
                 sb.append(":");
                 sb.append(id);
                 
                 sb.append(",");
                 
-                sb.append(JSONObject.escape("Titel"));
+                sb.append("\"").append(JSONObject.escape("Titel")).append("\"");
                 sb.append(":");
                 sb.append("\"").append(JSONObject.escape(titel)).append("\"");
                 
                 sb.append(",");
                 
-                sb.append(JSONObject.escape("Score"));
+                sb.append("\"").append(JSONObject.escape("Score")).append("\"");
                 sb.append(":");
-                sb.append(score);
+                sb.append("\"").append(JSONObject.escape(score)).append("\"");
                 
                 sb.append("}");
                 

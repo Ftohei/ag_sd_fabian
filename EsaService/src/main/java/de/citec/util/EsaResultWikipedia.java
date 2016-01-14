@@ -23,15 +23,15 @@ public class EsaResultWikipedia implements JSONAware, Comparable{
                 StringBuilder sb = new StringBuilder();
                 
                 sb.append("{");
-                sb.append(JSONObject.escape("WikipediaId"));
+                sb.append("\"").append(JSONObject.escape("WikipediaId")).append("\"");
                 sb.append(":");
-                sb.append(JSONObject.escape(id));
+                sb.append("\"").append(JSONObject.escape(id)).append("\"");
                 
                 sb.append(",");
                 
-                sb.append(JSONObject.escape("Score"));
+                sb.append("\"").append(JSONObject.escape("Score")).append("\"");
                 sb.append(":");
-                sb.append(score);
+                sb.append("\"").append(JSONObject.escape(score)).append("\"");
                 
                 sb.append("}");
                 
