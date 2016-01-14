@@ -28,7 +28,7 @@ public class EsaResult implements JSONAware, Comparable{
                 
                 sb.append("\"").append(JSONObject.escape("ID")).append("\"");
                 sb.append(":");
-                sb.append(id);
+                sb.append("\"").append(JSONObject.escape(id)).append("\"");
                 
                 sb.append(",");
                 
