@@ -59,6 +59,7 @@ public class ArtikelJson implements JSONAware{
         sb.append(",");
 
         sb.append("\"").append(JSONObject.escape("WikipediaOnlyPersons")).append("\"");
+        sb.append(":");
         sb.append("{");
         StringBuilder sb_onlyPersons = new StringBuilder();
         Map<Integer, Float> wikipedia_onlyPersons = artikel.getWikipedia_entries_onlyPersons();
@@ -73,6 +74,7 @@ public class ArtikelJson implements JSONAware{
         sb.append("},");
         
         sb.append("\"").append(JSONObject.escape("WikipediaAllPersons")).append("\"");
+        sb.append(":");
         sb.append("{");
         StringBuilder sb_allPersons = new StringBuilder();
         Map<Integer, Float> wikipedia_allPersons = artikel.getWikipedia_entries_all();
