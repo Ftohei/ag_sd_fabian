@@ -9,11 +9,11 @@ import org.json.simple.JSONObject;
  * @author swalter
  */
 
-public class EsaResultWikipedia implements JSONAware, Comparable{
+public class EsaResultWikipediaJson implements JSONAware, Comparable{
         private final String id;
         private final String score;
         
-        public EsaResultWikipedia(String title, String score){
+        public EsaResultWikipediaJson(String title, String score){
                 this.id = title;
                 this.score = score;
         }
@@ -41,9 +41,9 @@ public class EsaResultWikipedia implements JSONAware, Comparable{
         @Override
         public int compareTo(Object o) {
                 //sortiert abwärts
-                if(Double.parseDouble(((EsaResultWikipedia) o).score) > Double.parseDouble(this.score) ) {
+                if(Double.parseDouble(((EsaResultWikipediaJson) o).score) > Double.parseDouble(this.score) ) {
                         return 1;
-                } else if(Double.parseDouble(((EsaResultWikipedia) o).score) < Double.parseDouble(this.score) ) {
+                } else if(Double.parseDouble(((EsaResultWikipediaJson) o).score) < Double.parseDouble(this.score) ) {
                         return -1;
                 }
                 return 0;

@@ -7,12 +7,16 @@ package de.citec.io;
 
 import de.citec.util.Artikel;
 import de.citec.util.ArtikelJson;
+import de.citec.util.EsaResultJson;
+import de.citec.util.Levenshtein;
+import de.citec.util.MappingResultJson;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.simple.JSONArray;
 
 /**
  *
@@ -277,8 +282,8 @@ public class DatabaseAction {
     public List<Artikel> getArtikelsForDate(String date, boolean onlyPersons) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         
         List<Artikel> results = new ArrayList<>();
-        try ( // date example: 2015-08-2
-            Connection connect = connector.connect()) {
+        // date example: 2015-08-2
+        try (Connection connect = connector.connect()) {
             Statement stmt = connect.createStatement();
             
             String query = "SELECT Distinct id, artikelId, titel FROM artikel where datum='"+date+"';";
@@ -320,6 +325,52 @@ public class DatabaseAction {
         }
 //        System.out.println("results.size():"+results.size());
         return results;
+    }
+    
+    
+    public String getMapping(String term) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
+        Map<String,List<String>> mapping = new HashMap<>();
+        try (Connection connect = connector.connect()) {
+            Statement stmt = connect.createStatement();
+            
+            Map<Integer,String> ids = new HashMap<>();
+            
+            String query = "SELECT Distinct resId, res FROM resources WHERE res LIKE '%"+term+"%';";
+            
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next()) {
+                ids.put(resultSet.getInt("resId"), resultSet.getString("res"));
+            }
+            System.out.println(ids.size());
+            for(int id : ids.keySet()){
+                query = "SELECT Distinct Classes FROM resource_class_mapping WHERE Id='"+Integer.toString(id)+"';";
+                List<String> tmp_results = new ArrayList<>();
+                
+                ResultSet resultSet_new = stmt.executeQuery(query);
+                    while (resultSet_new.next()) {
+                        tmp_results.add(resultSet_new.getString("Classes"));
+                    }
+                
+                if(!tmp_results.isEmpty()){
+                    mapping.put(ids.get(id), tmp_results);
+                }
+            }
+            
+            stmt.close();    
+        }
+            
+        ArrayList<MappingResultJson> mappingResults = new ArrayList<>();
+        JSONArray results = new JSONArray();
+        
+        for(String key : mapping.keySet()){
+            double nld = Levenshtein.normalizedLevenshteinDistance(term, key);
+            mappingResults.add(new MappingResultJson(key,Double.toString(nld),mapping.get(key)));
+        }
+        Collections.sort(mappingResults);
+        results.addAll(mappingResults);
+        return JSONArray.toJSONString(results);
+        
+
     }
         
     

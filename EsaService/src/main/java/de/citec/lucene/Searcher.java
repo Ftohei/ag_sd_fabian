@@ -4,7 +4,7 @@ package de.citec.lucene;
 
 
 import de.citec.util.Language;
-import de.citec.util.EsaResult;
+import de.citec.util.EsaResultJson;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -130,7 +130,7 @@ public class Searcher {
         search(query,onlyPersons);
         JSONArray results = new JSONArray();
         for(int i = 0; i<titles.size();i++){
-            results.add(new EsaResult(pageIds.get(i),titles.get(i),Double.toString(scores.get(i))));
+            results.add(new EsaResultJson(pageIds.get(i),titles.get(i),Double.toString(scores.get(i))));
         }
         return JSONArray.toJSONString(results);
     }

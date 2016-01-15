@@ -84,11 +84,11 @@ public class VectorSimilarity {
 //        .sorted(Map.Entry.<String, Double>comparingByValue().reversed()) 
 //        .limit(10) 
 //        .forEach(System.out::println);
-        ArrayList<EsaResult> esaResults = new ArrayList<>();
+        ArrayList<EsaResultJson> esaResults = new ArrayList<>();
         JSONArray results = new JSONArray();
 //        System.out.println(overall_results.size());
         for(String key : overall_results.keySet()){
-            esaResults.add(new EsaResult(titel_id.get(key),key,Double.toString(overall_results.get(key))));
+            esaResults.add(new EsaResultJson(titel_id.get(key),key,Double.toString(overall_results.get(key))));
         }
         Collections.sort(esaResults);
         results.addAll(esaResults);
@@ -116,12 +116,12 @@ public class VectorSimilarity {
 
 
         JSONArray resultJSON = new JSONArray();
-        ArrayList<EsaResultWikipedia> esaResults = new ArrayList<>();
+        ArrayList<EsaResultWikipediaJson> esaResults = new ArrayList<>();
         for(int key : result_rawInput.keySet()){
             String artikelid = Integer.toString(key);
             String score = Float.toString(result_rawInput.get(key));
 
-            esaResults.add(new EsaResultWikipedia(artikelid, score));
+            esaResults.add(new EsaResultWikipediaJson(artikelid, score));
         }
         Collections.sort(esaResults);
         resultJSON.addAll(esaResults);
@@ -222,10 +222,10 @@ public class VectorSimilarity {
         return scalar;
     }
 
-    private String getPlainTitle(ArrayList<EsaResult> esaResults) {
+    private String getPlainTitle(ArrayList<EsaResultJson> esaResults) {
         String output="";
         int counter = 0;
-        for(EsaResult result : esaResults){
+        for(EsaResultJson result : esaResults){
             if (counter <30) output+=result.getTitle()+"\n";
             counter+=1;
         }
