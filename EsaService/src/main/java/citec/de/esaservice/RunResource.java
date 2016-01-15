@@ -9,6 +9,7 @@ import de.citec.io.Config;
 import static de.citec.util.Language.DE;
 import de.citec.util.VectorSimilarity;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,7 +62,7 @@ public class RunResource {
      */
     @GET
     @Produces("application/json")
-    public String getJson(@QueryParam("date") String date, @QueryParam("interests") String interests,  @QueryParam("onlyPersons") String onlyPersons,@QueryParam("personid") String personid, @QueryParam("json") String json_input) {
+    public String getJson(@QueryParam("date") String date, @QueryParam("interests") String interests,  @QueryParam("onlyPersons") String onlyPersons,@QueryParam("personid") String personid, @QueryParam("json") String json_input) throws SQLException {
         List<String> terms = new ArrayList<String>();
         if(date!=null && interests!=null && onlyPersons!=null){
             boolean persons = true;
@@ -74,7 +75,9 @@ public class RunResource {
            if(json_input!=null){
                if(json_input.toLowerCase().equals("false")) json=false;
            }
-           return vec.getArtikels(terms, date,persons,json);
+           String result =vec.getArtikels(terms, date,persons,json);
+           vec.close();
+           return result;
         }
         
         
@@ -90,7 +93,9 @@ public class RunResource {
             if(json_input!=null){
                if(json_input.toLowerCase().equals("false")) json=false;
             }
-            return vec.getArtikels(terms, date,persons,json);
+            String result = vec.getArtikels(terms, date,persons,json);
+            vec.close();
+            return result;
         }
         
         else if(date!=null && personid!=null && onlyPersons!=null){
@@ -100,10 +105,15 @@ public class RunResource {
             if(json_input!=null){
                if(json_input.toLowerCase().equals("false")) json=false;
             }
-            return vec.getArtikels(getInterests(personid), date,persons,json);
+            String result =  vec.getArtikels(getInterests(personid), date,persons,json);
+            vec.close();
+            return result;
         }
         
-        else return "ERROR";
+        else{
+            vec.close();
+            return "ERROR";
+        }
         
     }
 

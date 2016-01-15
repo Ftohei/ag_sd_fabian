@@ -90,10 +90,14 @@ public class RawInputResource {
             boolean persons = true;
             if(onlyPersons.contains("false")) persons=false;
             //return vec.getArtikelsRawInput(interests, persons, tagger);
-            return vec.getArtikelsRawInput(interests, persons);
+            String result = vec.getArtikelsRawInput(interests, persons);
+            vec.close();
+            return result;
         }
         else if(artikelid!=null){
-            return rd.getInformations(artikelid);
+            String result = rd.getInformations(artikelid);
+            rd.close();
+            return result;
         }
         else return "ERROR";
         

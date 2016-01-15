@@ -57,7 +57,9 @@ public class MappingResource {
     @GET
     @Produces("application/json")
     public String getJson(@QueryParam("term") String term) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        return rd.getMapping(term.toLowerCase());
+        String result =  rd.getMapping(term.toLowerCase());
+        rd.close();
+        return result;
     }
 
     /**

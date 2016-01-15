@@ -13,6 +13,7 @@ import java.util.*;
 
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import java.math.RoundingMode;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 
 import org.json.simple.JSONArray;
@@ -29,6 +30,10 @@ public class VectorSimilarity {
 //        System.out.println("Done initialization");
     }
     
+    
+    public void close() throws SQLException{
+        da.close();
+    }
     
     public String getArtikels(List<String> interests, String date, boolean onlyPerson, boolean json){
         

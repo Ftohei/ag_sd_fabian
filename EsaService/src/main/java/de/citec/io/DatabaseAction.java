@@ -59,6 +59,9 @@ public class DatabaseAction {
     }
     
     
+    public void close() throws SQLException{
+        connector.closeConnection();
+    }
     
     private Artikel getArtikelForId(String id) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         
