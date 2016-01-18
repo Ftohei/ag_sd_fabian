@@ -121,15 +121,16 @@ public class VectorSimilarity {
 
 
         JSONArray resultJSON = new JSONArray();
-        ArrayList<EsaResultWikipediaJson> esaResults = new ArrayList<>();
+        ArrayList<EsaResultWikipediaJson> esaResultsWikipedia = new ArrayList<>();
+        Map<Integer,String> wikipedia_titles = getWikipediaTitles(result_rawInput);
         for(int key : result_rawInput.keySet()){
             String artikelid = Integer.toString(key);
             String score = Float.toString(result_rawInput.get(key));
-
-            esaResults.add(new EsaResultWikipediaJson(artikelid, score));
+            if(wikipedia_titles.containsKey(key))
+                esaResultsWikipedia.add(new EsaResultWikipediaJson(artikelid, score,wikipedia_titles.get(key)));
         }
-        Collections.sort(esaResults);
-        resultJSON.addAll(esaResults);
+        Collections.sort(esaResultsWikipedia);
+        resultJSON.addAll(esaResultsWikipedia);
         return JSONArray.toJSONString(resultJSON);
 
     }
@@ -236,6 +237,21 @@ public class VectorSimilarity {
         }
         
         return output;
+    }
+
+    private Map<Integer, String> getWikipediaTitles(Map<Integer, Float> result_rawInput) {
+        Map<Integer,String> titles = new HashMap<>();
+        for(int key : result_rawInput.keySet()){
+            try{
+                titles.put(key, da.getWikipediaTitle(key));
+            }
+            catch(Exception e){
+                //pass
+            }
+        }
+        
+        
+        return titles;
     }
     
 

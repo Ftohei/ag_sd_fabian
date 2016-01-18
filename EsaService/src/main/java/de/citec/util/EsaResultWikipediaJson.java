@@ -12,10 +12,12 @@ import org.json.simple.JSONObject;
 public class EsaResultWikipediaJson implements JSONAware, Comparable{
         private final String id;
         private final String score;
+        private final String title;
         
-        public EsaResultWikipediaJson(String title, String score){
-                this.id = title;
+        public EsaResultWikipediaJson(String artikelID, String score, String title){
+                this.id = artikelID;
                 this.score = score;
+                this.title = title;
         }
         
         @Override
@@ -26,6 +28,12 @@ public class EsaResultWikipediaJson implements JSONAware, Comparable{
                 sb.append("\"").append(JSONObject.escape("WikipediaId")).append("\"");
                 sb.append(":");
                 sb.append("\"").append(JSONObject.escape(id)).append("\"");
+                
+                sb.append(",");
+                
+                sb.append("\"").append(JSONObject.escape("Titel")).append("\"");
+                sb.append(":");
+                sb.append("\"").append(JSONObject.escape(title)).append("\"");
                 
                 sb.append(",");
                 

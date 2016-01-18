@@ -105,7 +105,7 @@ public class DatabaseAction {
             
             stmt.close();
         }
-
+        
         return artikel;
     }
         
@@ -127,6 +127,22 @@ public class DatabaseAction {
         
         return wikipedia_entries;
     }
+     
+     public String getWikipediaTitle(int id) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
+        String title = "";
+        try ( // date example: 2015-08-2
+            Connection connect = connector.connect()) {
+            Statement stmt = connect.createStatement();
+            String query_all = "SELECT Distinct title FROM wikipedia WHERE id='"+Integer.toString(id)+"';";
+//            System.out.println(query_all);
+            ResultSet resultSet_all = stmt.executeQuery(query_all);
+            while (resultSet_all.next()) {
+                title= resultSet_all.getString("title");
+            }
+        }
+//         System.out.println(title);
+         return title;
+     }
     
     
     private String convertoToJson(Artikel artikel) {
