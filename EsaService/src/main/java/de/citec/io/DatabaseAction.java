@@ -152,6 +152,7 @@ public class DatabaseAction {
             
             connect = connector.connect();
             for(String term : terms){
+                term = term.replace("_", " ");
                 Statement stmt = connect.createStatement();
                 String query = "";
                 try{
