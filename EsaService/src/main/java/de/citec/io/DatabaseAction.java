@@ -361,7 +361,7 @@ public class DatabaseAction {
             while (resultSet.next()) {
                 ids.put(resultSet.getInt("resId"), resultSet.getString("res"));
             }
-            System.out.println(ids.size());
+            //System.out.println(ids.size());
             for(int id : ids.keySet()){
                 query = "SELECT Distinct Classes FROM resource_class_mapping WHERE Id='"+Integer.toString(id)+"';";
                 List<String> tmp_results = new ArrayList<>();

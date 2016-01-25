@@ -6,15 +6,11 @@
 package de.citec.util;
 
 import de.citec.io.Config;
-import de.citec.io.ImportNW;
 import de.citec.io.DatabaseAction;
 import java.io.IOException;
 import java.util.*;
 
-import edu.stanford.nlp.tagger.maxent.MaxentTagger;
-import java.math.RoundingMode;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 
 import org.json.simple.JSONArray;
 
@@ -105,7 +101,7 @@ public class VectorSimilarity {
     
     
     
-    public String getArtikelsRawInput(String rawInput, boolean onlyPerson){
+    public String getArtikelsRawInput(String rawInput, boolean onlyPerson, int value){
 
         List<String> searchInput = new ArrayList();
 
@@ -117,7 +113,7 @@ public class VectorSimilarity {
             searchInput.add(rawInput);
         }
 
-        Map<Integer, Float> result_rawInput = da.getWikipediaArtikels(searchInput,onlyPerson,10);
+        Map<Integer, Float> result_rawInput = da.getWikipediaArtikels(searchInput,onlyPerson,value);
 
 
         JSONArray resultJSON = new JSONArray();

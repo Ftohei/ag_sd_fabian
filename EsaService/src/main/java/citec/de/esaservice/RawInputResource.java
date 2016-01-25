@@ -57,13 +57,14 @@ public class RawInputResource {
      * @param onlyPersons
      * @param language_input
      * @param artikelid
+     * @param numberArticles
      * @return an instance of java.lang.String
      * @throws java.lang.Exception
      */
     @GET
     @Produces("application/json")
     public String getJson(@QueryParam("interests") String interests, @QueryParam("onlyPersons") String onlyPersons,
-                          @QueryParam("language") String language_input, @QueryParam("artikelid") String artikelid) throws Exception {
+                          @QueryParam("language") String language_input, @QueryParam("artikelid") String artikelid, @QueryParam("numberArticles") String numberArticles) throws Exception {
         Language language = DE;
         if(language_input!=null){
             language = getLanguage(language_input);
@@ -89,8 +90,13 @@ public class RawInputResource {
             }
             boolean persons = true;
             if(onlyPersons.contains("false")) persons=false;
+            int value = 10;
+            try{
+                value = Integer.valueOf(numberArticles);
+            }
+            catch(Exception e){}
             //return vec.getArtikelsRawInput(interests, persons, tagger);
-            String result = vec.getArtikelsRawInput(interests, persons);
+            String result = vec.getArtikelsRawInput(interests, persons, value);
             vec.close();
             return result;
         }

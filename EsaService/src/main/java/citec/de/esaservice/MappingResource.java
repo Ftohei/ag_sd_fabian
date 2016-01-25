@@ -7,14 +7,10 @@ package citec.de.esaservice;
 
 import de.citec.io.Config;
 import de.citec.io.DatabaseAction;
-import de.citec.util.VectorSimilarity;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
