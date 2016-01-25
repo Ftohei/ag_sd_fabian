@@ -71,9 +71,7 @@ public class RunResource {
         try{
             value = Integer.valueOf(numberArticles);
         }
-        catch(Exception e){ e.printStackTrace();}
-        System.out.println("numberArticles:"+numberArticles);
-        System.out.println("value:"+value);
+        catch(Exception e){}
         
         if(date!=null && interests!=null && onlyPersons!=null){
             boolean persons = true;
