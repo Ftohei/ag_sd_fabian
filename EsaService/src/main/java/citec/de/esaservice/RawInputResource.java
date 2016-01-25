@@ -94,6 +94,7 @@ public class RawInputResource {
             try{
                 value = Integer.valueOf(numberArticles);
             }
+            
             catch(Exception e){}
             //return vec.getArtikelsRawInput(interests, persons, tagger);
             String result = vec.getArtikelsRawInput(interests, persons, value);

@@ -69,9 +69,11 @@ public class RunResource {
         List<String> terms = new ArrayList<String>();
         int value = 500;
         try{
-            value = Integer.getInteger(numberArticles);
+            value = Integer.valueOf(numberArticles);
         }
-        catch(Exception e){}
+        catch(Exception e){ e.printStackTrace();}
+        System.out.println("numberArticles:"+numberArticles);
+        System.out.println("value:"+value);
         
         if(date!=null && interests!=null && onlyPersons!=null){
             boolean persons = true;
