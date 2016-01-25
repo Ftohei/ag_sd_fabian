@@ -58,12 +58,21 @@ public class RunResource {
      * @param onlyPersons
      * @param personid
      * @param json_input
+     * @param numberArticles
      * @return an instance of java.lang.String
      */
     @GET
     @Produces("application/json")
-    public String getJson(@QueryParam("date") String date, @QueryParam("interests") String interests,  @QueryParam("onlyPersons") String onlyPersons,@QueryParam("personid") String personid, @QueryParam("json") String json_input) throws SQLException {
+    public String getJson(@QueryParam("date") String date, @QueryParam("interests") String interests,  @QueryParam("onlyPersons") String onlyPersons,
+            @QueryParam("personid") String personid, @QueryParam("json") String json_input, 
+            @QueryParam("numberArticles") String numberArticles) throws SQLException {
         List<String> terms = new ArrayList<String>();
+        int value = 500;
+        try{
+            value = Integer.getInteger(numberArticles);
+        }
+        catch(Exception e){}
+        
         if(date!=null && interests!=null && onlyPersons!=null){
             boolean persons = true;
             if(onlyPersons.contains("false")) persons=false;
@@ -75,7 +84,7 @@ public class RunResource {
            if(json_input!=null){
                if(json_input.toLowerCase().equals("false")) json=false;
            }
-           String result =vec.getArtikels(terms, date,persons,json);
+           String result =vec.getArtikels(terms, date,persons, json, value);
            vec.close();
            return result;
         }
@@ -93,7 +102,7 @@ public class RunResource {
             if(json_input!=null){
                if(json_input.toLowerCase().equals("false")) json=false;
             }
-            String result = vec.getArtikels(terms, date,persons,json);
+            String result = vec.getArtikels(terms, date,persons,json, value);
             vec.close();
             return result;
         }
@@ -105,7 +114,7 @@ public class RunResource {
             if(json_input!=null){
                if(json_input.toLowerCase().equals("false")) json=false;
             }
-            String result =  vec.getArtikels(getInterests(personid), date,persons,json);
+            String result =  vec.getArtikels(getInterests(personid), date,persons,json, value);
             vec.close();
             return result;
         }

@@ -31,7 +31,7 @@ public class VectorSimilarity {
         da.close();
     }
     
-    public String getArtikels(List<String> interests, String date, boolean onlyPerson, boolean json){
+    public String getArtikels(List<String> interests, String date, boolean onlyPerson, boolean json, int numberArticles){
         
         List<Artikel> result_nw = null;
         Map<Integer, Float> result_interests = new HashMap();
@@ -46,8 +46,8 @@ public class VectorSimilarity {
             int value = result_nw.size();
             if(value>0){
                 if(onlyPerson)
-                    result_interests = da.getWikipediaArtikels(interests, onlyPerson,500);
-                else result_interests = da.getWikipediaArtikels(interests, onlyPerson,500);
+                    result_interests = da.getWikipediaArtikels(interests, onlyPerson,numberArticles);
+                else result_interests = da.getWikipediaArtikels(interests, onlyPerson,numberArticles);
             }
             
         }
