@@ -73,24 +73,8 @@ public class RunResource {
         }
         catch(Exception e){}
         
-        if(date!=null && interests!=null && onlyPersons!=null){
-            boolean persons = true;
-            if(onlyPersons.contains("false")) persons=false;
-            if(interests.contains(",")){
-                terms.addAll(Arrays.asList(interests.split(",")));
-            }
-            else terms.add(interests);
-           boolean json = true;
-           if(json_input!=null){
-               if(json_input.toLowerCase().equals("false")) json=false;
-           }
-           String result =vec.getArtikels(terms, date,persons, json, value);
-           vec.close();
-           return result;
-        }
         
-        
-        else if(date!=null && personid!=null && onlyPersons!=null && interests!=null){
+        if(date!=null && personid!=null && onlyPersons!=null && interests!=null){
             boolean persons = true;
             if(onlyPersons.contains("false")) persons=false;
             if(interests.contains(",")){
@@ -105,6 +89,22 @@ public class RunResource {
             String result = vec.getArtikels(terms, date,persons,json, value);
             vec.close();
             return result;
+        }
+        
+        else if(date!=null && interests!=null && onlyPersons!=null){
+            boolean persons = true;
+            if(onlyPersons.contains("false")) persons=false;
+            if(interests.contains(",")){
+                terms.addAll(Arrays.asList(interests.split(",")));
+            }
+            else terms.add(interests);
+           boolean json = true;
+           if(json_input!=null){
+               if(json_input.toLowerCase().equals("false")) json=false;
+           }
+           String result =vec.getArtikels(terms, date,persons, json, value);
+           vec.close();
+           return result;
         }
         
         else if(date!=null && personid!=null && onlyPersons!=null){
