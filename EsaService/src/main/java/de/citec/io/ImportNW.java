@@ -146,6 +146,7 @@ public class ImportNW {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        da.close();
     }
 
 
