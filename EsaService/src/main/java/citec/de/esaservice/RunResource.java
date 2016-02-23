@@ -6,13 +6,26 @@
 package citec.de.esaservice;
 
 import de.citec.io.Config;
+import de.citec.util.EsaResultJson;
 import static de.citec.util.Language.DE;
+import de.citec.util.TagCloud;
 import de.citec.util.VectorSimilarity;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -21,6 +34,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
+import org.json.simple.JSONArray;
 
 
 /*
@@ -58,14 +72,16 @@ public class RunResource {
      * @param onlyPersons
      * @param personid
      * @param json_input
+     * @param tagCloud
      * @param numberArticles
      * @return an instance of java.lang.String
+     * @throws java.sql.SQLException
      */
     @GET
     @Produces("application/json")
     public String getJson(@QueryParam("date") String date, @QueryParam("interests") String interests,  @QueryParam("onlyPersons") String onlyPersons,
-            @QueryParam("personid") String personid, @QueryParam("json") String json_input, 
-            @QueryParam("numberArticles") String numberArticles) throws SQLException {
+            @QueryParam("personid") String personid, @QueryParam("json") String json_input, @QueryParam("wordcloud") String word_cloud, 
+            @QueryParam("numberArticles") String numberArticles, @Context HttpServletResponse response) throws SQLException, IOException {
         List<String> terms = new ArrayList<String>();
         int value = 500;
         try{
@@ -73,8 +89,32 @@ public class RunResource {
         }
         catch(Exception e){}
         
+
+        boolean wordcloud = false; 
         
-        if(date!=null && personid!=null && onlyPersons!=null && interests!=null){
+        try{
+            if(word_cloud.toLowerCase().contains("true")) wordcloud=true;
+        }
+        catch(Exception e){}
+        //http://localhost:8080/EsaService/webresources/run?date=2016-02-22&wordcloud=true
+        if(wordcloud){
+            boolean persons = true;
+            terms.addAll(getInterests("1"));
+            Map<String,String> titel_id = new HashMap<>();
+            Map<String, Double> result = vec.getArtikels(terms, date,persons, value,titel_id);
+            Map<String, Integer> input = new HashMap<>();
+            for(String w:result.keySet()){
+                int input_value = (int) Math.rint(result.get(w)*10);
+                input.put(w, input_value);
+            }
+            java.util.Date creation_date = new java.util.Date();
+            //Long.toString(creation_date.getTime())+".png"
+            String path = Long.toString(creation_date.getTime())+".png";
+            TagCloud.createCloud(input,path); 
+
+            return path;
+        }
+        else if(date!=null && personid!=null && onlyPersons!=null && interests!=null){
             boolean persons = true;
             if(onlyPersons.contains("false")) persons=false;
             if(interests.contains(",")){
@@ -86,9 +126,10 @@ public class RunResource {
             if(json_input!=null){
                if(json_input.toLowerCase().equals("false")) json=false;
             }
-            String result = vec.getArtikels(terms, date,persons,json, value);
+            Map<String,String> titel_id = new HashMap<>();
+            Map<String, Double> result = vec.getArtikels(terms, date,persons, value,titel_id);
             vec.close();
-            return result;
+            return createOutput(result,json,titel_id);
         }
         
         else if(date!=null && interests!=null && onlyPersons!=null){
@@ -102,9 +143,10 @@ public class RunResource {
            if(json_input!=null){
                if(json_input.toLowerCase().equals("false")) json=false;
            }
-           String result =vec.getArtikels(terms, date,persons, json, value);
+           Map<String,String> titel_id = new HashMap<>();
+           Map<String, Double> result =vec.getArtikels(terms, date,persons, value, titel_id);
            vec.close();
-           return result;
+           return createOutput(result,json,titel_id);
         }
         
         else if(date!=null && personid!=null && onlyPersons!=null){
@@ -114,9 +156,10 @@ public class RunResource {
             if(json_input!=null){
                if(json_input.toLowerCase().equals("false")) json=false;
             }
-            String result =  vec.getArtikels(getInterests(personid), date,persons,json, value);
+            Map<String,String> titel_id = new HashMap<>();
+            Map<String, Double> result =  vec.getArtikels(getInterests(personid), date,persons, value, titel_id);
             vec.close();
-            return result;
+            return createOutput(result,json,titel_id);
         }
         
         else{
@@ -226,5 +269,30 @@ public class RunResource {
             System.out.println(i);
         }
         return interests;
+    }
+
+    private String createOutput(Map<String, Double> result, boolean json, Map<String,String> titel_id) {
+        ArrayList<EsaResultJson> esaResults = new ArrayList<>();
+        JSONArray results = new JSONArray();
+//        System.out.println(overall_results.size());
+        for(String key : result.keySet()){
+            esaResults.add(new EsaResultJson(titel_id.get(key),key,Double.toString(result.get(key))));
+        }
+        Collections.sort(esaResults);
+        results.addAll(esaResults);
+        if(json)
+            return JSONArray.toJSONString(results);
+        else
+            return getPlainTitle(esaResults);
+    }
+    private String getPlainTitle(ArrayList<EsaResultJson> esaResults) {
+        String output="";
+        int counter = 0;
+        for(EsaResultJson result : esaResults){
+            if (counter <30) output+=result.getTitle()+"\n";
+            counter+=1;
+        }
+        
+        return output;
     }
 }
